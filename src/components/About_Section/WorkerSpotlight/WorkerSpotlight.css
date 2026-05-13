@@ -1,0 +1,177 @@
+/* =============================================
+   WorkerSpotlight.css — Fixed
+   ============================================= */
+
+.worker-spotlight {
+  padding: var(--spacing-xl) 0;
+  background-color: var(--color-background);
+  /* overflow: hidden was BLOCKING horizontal scroll — removed */
+}
+
+.worker-spotlight__inner {
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: 0 var(--spacing-gutter);
+}
+
+.worker-spotlight__heading {
+  font-family: var(--font-headline);
+  font-size: var(--text-headline-lg);
+  font-weight: var(--fw-bold);
+  color: var(--color-on-surface);
+  margin-bottom: var(--spacing-lg);
+}
+
+/* ── Scrollable track ── */
+.worker-spotlight__track {
+  display: flex;
+  gap: var(--spacing-lg);
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+  padding-bottom: var(--spacing-md);
+  /* Cursor hint on desktop */
+  cursor: grab;
+  /* Hide scrollbar cross-browser */
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.worker-spotlight__track::-webkit-scrollbar {
+  display: none;
+}
+
+.worker-spotlight__track:active {
+  cursor: grabbing;
+}
+
+/* Spacers create the illusion that cards align with page content */
+.worker-spotlight__spacer {
+  flex-shrink: 0;
+  width: var(--spacing-gutter, 16px);
+}
+
+/* ── Individual card ── */
+.worker-card {
+  flex-shrink: 0;
+  /* 
+    FIX: use calc so card never overflows viewport on mobile.
+    Show ~85% of card width so user can see next card peeking.
+  */
+  width: min(520px, calc(85vw));
+  background-color: var(--color-surface-container-lowest);
+  border-radius: var(--radius-2xl);
+  padding: var(--spacing-lg);
+  box-shadow: var(--shadow-md);
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-md);
+  scroll-snap-align: start;
+  transition: transform var(--transition-normal), box-shadow var(--transition-normal);
+}
+
+.worker-card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-xl);
+}
+
+/* Desktop: side-by-side layout inside card */
+@media (min-width: 640px) {
+  .worker-card {
+    flex-direction: row;
+    align-items: center;
+    gap: var(--spacing-lg);
+  }
+}
+
+/* ── Image ── */
+.worker-card__img-wrap {
+  width: 100%;
+  /* On mobile: landscape banner ratio */
+  aspect-ratio: 16 / 9;
+  border-radius: var(--radius-xl);
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+@media (min-width: 640px) {
+  .worker-card__img-wrap {
+    /* On desktop: fixed square */
+    width: 180px;
+    height: 180px;
+    aspect-ratio: unset;
+  }
+}
+
+.worker-card__img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: top center;
+  display: block;
+}
+
+/* ── Body ── */
+.worker-card__body {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: var(--spacing-base);
+  /* Prevent text overflow inside flex child */
+  min-width: 0;
+}
+
+/* ── Rating ── */
+.worker-card__rating {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--color-primary);
+  font-family: var(--font-body);
+  font-weight: var(--fw-bold);
+  font-size: var(--text-body-sm);
+}
+
+.worker-star-icon {
+  width: 16px;
+  height: 16px;
+  flex-shrink: 0;
+  color: var(--color-primary);
+}
+
+/* ── Name ── */
+.worker-card__name {
+  font-family: var(--font-headline);
+  font-size: var(--text-headline-md);
+  font-weight: var(--fw-bold);
+  color: var(--color-on-surface);
+  margin: 0;
+  /* Prevent very long names from breaking layout */
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* ── Role ── */
+.worker-card__role {
+  font-family: var(--font-body);
+  font-size: var(--text-body-md);
+  font-weight: var(--fw-bold);
+  color: var(--color-primary);
+  margin: 0;
+}
+
+/* ── Quote ── */
+.worker-card__quote {
+  font-family: var(--font-body);
+  font-size: var(--text-body-md);
+  line-height: var(--lh-body-md);
+  color: var(--color-on-surface-variant);
+  font-style: italic;
+  margin: 0;
+  /* Clamp to 4 lines so tall quotes don't break card height */
+  display: -webkit-box;
+  -webkit-line-clamp: 4;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}

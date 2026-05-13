@@ -1,0 +1,102 @@
+/* =============================================
+   OfficeMap.css
+   ============================================= */
+
+.office-map {
+  height: 500px;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
+
+@media (min-width: 768px) {
+  .office-map {
+    flex-direction: row;
+  }
+}
+
+/* Sidebar */
+.office-map__sidebar {
+  background: var(--color-surface-container-lowest);
+  padding: var(--spacing-md);
+  overflow-y: auto;
+  box-shadow: 4px 0 20px rgba(0, 0, 0, 0.06);
+  z-index: 10;
+  flex-shrink: 0;
+}
+
+@media (min-width: 768px) {
+  .office-map__sidebar {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  .office-map__sidebar {
+    height: 180px;
+  }
+}
+
+.office-map__sidebar-heading {
+  font-family: var(--font-headline);
+  font-size: var(--text-headline-sm);
+  font-weight: var(--fw-semibold);
+  color: var(--color-on-surface);
+  margin-bottom: var(--spacing-md);
+}
+
+.office-map__list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-base);
+}
+
+.office-map__item {
+  width: 100%;
+  text-align: left;
+  padding: 12px;
+  border-radius: var(--radius-lg);
+  background: transparent;
+  border: none;
+  border-left: 4px solid transparent;
+  cursor: pointer;
+  transition: background var(--transition-fast), border-color var(--transition-fast);
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.office-map__item:hover {
+  background: rgba(0, 77, 153, 0.05);
+}
+
+.office-map__item--active {
+  background: rgba(0, 77, 153, 0.06);
+  border-left-color: var(--color-primary);
+}
+
+.office-map__item-label {
+  font-family: var(--font-body);
+  font-size: var(--text-body-md);
+  font-weight: var(--fw-bold);
+  color: var(--color-on-surface);
+}
+
+.office-map__item-sub {
+  font-family: var(--font-body);
+  font-size: 12px;
+  color: var(--color-on-surface-variant);
+}
+
+/* Map image */
+.office-map__img-wrap {
+  flex-grow: 1;
+  overflow: hidden;
+}
+
+.office-map__img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: grayscale(1) brightness(0.75) contrast(1.25);
+}

@@ -1,0 +1,172 @@
+.payment-flow {
+  background: var(--color-background);
+  padding: var(--spacing-xl) var(--spacing-lg);
+}
+
+.payment-flow__inner {
+  max-width: var(--max-width);
+  margin: 0 auto;
+}
+
+.payment-flow__card {
+  background: #fff;
+  padding: var(--spacing-lg);
+  border-radius: var(--radius-xl);
+  box-shadow: 0px 4px 20px rgba(21, 101, 192, 0.08);
+}
+
+.payment-flow__heading {
+  font-family: var(--font-headline);
+  font-size: var(--text-headline-lg);
+  font-weight: var(--fw-bold);
+  line-height: var(--lh-headline-lg);
+  text-align: center;
+  margin-bottom: var(--spacing-md);
+}
+
+/* Steps row */
+.payment-flow__steps {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--spacing-md);
+  position: relative;
+  padding: var(--spacing-lg) 0;
+}
+
+@media (min-width: 768px) {
+  .payment-flow__steps {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: flex-start;
+  }
+}
+
+/* Dashed connector lines — desktop only, hidden on mobile */
+.payment-flow__connector {
+  display: none;
+}
+
+@media (min-width: 768px) {
+  .payment-flow__connector {
+    display: block;
+    position: absolute;
+    top: calc(var(--spacing-lg) + 32px); /* center of 64px icon */
+    border-top: 2px dashed rgba(0, 77, 153, 0.3);
+    z-index: 0;
+    /* 
+      5 steps, evenly spaced → each step occupies 20% width.
+      Connector sits between step centers, starting at 10% (center of step 1).
+      Gap between centers = 20%, connector width ≈ 14% (leaving 3% padding each side).
+    */
+  }
+
+  /* Between step 1 (center ~10%) and step 2 (center ~30%) */
+  .payment-flow__connector--1 {
+    left: 13%;
+    width: 14%;
+  }
+
+  /* Between step 2 (center ~30%) and step 3 (center ~50%) */
+  .payment-flow__connector--2 {
+    left: 33%;
+    width: 14%;
+  }
+
+  /* Between step 3 (center ~50%) and step 4 (center ~70%) */
+  .payment-flow__connector--3 {
+    left: 53%;
+    width: 14%;
+  }
+
+  /* Between step 4 (center ~70%) and step 5 (center ~90%) */
+  .payment-flow__connector--4 {
+    left: 73%;
+    width: 14%;
+  }
+}
+
+/* Each step */
+.payment-flow__step {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  text-align: center;
+  z-index: 10;
+  /* Remove fixed width on mobile so it doesn't overflow */
+  width: 100%;
+  max-width: 160px;
+}
+
+@media (min-width: 768px) {
+  .payment-flow__step {
+    width: 20%;
+    max-width: none;
+    flex-shrink: 0;
+  }
+}
+
+.payment-flow__step-icon {
+  width: 64px;
+  height: 64px;
+  border-radius: var(--radius-full);
+  background: var(--color-surface-container);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--color-primary);
+  flex-shrink: 0;
+}
+
+.payment-flow__step-icon--green {
+  background: #22c55e;
+  color: #fff;
+}
+
+.payment-flow__step-icon .material-symbols-outlined {
+  font-size: 32px;
+}
+
+.payment-flow__step-label {
+  font-family: var(--font-body);
+  font-weight: var(--fw-bold);
+  font-size: var(--text-body-md);
+}
+
+.payment-flow__step-label--green {
+  color: #16a34a;
+}
+
+/* Info box */
+.payment-flow__info {
+  margin-top: var(--spacing-lg);
+  background: rgba(0, 77, 153, 0.06);
+  padding: 24px;
+  border-radius: var(--radius-lg);
+  border: 1px solid rgba(0, 77, 153, 0.2);
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+}
+
+.payment-flow__info .material-symbols-outlined {
+  color: var(--color-primary);
+  font-size: 24px;
+  flex-shrink: 0;
+}
+
+.payment-flow__info-text {
+  font-family: var(--font-body);
+  font-size: var(--text-body-md);
+  font-weight: var(--fw-bold);
+  color: var(--color-primary);
+  line-height: var(--lh-body-md);
+}
+
+/* Mobile padding override */
+@media (max-width: 600px) {
+  .payment-flow {
+    padding: var(--spacing-xl) var(--spacing-margin-mobile);
+  }
+}

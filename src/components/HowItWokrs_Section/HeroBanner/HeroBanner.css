@@ -1,0 +1,81 @@
+/* =========================================
+   HEROBANNER.CSS
+   ========================================= */
+
+.hero-banner {
+  background: linear-gradient(135deg, #1565c0 0%, #1e88e5 100%);
+  height: 320px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 0 var(--spacing-gutter);
+  position: relative;
+  overflow: hidden;
+}
+
+.hero-banner__inner {
+  z-index: 10;
+  max-width: 672px;
+}
+
+.hero-banner__badge {
+  display: inline-block;
+  background: rgba(255, 255, 255, 0.2);
+  color: #fff;
+  font-family: var(--font-body);
+  font-size: var(--text-body-sm);
+  font-weight: var(--fw-semibold);
+  letter-spacing: var(--ls-label);
+  padding: 4px 16px;
+  border-radius: var(--radius-full);
+  margin-bottom: var(--spacing-md);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  backdrop-filter: blur(4px);
+}
+
+.hero-banner__title {
+  font-family: var(--font-headline);
+  font-size: var(--text-headline-xl);
+  font-weight: var(--fw-extrabold);
+  line-height: var(--lh-headline-xl);
+  letter-spacing: var(--ls-headline-xl);
+  color: #fff;
+  margin-bottom: var(--spacing-base);
+}
+
+.hero-banner__subtitle {
+  font-family: var(--font-body);
+  font-size: var(--text-body-lg);
+  line-height: var(--lh-body-lg);
+  color: rgba(255, 255, 255, 0.6);
+  margin-bottom: var(--spacing-lg);
+}
+
+.hero-banner__pills {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: var(--spacing-base);
+}
+
+.hero-banner__pill {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: var(--radius-full);
+  padding: 8px 16px;
+  color: #fff;
+  font-family: var(--font-body);
+  font-size: var(--text-body-sm);
+  font-weight: var(--fw-semibold);
+  letter-spacing: var(--ls-label);
+}
+
+.hero-banner__pill .material-symbols-outlined {
+  font-size: 18px;
+}

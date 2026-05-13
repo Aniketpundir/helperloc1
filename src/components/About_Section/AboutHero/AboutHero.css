@@ -1,0 +1,121 @@
+/* =========================================
+   ABOUTHERO.CSS
+   ========================================= */
+
+.about-hero {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  min-height: 600px;
+}
+
+@media (max-width: 768px) {
+  .about-hero {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Left — gradient panel */
+.about-hero__left {
+  background: linear-gradient(135deg, #1565c0 0%, #1e88e5 100%);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: var(--spacing-xl) var(--spacing-gutter);
+  color: var(--color-on-primary);
+}
+
+.about-hero__left-inner {
+  max-width: 520px;
+  margin-left: auto;
+}
+
+.about-hero__title {
+  font-family: var(--font-headline);
+  font-size: var(--text-headline-xl);
+  font-weight: var(--fw-extrabold);
+  line-height: var(--lh-headline-xl);
+  letter-spacing: var(--ls-headline-xl);
+  margin-bottom: 24px;
+  color: #fff;
+}
+
+.about-hero__subtitle {
+  font-family: var(--font-body);
+  font-size: var(--text-body-lg);
+  line-height: var(--lh-body-lg);
+  opacity: 0.9;
+  margin-bottom: 32px;
+  color: #fff;
+}
+
+.about-hero__buttons {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.about-hero__btn-primary {
+  background: var(--color-secondary-container);
+  color: var(--color-on-secondary-container);
+  padding: 16px 32px;
+  border-radius: var(--radius-lg);
+  font-family: var(--font-body);
+  font-weight: var(--fw-bold);
+  font-size: var(--text-body-md);
+  border: none;
+  cursor: pointer;
+  transition: transform var(--transition-normal);
+}
+
+.about-hero__btn-primary:hover {
+  transform: scale(1.05);
+}
+
+.about-hero__btn-secondary {
+  background: transparent;
+  color: #fff;
+  padding: 16px 32px;
+  border-radius: var(--radius-lg);
+  font-family: var(--font-body);
+  font-weight: var(--fw-bold);
+  font-size: var(--text-body-md);
+  border: 1px solid rgba(255, 255, 255, 0.6);
+  cursor: pointer;
+  transition: background var(--transition-normal);
+}
+
+.about-hero__btn-secondary:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+/* Right — image panel */
+.about-hero__right {
+  position: relative;
+  overflow: hidden;
+  background: var(--color-surface-container-high);
+  height: 400px;
+}
+
+@media (min-width: 768px) {
+  .about-hero__right {
+    height: auto;
+  }
+}
+
+.about-hero__img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+@media (max-width: 600px) {
+  .about-hero__left {
+    padding: var(--spacing-xl) var(--spacing-margin-mobile);
+  }
+  .about-hero__title {
+    font-size: var(--text-headline-lg-mobile);
+    line-height: 36px;
+  }
+}

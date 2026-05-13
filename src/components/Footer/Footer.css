@@ -1,0 +1,189 @@
+/* =========================================
+   FOOTER.CSS — Footer Component Styles
+   HelperLoc — Professional Home Services
+   ========================================= */
+
+/* ---- FOOTER WRAPPER ---- */
+.footer {
+  background-color: var(--color-primary);
+  color: var(--color-on-primary);
+  padding: var(--spacing-xl) 0 0 0;
+}
+
+/* ---- FOOTER GRID ---- */
+.footer__grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: var(--spacing-gutter);
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: 0 var(--spacing-lg);
+}
+
+@media (max-width: 1024px) {
+  .footer__grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--spacing-md);
+  }
+}
+
+@media (max-width: 600px) {
+  .footer__grid {
+    grid-template-columns: 1fr;
+    padding: 0 var(--spacing-margin-mobile);
+  }
+}
+
+/* ---- FOOTER COLUMN ---- */
+.footer__col {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-base);
+}
+
+/* ---- BRAND SECTION ---- */
+.footer__brand {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-base);
+  margin-bottom: var(--spacing-xs);
+}
+
+.footer__logo {
+  width: 32px;
+  height: 32px;
+  border-radius: var(--radius-lg);
+  filter: brightness(0) invert(1);
+}
+
+.footer__brand-name {
+  font-family: var(--font-headline);
+  font-size: var(--text-headline-sm);
+  font-weight: var(--fw-extrabold);
+  color: var(--color-on-primary);
+  line-height: var(--lh-headline-sm);
+}
+
+.footer__tagline {
+  font-family: var(--font-body);
+  font-size: var(--text-body-sm);
+  line-height: var(--lh-body-sm);
+  color: var(--color-primary-fixed);
+  opacity: 0.8;
+  margin-top: var(--spacing-xs);
+}
+
+/* ---- SOCIAL ICONS ---- */
+.footer__socials {
+  display: flex;
+  gap: var(--spacing-base);
+  margin-top: var(--spacing-base);
+}
+
+.footer__social-link {
+  width: 40px;
+  height: 40px;
+  border-radius: var(--radius-full);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--color-on-primary);
+  transition: background-color var(--transition-normal);
+}
+
+.footer__social-link:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+.footer__social-link .material-symbols-outlined {
+  font-size: 18px;
+}
+
+/* ---- COLUMN HEADING ---- */
+.footer__col-title {
+  font-family: var(--font-body);
+  font-size: var(--text-body-sm);
+  font-weight: var(--fw-semibold);
+  letter-spacing: var(--ls-label);
+  color: var(--color-on-primary);
+  text-transform: uppercase;
+  padding-bottom: var(--spacing-base);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  margin-bottom: var(--spacing-xs);
+}
+
+/* ---- LINK LIST ---- */
+.footer__list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-base);
+}
+
+.footer__list a {
+  font-family: var(--font-body);
+  font-size: var(--text-body-sm);
+  line-height: var(--lh-body-sm);
+  color: var(--color-primary-fixed);
+  transition: color var(--transition-fast);
+}
+
+.footer__list a:hover {
+  color: var(--color-secondary-fixed);
+}
+
+/* ---- CONTACT ITEMS ---- */
+.footer__contact-item {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-xs);
+  font-family: var(--font-body);
+  font-size: var(--text-body-sm);
+  line-height: var(--lh-body-sm);
+  color: var(--color-primary-fixed);
+}
+
+.footer__contact-item .material-symbols-outlined {
+  font-size: 18px;
+  flex-shrink: 0;
+  color: var(--color-on-primary);
+}
+
+.footer__legal-links {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-base);
+  margin-top: var(--spacing-base);
+}
+
+.footer__legal-links a {
+  font-family: var(--font-body);
+  font-size: var(--text-body-sm);
+  color: var(--color-primary-fixed);
+  transition: color var(--transition-fast);
+}
+
+.footer__legal-links a:hover {
+  color: var(--color-secondary-fixed);
+}
+
+/* ---- FOOTER BOTTOM BAR ---- */
+.footer__bottom {
+  max-width: var(--max-width);
+  margin: var(--spacing-xl) auto 0;
+  padding: var(--spacing-lg) var(--spacing-lg);
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  text-align: center;
+  font-family: var(--font-body);
+  font-size: var(--text-body-sm);
+  color: var(--color-primary-fixed);
+  opacity: 0.6;
+}
+
+@media (max-width: 600px) {
+  .footer__bottom {
+    padding: var(--spacing-lg) var(--spacing-margin-mobile);
+    font-size: 12px;
+  }
+}
