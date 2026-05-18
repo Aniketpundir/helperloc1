@@ -13,8 +13,6 @@ import LoginForm from './components/Auth/LoginForm/LoginForm'
 import ProtectedRoute from './components/Auth/ProtectedRoute'
 import PublicOnlyRoute from './components/Auth/PublicOnlyRoute'
 
-// import { loginSuccess } from "./Redux/Slice/authSlice";
-
 const router = createBrowserRouter(
   createRoutesFromElements(
     <Route>
@@ -99,16 +97,6 @@ const router = createBrowserRouter(
 )
 
 const App = () => {
-
-  // store.dispatch(loginSuccess({
-  //   token: 'fake-token-123',
-  //   user: {
-  //     fullName: 'Rahul Sharma',
-  //     email: 'rahul@example.com',
-  //     role: 'user',
-  //   },
-  //   remember: false,
-  // }))
   return (
     // Redux Provider — poori app ko wrap karta hai
     <Provider store={store}>

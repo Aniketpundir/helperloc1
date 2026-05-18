@@ -1,7 +1,7 @@
 // src/components/Auth/LoginForm/LoginForm.jsx
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useNavigate, useLocation, Link } from 'react-router-dom'; // ✅ FIX 1: Link import karo
+import { useNavigate, useLocation } from 'react-router-dom';
 import { loginUser, clearError } from '../../../Redux/Slice/authSlice';
 import './LoginForm.css';
 
@@ -21,19 +21,13 @@ export default function LoginForm() {
 
   const from = location.state?.from?.pathname || '/';
 
+  // Redux se loading aur error lo — local state nahi chahiye
   const { loading, error } = useSelector((state) => state.auth);
 
   const [role, setRole] = useState('user');
   const [showPassword, setShowPassword] = useState(false);
   const [form, setForm] = useState({ identifier: '', password: '', remember: false });
   const [errors, setErrors] = useState({});
-
-  // ✅ FIX 2: Component unmount hone pe error clear karo (dusre page pe jaane ke baad bhi error na dikhay)
-  useEffect(() => {
-    return () => {
-      dispatch(clearError());
-    };
-  }, [dispatch]);
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
@@ -71,6 +65,7 @@ export default function LoginForm() {
       role,
     }));
 
+    // Sirf fulfilled par navigate karo
     if (loginUser.fulfilled.match(result)) {
       navigate(from, { replace: true });
     }
@@ -81,7 +76,7 @@ export default function LoginForm() {
       <div className="login-form-wrap">
 
         <div className="login-header">
-          <h2 className="login-header__heading">Sign In to Your Account</h2>
+          <h2 className="login-header__heading">Welcome Back!</h2>
           <p className="login-header__sub">Welcome back! Please enter your details.</p>
         </div>
 
@@ -94,6 +89,7 @@ export default function LoginForm() {
             onClick={() => setRole('worker')}>Worker</button>
         </div>
 
+        {/* Redux slice se error — koi local apiError state nahi */}
         {error && (
           <div className="login-api-error">
             <span className="material-symbols-outlined">error</span>
@@ -120,8 +116,7 @@ export default function LoginForm() {
           <div className="login-field">
             <div className="login-label-row">
               <label className="login-label" htmlFor="password">Password</label>
-              {/* ✅ FIX 3: href="#" hata ke proper Link lagao — ya as-is rakho agar route baad mein banani hai */}
-              <Link className="login-forgot" to="/forgot-password">Forgot Password?</Link>
+              <a className="login-forgot" href="#">Forgot Password?</a>
             </div>
             <div className="login-input-wrap">
               <span className="material-symbols-outlined login-input-icon">lock</span>
@@ -162,7 +157,7 @@ export default function LoginForm() {
             ) : 'Sign In'}
           </button>
 
-          <div className="login-divider">
+          {/* <div className="login-divider">
             <div className="login-divider__line" />
             <span className="login-divider__text">Or continue with</span>
             <div className="login-divider__line" />
@@ -176,12 +171,11 @@ export default function LoginForm() {
               <span className="material-symbols-outlined login-social__phone-icon">phone_iphone</span>
               <span>Phone</span>
             </button>
-          </div>
+          </div> */}
 
           <p className="login-signup">
             Don't have an account?{' '}
-            {/* ✅ FIX 1: href hata ke Link lagao — page reload nahi hoga */}
-            <Link className="login-link" to="/registration">Sign Up Here</Link>
+            <a className="login-link" href="/registration">Sign Up Here</a>
           </p>
 
         </form>
