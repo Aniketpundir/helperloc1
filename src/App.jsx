@@ -12,15 +12,16 @@ import RegisterForm from './components/Auth/RegisterForm/RegisterForm'
 import LoginForm from './components/Auth/LoginForm/LoginForm'
 import ProtectedRoute from './components/Auth/ProtectedRoute'
 import PublicOnlyRoute from './components/Auth/PublicOnlyRoute'
+import UserProfile from "./components/user_section/user_dashboard/UserProfile/UserProfile";
+import Help from "./components/user_section/user_dashboard/Help/Help";
+import CurrentBooking from "./components/user_section/user_dashboard/CurrentBooking/CurrentBooking";
+import PastBooking from "./components/user_section/user_dashboard/PastBooking/PastBooking"
+import PostWork from "./components/user_section/user_dashboard/PostWork/PostWork";
+import MyPostedJobs from "./components/user_section/user_dashboard/MyPostedJobs/MyPostedJobs";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
     <Route>
-      {/*
-        ── PUBLIC ONLY ROUTES ──
-        Agar user already logged in hai toh yahan aane par
-        automatically redirect ho jayega — chahe URL type kare tab bhi.
-      */}
       <Route
         path='/registration'
         element={
@@ -38,10 +39,6 @@ const router = createBrowserRouter(
         }
       />
 
-      {/*
-        ── PROTECTED ROUTES (sirf logged-in users) ──
-        Agar login nahi hai toh /login par redirect hoga.
-      */}
       <Route path='/' element={<Layout />}>
         <Route
           index
@@ -76,21 +73,54 @@ const router = createBrowserRouter(
           }
         />
 
-        {/*
-          ── WORKER ONLY ROUTES ──
-          Sirf workers ke liye — users yahan nahi ja sakte.
-          Apna WorkerDashboard component import karke lagao.
-        */}
-        {/* 
-        <Route
-          path='/worker/dashboard'
+        <Route path="/user-dashboard/user-profile"
           element={
-            <ProtectedRoute allowedRoles={['worker']}>
-              <WorkerDashboard />
-            </ProtectedRoute>
+            // <ProtectedRoute>
+            <UserProfile />
+            // </ProtectedRoute>
           }
         />
-        */}
+
+        <Route path="/user-dashboard/current-booking"
+          element={
+            // <ProtectedRoute>
+            <CurrentBooking />
+            // </ProtectedRoute>
+          }
+        />
+
+        <Route path="/user-dashboard/past-booking"
+          element={
+            // <ProtectedRoute>
+            <PastBooking />
+            // </ProtectedRoute>
+          }
+        />
+
+        <Route path="/user-dashboard/post-work"
+          element={
+            // <ProtectedRoute>
+            <PostWork />
+            // </ProtectedRoute>
+          }
+        />
+
+        <Route path="/user-dashboard/my-posted-jobs"
+          element={
+            // <ProtectedRoute>
+            <MyPostedJobs />
+            // </ProtectedRoute>
+          }
+        />
+
+        <Route path="/user-dashboard/help-and-support"
+          element={
+            // <ProtectedRoute>
+            <Help />
+            // </ProtectedRoute>
+          }
+        />
+
       </Route>
     </Route>
   )

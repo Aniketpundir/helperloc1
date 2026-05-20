@@ -1,0 +1,23 @@
+/* =============================================
+   PostWork.css
+   ============================================= */
+
+.post-work__layout {
+  max-width: var(--max-width, 1200px);
+  margin: 0 auto;
+  padding: var(--spacing-lg, 32px) var(--spacing-gutter, 24px);
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--spacing-lg, 32px);
+  align-items: start;
+}
+
+@media (min-width: 768px) {
+  .post-work__layout {
+    grid-template-columns: 260px 1fr;
+  }
+}
+
+.post-work__main {
+  min-width: 0; /* prevents grid blowout */
+}

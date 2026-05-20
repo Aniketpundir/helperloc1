@@ -1,0 +1,98 @@
+.bookings-header {
+  background: var(--color-surface-container-lowest);
+  padding: var(--spacing-lg) 0 0 0;
+}
+
+.bookings-header__inner {
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: 0 var(--spacing-gutter);
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-sm);
+}
+
+.bookings-header__text {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.bookings-header__heading {
+  font-family: var(--font-headline);
+  font-size: var(--text-headline-lg);   /* xl se lg — thoda compact */
+  font-weight: var(--fw-extrabold);
+  color: var(--color-on-surface);
+  letter-spacing: var(--ls-headline-lg);
+  line-height: 1.1;
+  margin: 0;
+}
+
+.bookings-header__sub {
+  font-family: var(--font-body);
+  font-size: var(--text-body-md);       /* lg se md — subtitle chhoti */
+  color: var(--color-on-surface-variant);
+  margin: 0;
+}
+
+/* ---- Pill tabs ---- */
+.bookings-tabs {
+  display: flex;
+  background: var(--color-surface-container-low);
+  padding: 4px;
+  border-radius: var(--radius-full);
+  border: 1px solid var(--color-outline-variant);
+  gap: 2px;
+  width: 100%;
+  overflow-x: auto;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  margin-top: var(--spacing-xs);
+}
+
+.bookings-tabs::-webkit-scrollbar {
+  display: none;
+}
+
+@media (min-width: 768px) {
+  .bookings-header__inner {
+    flex-direction: row;
+    align-items: flex-end;
+    justify-content: space-between;
+  }
+
+  .bookings-tabs {
+    width: auto;
+    overflow-x: visible;
+    flex-shrink: 0;
+    margin-top: 0;
+  }
+}
+
+.bookings-tabs__btn {
+  flex: 1;
+  white-space: nowrap;
+  flex-shrink: 0;
+  padding: 7px 16px;
+  border-radius: var(--radius-full);
+  font-family: var(--font-body);
+  font-size: 13px;
+  font-weight: var(--fw-semibold);
+  letter-spacing: var(--ls-label);
+  border: none;
+  cursor: pointer;
+  color: var(--color-on-surface-variant);
+  background: transparent;
+  transition: background var(--transition-normal), color var(--transition-normal),
+    box-shadow var(--transition-normal);
+}
+
+.bookings-tabs__btn:hover:not(.bookings-tabs__btn--active) {
+  background: rgba(215, 228, 236, 0.3);
+}
+
+.bookings-tabs__btn--active {
+  background: var(--color-primary);
+  color: var(--color-on-primary);
+  box-shadow: var(--shadow-sm);
+}

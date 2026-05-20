@@ -1,0 +1,63 @@
+/* =============================================
+   PageBanner.css
+   ============================================= */
+
+.page-banner {
+  width: 100%;
+  background: linear-gradient(90deg, #1565c0 0%, #006493 100%);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+  padding: var(--spacing-lg, 24px) 0;
+  min-height: 180px;
+}
+
+@media (min-width: 768px) {
+  .page-banner {
+    height: 240px;
+    padding: 0;
+  }
+}
+
+.page-banner__inner {
+  max-width: var(--max-width, 1200px);
+  margin: 0 auto;
+  padding: 0 var(--spacing-gutter, 20px);
+  width: 100%;
+  position: relative;
+  z-index: 1;
+}
+
+/* Heading */
+.page-banner__heading {
+  font-family: var(--font-headline);
+  font-size: clamp(1.4rem, 5vw, 2.2rem);
+  font-weight: var(--fw-extrabold);
+  color: var(--color-on-primary);
+  letter-spacing: var(--ls-headline-xl);
+  margin-bottom: var(--spacing-base, 8px);
+  line-height: 1.2;
+}
+
+/* Subtitle */
+.page-banner__sub {
+  font-family: var(--font-body);
+  font-size: clamp(0.85rem, 3vw, 1rem);
+  color: rgba(255, 255, 255, 0.75);
+  margin-bottom: var(--spacing-lg, 20px);
+  line-height: 1.5;
+}
+
+/* Decorative glow */
+.page-banner__deco {
+  position: absolute;
+  right: 0;
+  top: 0;
+  height: 100%;
+  width: 33%;
+  opacity: 0.1;
+  pointer-events: none;
+  background: radial-gradient(circle at center, white, transparent 70%);
+}

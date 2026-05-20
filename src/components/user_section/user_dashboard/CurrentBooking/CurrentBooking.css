@@ -1,0 +1,25 @@
+/* =============================================
+   BookingsPage.css
+   ============================================= */
+
+.bookings-page {
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: var(--spacing-lg) var(--spacing-gutter);
+}
+
+.bookings-page__grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--spacing-lg);
+  align-items: start;
+}
+
+@media (min-width: 1024px) {
+  .bookings-page__grid {
+    grid-template-columns: 7fr 5fr;
+  }
+}
+
+.bookings-page__left  { min-width: 0; }
+.bookings-page__right { min-width: 0; }

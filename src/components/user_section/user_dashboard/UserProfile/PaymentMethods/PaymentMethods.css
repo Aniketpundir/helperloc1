@@ -1,0 +1,71 @@
+/* =============================================
+   PaymentMethods.css
+   ============================================= */
+
+.payment-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--spacing-md);
+}
+
+@media (min-width: 640px) {
+  .payment-grid { grid-template-columns: repeat(3, 1fr); }
+}
+
+.payment-card {
+  padding: var(--spacing-md);
+  border: 1px solid var(--color-surface-container);
+  border-radius: var(--radius-lg);
+  position: relative;
+  overflow: hidden;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+}
+
+.payment-card:hover {
+  border-color: var(--color-primary-container);
+  box-shadow: var(--shadow-md);
+}
+
+.payment-card__deco {
+  position: absolute;
+  top: -16px;
+  right: -16px;
+  width: 48px;
+  height: 48px;
+  background: rgba(0, 100, 147, 0.05);
+  border-radius: var(--radius-full);
+  transition: transform var(--transition-normal);
+}
+
+.payment-card:hover .payment-card__deco {
+  transform: scale(2.5);
+}
+
+.payment-card__icon {
+  color: var(--color-on-surface-variant);
+  font-size: 24px !important;
+  position: relative;
+  z-index: 1;
+}
+
+.payment-card__label {
+  font-family: var(--font-body);
+  font-size: 14px;
+  font-weight: var(--fw-semibold);
+  letter-spacing: var(--ls-label);
+  color: var(--color-on-surface);
+  position: relative;
+  z-index: 1;
+}
+
+.payment-card__sub {
+  font-family: var(--font-body);
+  font-size: 12px;
+  color: var(--color-on-surface-variant);
+  position: relative;
+  z-index: 1;
+}

@@ -1,0 +1,67 @@
+/* =============================================
+   Preferences.css
+   ============================================= */
+
+.pref-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-md);
+}
+
+.pref-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--spacing-md);
+}
+
+.pref-item__info {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.pref-item__label {
+  font-family: var(--font-body);
+  font-size: 14px;
+  font-weight: var(--fw-semibold);
+  letter-spacing: var(--ls-label);
+  color: var(--color-on-surface);
+}
+
+.pref-item__sub {
+  font-family: var(--font-body);
+  font-size: var(--text-body-sm);
+  color: var(--color-on-surface-variant);
+}
+
+/* ---- Toggle switch ---- */
+.pref-toggle {
+  width: 48px;
+  height: 24px;
+  border-radius: var(--radius-full);
+  border: none;
+  cursor: pointer;
+  position: relative;
+  flex-shrink: 0;
+  transition: background var(--transition-normal);
+  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.15);
+  padding: 0;
+}
+
+.pref-toggle--on  { background: var(--color-secondary-container); }
+.pref-toggle--off { background: var(--color-outline); }
+
+.pref-toggle__thumb {
+  position: absolute;
+  top: 4px;
+  width: 16px;
+  height: 16px;
+  border-radius: var(--radius-full);
+  background: #ffffff;
+  box-shadow: var(--shadow-sm);
+  transition: left var(--transition-normal);
+}
+
+.pref-toggle--on  .pref-toggle__thumb { left: calc(100% - 4px - 16px); }
+.pref-toggle--off .pref-toggle__thumb { left: 4px; }

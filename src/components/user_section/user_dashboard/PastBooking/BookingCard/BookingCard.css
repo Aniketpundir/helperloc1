@@ -1,0 +1,273 @@
+/* ===== PAST BOOKING CARD ===== */
+.past-card {
+  background-color: #ffffff;
+  border-radius: var(--radius-xl);
+  border: 1px solid rgba(194, 198, 212, 0.15);
+  box-shadow: 0px 4px 20px rgba(21, 101, 192, 0.08);
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-lg);
+  padding: var(--spacing-md);
+  transition: box-shadow var(--transition-normal), transform var(--transition-normal);
+}
+
+.past-card:hover {
+  box-shadow: 0px 8px 30px rgba(21, 101, 192, 0.12);
+  transform: translateY(-2px);
+}
+
+@media (min-width: 768px) {
+  .past-card {
+    flex-direction: row;
+    padding: var(--spacing-lg);
+  }
+}
+
+.past-card--cancelled {
+  opacity: 0.75;
+  filter: grayscale(0.2);
+}
+
+/* ===== IMAGE ===== */
+.past-card__img-wrap {
+  width: 100%;
+  height: 128px;
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  flex-shrink: 0;
+  background-color: var(--color-surface-dim);
+}
+
+@media (min-width: 768px) {
+  .past-card__img-wrap {
+    width: 192px;
+  }
+}
+
+.past-card__img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* ===== CONTENT ===== */
+.past-card__content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-sm);
+}
+
+/* ===== TOP ROW ===== */
+.past-card__top {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: var(--spacing-sm);
+}
+
+/* ===== BADGE ===== */
+.past-card__badge {
+  display: inline-block;
+  padding: 4px var(--spacing-sm);
+  border-radius: var(--radius-lg);
+  font-family: var(--font-body);
+  font-size: var(--text-body-sm);
+  font-weight: var(--fw-semibold);
+  letter-spacing: 0.05em;
+  margin-bottom: var(--spacing-xs);
+}
+
+.past-card__badge--completed {
+  background-color: var(--color-surface-container);
+  color: var(--color-primary);
+}
+
+.past-card__badge--cancelled {
+  background-color: var(--color-error-container);
+  color: var(--color-on-error-container);
+}
+
+/* ===== TITLE & DATE ===== */
+.past-card__title {
+  font-family: var(--font-headline);
+  font-size: var(--text-headline-sm);
+  line-height: var(--lh-headline-sm);
+  font-weight: var(--fw-semibold);
+  color: var(--color-on-surface);
+  margin-bottom: 4px;
+}
+
+.past-card__date {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-xs);
+  font-family: var(--font-body);
+  font-size: var(--text-body-sm);
+  color: var(--color-on-surface-variant);
+}
+
+.past-card__date-icon {
+  font-size: 18px !important;
+}
+
+/* ===== PRICE ===== */
+.past-card__price-wrap {
+  text-align: right;
+}
+
+.past-card__price {
+  font-family: var(--font-headline);
+  font-size: var(--text-headline-sm);
+  font-weight: var(--fw-semibold);
+  color: var(--color-primary);
+}
+
+.past-card__price--cancelled {
+  color: var(--color-on-surface-variant);
+}
+
+.past-card__payment-note {
+  font-family: var(--font-body);
+  font-size: var(--text-body-sm);
+  color: var(--color-on-surface-variant);
+  margin-top: 2px;
+}
+
+/* ===== REVIEW BOX ===== */
+.past-card__review {
+  background-color: var(--color-surface-container-low);
+  padding: var(--spacing-sm);
+  border-radius: var(--radius-lg);
+  border: 1px solid rgba(194, 198, 212, 0.3);
+}
+
+.past-card__review-top {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-xs);
+  flex-wrap: wrap;
+}
+
+.past-card__stars {
+  display: flex;
+  gap: 2px;
+}
+
+.past-card__star {
+  font-size: 20px !important;
+  color: var(--color-tertiary-container);
+  font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+}
+
+.past-card__review-text {
+  font-family: var(--font-body);
+  font-size: var(--text-body-sm);
+  font-weight: var(--fw-semibold);
+  color: var(--color-on-surface);
+}
+
+/* ===== CANCEL INFO ===== */
+.past-card__cancel-info {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-xs);
+  margin-top: var(--spacing-base);
+}
+
+.past-card__cancel-reason {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  font-family: var(--font-body);
+  font-size: var(--text-body-sm);
+  color: var(--color-on-surface-variant);
+}
+
+.past-card__cancel-icon {
+  font-size: 20px !important;
+  color: var(--color-error);
+}
+
+.past-card__refund {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  font-family: var(--font-body);
+  font-size: var(--text-body-sm);
+  font-weight: var(--fw-semibold);
+  color: var(--color-secondary);
+}
+
+.past-card__refund-icon {
+  font-size: 20px !important;
+}
+
+/* ===== ACTION BUTTONS ===== */
+.past-card__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--spacing-sm);
+  margin-top: var(--spacing-xs);
+}
+
+.past-card__btn {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--spacing-xs);
+  padding: var(--spacing-sm) var(--spacing-md);
+  border-radius: var(--radius-lg);
+  font-family: var(--font-body);
+  font-size: var(--text-body-sm);
+  font-weight: var(--fw-semibold);
+  letter-spacing: 0.05em;
+  cursor: pointer;
+  transition: all var(--transition-normal);
+  border: none;
+}
+
+.past-card__btn:active {
+  transform: scale(0.95);
+}
+
+.past-card__btn .material-symbols-outlined {
+  font-size: 18px !important;
+}
+
+/* Hire Again — filled primary */
+.past-card__btn--hire {
+  background-color: var(--color-primary);
+  color: var(--color-on-primary);
+  box-shadow: 0 2px 8px rgba(0, 77, 153, 0.2);
+}
+
+.past-card__btn--hire:hover {
+  background-color: var(--color-primary-container);
+  box-shadow: 0 4px 12px rgba(0, 77, 153, 0.3);
+}
+
+/* Rate Now — outline tertiary */
+.past-card__btn--rate {
+  background-color: transparent;
+  color: var(--color-tertiary);
+  border: 1px solid var(--color-tertiary);
+}
+
+.past-card__btn--rate:hover {
+  background-color: var(--color-tertiary-fixed);
+}
+
+/* Share — icon only style */
+.past-card__btn--share {
+  background-color: transparent;
+  color: var(--color-on-surface-variant);
+  border: 1px solid var(--color-outline-variant);
+  padding: var(--spacing-sm);
+}
+
+.past-card__btn--share:hover {
+  color: var(--color-primary);
+  border-color: var(--color-primary);
+  background-color: var(--color-primary-fixed);
+}

@@ -7,7 +7,6 @@ import { logout } from '../../../Redux/Slice/authSlice';
 
 const Navbar = () => {
     const [scrolled, setScrolled] = useState(false);
-    const [menuOpen, setMenuOpen] = useState(false);
     const [profileOpen, setProfileOpen] = useState(false);
 
     const location = useLocation();
@@ -15,7 +14,6 @@ const Navbar = () => {
     const dispatch = useDispatch();
     const dropRef = useRef(null);
 
-    // Redux auth state
     const { isAuthenticated, user } = useSelector((state) => state.auth);
 
     // Scroll handler
@@ -25,13 +23,12 @@ const Navbar = () => {
         return () => window.removeEventListener('scroll', handleScroll);
     }, []);
 
-    // Close mobile menu on route change
+    // Close dropdown on route change
     useEffect(() => {
-        setMenuOpen(false);
         setProfileOpen(false);
     }, [location]);
 
-    // Close profile dropdown on outside click
+    // Close dropdown on outside click
     useEffect(() => {
         const handleClickOutside = (e) => {
             if (dropRef.current && !dropRef.current.contains(e.target)) {
@@ -47,7 +44,6 @@ const Navbar = () => {
         return location.pathname.startsWith(path);
     };
 
-    // Get user initials for avatar
     const getInitials = (name) => {
         if (!name) return 'U';
         const parts = name.trim().split(' ');
@@ -62,7 +58,6 @@ const Navbar = () => {
         navigate('/login', { replace: true });
     };
 
-    // ── Profile Avatar + Dropdown ──
     const ProfileDropdown = () => (
         <div className="navbar__profile-wrap" ref={dropRef}>
             <button
@@ -82,7 +77,6 @@ const Navbar = () => {
 
             {profileOpen && (
                 <div className="navbar__dropdown">
-                    {/* User info header */}
                     <div className="navbar__dropdown-header">
                         <span className="navbar__dropdown-avatar">{getInitials(user?.fullName)}</span>
                         <div>
@@ -93,22 +87,34 @@ const Navbar = () => {
 
                     <div className="navbar__dropdown-divider" />
 
-                    {/* Menu items */}
-                    <Link to="/profile" className="navbar__dropdown-item" onClick={() => setProfileOpen(false)}>
+                    <Link to="/user-dashboard/user-profile" className="navbar__dropdown-item" onClick={() => setProfileOpen(false)}>
                         <span className="material-symbols-outlined">account_circle</span>
                         <span>My Profile</span>
                     </Link>
-                    <Link to="/bookings/current" className="navbar__dropdown-item" onClick={() => setProfileOpen(false)}>
+
+                    <Link to="/user-dashboard/current-booking" className="navbar__dropdown-item" onClick={() => setProfileOpen(false)}>
                         <span className="material-symbols-outlined">pending_actions</span>
                         <span>Current Booking</span>
                     </Link>
-                    <Link to="/bookings/past" className="navbar__dropdown-item" onClick={() => setProfileOpen(false)}>
+
+                    <Link to="/user-dashboard/past-booking" className="navbar__dropdown-item" onClick={() => setProfileOpen(false)}>
                         <span className="material-symbols-outlined">history</span>
                         <span>Past Bookings</span>
                     </Link>
-                    <Link to="/help" className="navbar__dropdown-item" onClick={() => setProfileOpen(false)}>
+
+                    <Link to="/user-dashboard/post-work" className="navbar__dropdown-item" onClick={() => setProfileOpen(false)}>
+                        <span className="material-symbols-outlined">history</span>
+                        <span>Post Work</span>
+                    </Link>
+
+                    <Link to="/user-dashboard/my-posted-jobs" className="navbar__dropdown-item" onClick={() => setProfileOpen(false)}>
+                        <span className="material-symbols-outlined">history</span>
+                        <span>My Posted Jobs</span>
+                    </Link>
+
+                    <Link to="/user-dashboard/help-and-support" className="navbar__dropdown-item" onClick={() => setProfileOpen(false)}>
                         <span className="material-symbols-outlined">help_center</span>
-                        <span>Help Center</span>
+                        <span>Help & Support</span>
                     </Link>
 
                     <div className="navbar__dropdown-divider" />
@@ -125,13 +131,14 @@ const Navbar = () => {
     return (
         <nav className={`navbar ${scrolled ? 'navbar--scrolled' : ''}`}>
             <div className="navbar__inner">
+
                 {/* Logo */}
                 <div className="navbar__logo">
                     <Link to="/" className="navbar__logo-icon">H</Link>
                     <Link to="/" className="navbar__logo-text">HelperLoc</Link>
                 </div>
 
-                {/* Desktop Nav Links */}
+                {/* Nav Links */}
                 <div className="navbar__links">
                     <Link to="/" className={`navbar__link ${isActive('/') ? 'navbar__link--active' : ''}`}>Home</Link>
                     <Link to="/how-it-works" className={`navbar__link ${isActive('/how-it-works') ? 'navbar__link--active' : ''}`}>How it Works</Link>
@@ -144,57 +151,24 @@ const Navbar = () => {
                     <span className="material-symbols-outlined navbar__search-icon">search</span>
                     <input type="text" placeholder="Search services..." className="navbar__search-input" />
                 </div>
-                <div className='navbar__login'>
-                    {/* CTA — Login/Signup OR Profile */}
-                    <div className="navbar__actions">
-                        {isAuthenticated ? (
-                            <ProfileDropdown />
-                        ) : (
-                            <>
-                                <Link to="/login">
-                                    <button className="navbar__btn navbar__btn--outline navbar-login">Login</button>
-                                </Link>
-                                <Link to="/registration">
-                                    <button className="navbar__btn navbar__btn--filled">Sign Up</button>
-                                </Link>
-                            </>
-                        )}
-                    </div>
 
-                    {/* Hamburger */}
-                    <button className="navbar__hamburger" onClick={() => setMenuOpen(!menuOpen)} aria-label="Toggle menu">
-                        <span className="material-symbols-outlined">{menuOpen ? 'close' : 'menu'}</span>
-                    </button>
-                </div>
-            </div>
-            {/* Mobile Menu */}
-            {menuOpen && (
-                <div className="navbar__mobile-menu">
-                    <Link to="/" className={`navbar__mobile-link ${isActive('/') ? 'navbar__mobile-link--active' : ''}`}>Home</Link>
-                    <Link to="/how-it-works" className={`navbar__mobile-link ${isActive('/how-it-works') ? 'navbar__mobile-link--active' : ''}`}>How it Works</Link>
-                    <Link to="/about-us" className={`navbar__mobile-link ${isActive('/about-us') ? 'navbar__mobile-link--active' : ''}`}>About</Link>
-                    <Link to="/contact-us" className={`navbar__mobile-link ${isActive('/contact-us') ? 'navbar__mobile-link--active' : ''}`}>Contact</Link>
-
+                {/* Right Side: Dropdown OR Login button */}
+                <div className="navbar__actions">
                     {isAuthenticated ? (
-                        /* Mobile — logged in */
-                        <div className="navbar__mobile-profile">
-                            <div className="navbar__mobile-profile-header">
-                                <span className="navbar__avatar navbar__avatar--mobile">{getInitials(user?.fullName)}</span>
-                                <div>
-                                    <p className="navbar__dropdown-name">{user?.fullName}</p>
-                                    <p className="navbar__dropdown-email">{user?.email}</p>
-                                </div>
-                            </div>
-                        </div>
+                        <ProfileDropdown />
                     ) : (
-                        /* Mobile — not logged in */
-                        <div className="navbar__mobile-actions">
-                            <Link to="/login"><button className="navbar__btn navbar__btn--outline">Login</button></Link>
-                            <Link to="/registration"><button className="navbar__btn navbar__btn--filled">Sign Up</button></Link>
-                        </div>
+                        <>
+                            <Link to="/login">
+                                <button className="navbar__btn navbar__btn--outline">Login</button>
+                            </Link>
+                            <Link to="/registration">
+                                <button className="navbar__btn navbar__btn--filled">Sign Up</button>
+                            </Link>
+                        </>
                     )}
                 </div>
-            )}
+
+            </div>
         </nav>
     );
 };

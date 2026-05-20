@@ -1,0 +1,96 @@
+.past-page-header {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-md);
+  margin-bottom: var(--spacing-lg);
+}
+
+@media (min-width: 768px) {
+  .past-page-header {
+    flex-direction: row;
+    align-items: flex-end;
+    justify-content: space-between;
+  }
+}
+
+.past-page-header__title {
+  font-family: var(--font-headline);
+  font-size: var(--text-headline-xl);
+  line-height: var(--lh-headline-xl);
+  font-weight: var(--fw-extrabold);
+  letter-spacing: -0.02em;
+  color: var(--color-primary);
+  margin-bottom: var(--spacing-xs);
+}
+
+.past-page-header__subtitle {
+  font-family: var(--font-body);
+  font-size: var(--text-body-md);
+  color: var(--color-on-surface-variant);
+}
+
+.past-page-header__controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--spacing-sm);
+}
+
+.past-page-header__search-wrap {
+  position: relative;
+  min-width: 280px;
+}
+
+.past-page-header__search-icon {
+  position: absolute;
+  left: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--color-outline);
+  font-size: 20px !important;
+}
+
+.past-page-header__search-input {
+  width: 100%;
+  padding: var(--spacing-sm) var(--spacing-md) var(--spacing-sm) 40px;
+  background-color: #ffffff;
+  border: 1px solid var(--color-outline-variant);
+  border-radius: var(--radius-lg);
+  font-family: var(--font-body);
+  font-size: var(--text-body-sm);
+  color: var(--color-on-surface);
+  outline: none;
+  transition: box-shadow var(--transition-fast), border-color var(--transition-fast);
+}
+
+.past-page-header__search-input:focus {
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 2px rgba(0, 77, 153, 0.15);
+}
+
+.past-page-header__search-input::placeholder {
+  color: var(--color-outline);
+}
+
+.past-page-header__ctrl-btn {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-xs);
+  padding: var(--spacing-sm) var(--spacing-md);
+  background-color: #ffffff;
+  border: 1px solid var(--color-outline-variant);
+  border-radius: var(--radius-lg);
+  font-family: var(--font-body);
+  color: var(--color-primary);
+  cursor: pointer;
+  transition: background var(--transition-fast);
+}
+
+.past-page-header__ctrl-btn:hover {
+  background-color: var(--color-surface-container);
+}
+
+.past-page-header__ctrl-label {
+  font-size: var(--text-body-sm);
+  font-weight: var(--fw-semibold);
+  letter-spacing: 0.05em;
+}

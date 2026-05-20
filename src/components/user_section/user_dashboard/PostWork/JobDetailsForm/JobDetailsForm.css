@@ -1,0 +1,496 @@
+/* =============================================
+   JobDetailsForm.css
+   ============================================= */
+
+/* ---- Card shell ---- */
+.jdf-card {
+  background: var(--color-surface-container-lowest);
+  box-shadow: 0px 4px 20px rgba(21, 101, 192, 0.08);
+  border-radius: var(--radius-xl);
+  padding: var(--spacing-md);
+  border: 1px solid rgba(215, 228, 236, 0.5);
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-md);
+}
+
+/* ---- Field ---- */
+.jdf-field {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-base);
+}
+
+.jdf-label {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-base);
+  font-family: var(--font-body);
+  font-size: 12px;
+  font-weight: var(--fw-semibold);
+  letter-spacing: var(--ls-label);
+  color: var(--color-on-surface-variant);
+  text-transform: uppercase;
+}
+
+.jdf-label__icon {
+  color: var(--color-primary-container);
+  font-size: 18px !important;
+}
+
+.jdf-label-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.jdf-char-counter {
+  font-family: var(--font-body);
+  font-size: var(--text-body-sm);
+  color: var(--color-outline);
+}
+
+/* ---- Input ---- */
+.jdf-input {
+  width: 100%;
+  padding: 13px 16px;
+  border: 1.5px solid var(--color-surface-variant);
+  border-radius: var(--radius-lg);
+  font-family: var(--font-body);
+  font-size: var(--text-body-md);
+  color: var(--color-on-surface);
+  background: var(--color-surface-container-lowest);
+  outline: none;
+  transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+}
+
+.jdf-input::placeholder { color: var(--color-outline); }
+
+.jdf-input:focus {
+  border-color: var(--color-secondary-container);
+  box-shadow: 0 0 0 3px rgba(0, 175, 254, 0.15);
+}
+
+.jdf-input--error {
+  border-color: var(--color-error) !important;
+  box-shadow: 0 0 0 3px rgba(186, 26, 26, 0.08) !important;
+}
+
+/* Input with icon */
+.jdf-input-icon-wrap {
+  position: relative;
+}
+
+.jdf-input-icon {
+  position: absolute;
+  left: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--color-outline);
+  font-size: 20px !important;
+  pointer-events: none;
+}
+
+.jdf-input--icon { padding-left: 48px; }
+
+/* Textarea */
+.jdf-textarea {
+  resize: vertical;
+  min-height: 120px;
+}
+
+/* ---- Error ---- */
+.jdf-error {
+  font-family: var(--font-body);
+  font-size: 12px;
+  color: var(--color-error);
+  font-weight: var(--fw-medium);
+}
+
+/* ---- Two-column grid ---- */
+.jdf-two-col {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--spacing-md);
+}
+
+@media (min-width: 768px) {
+  .jdf-two-col { grid-template-columns: 1fr 1fr; }
+}
+
+/* ---- Radio rows ---- */
+.jdf-radio-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 11px var(--spacing-sm);
+  border-radius: var(--radius-lg);
+  border: 1.5px solid var(--color-surface-variant);
+  cursor: pointer;
+  transition: background var(--transition-fast), border-color var(--transition-fast);
+}
+
+.jdf-radio-row:hover { background: var(--color-surface-container); }
+
+.jdf-radio-row--active {
+  border: 2px solid var(--color-primary-container);
+  background: rgba(21, 101, 192, 0.04);
+}
+
+.jdf-radio {
+  width: 18px;
+  height: 18px;
+  accent-color: var(--color-primary-container);
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+.jdf-radio-label {
+  font-family: var(--font-body);
+  font-size: var(--text-body-md);
+  font-weight: var(--fw-semibold);
+  color: var(--color-on-surface);
+}
+
+/* ---- Worker counter ---- */
+.jdf-counter {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  padding: var(--spacing-sm) var(--spacing-sm);
+  border: 1.5px solid var(--color-surface-variant);
+  border-radius: var(--radius-lg);
+  width: fit-content;
+}
+
+.jdf-counter__btn {
+  width: 38px;
+  height: 38px;
+  border-radius: var(--radius-full);
+  border: 1.5px solid var(--color-surface-variant) !important;
+  background: transparent;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background var(--transition-fast);
+}
+
+.jdf-counter__btn:hover { background: var(--color-surface-container); }
+.jdf-counter__btn .material-symbols-outlined { font-size: 20px !important; }
+
+.jdf-counter__val {
+  font-family: var(--font-headline);
+  font-size: var(--text-headline-sm);
+  font-weight: var(--fw-bold);
+  color: var(--color-on-surface);
+  min-width: 28px;
+  text-align: center;
+}
+
+/* ---- Budget slider ---- */
+.jdf-budget-badge {
+  background: rgba(0, 175, 254, 0.1);
+  border: 1px solid rgba(0, 175, 254, 0.3);
+  border-radius: var(--radius-full);
+  padding: 5px 14px;
+  font-family: var(--font-body);
+  font-size: 13px;
+  font-weight: var(--fw-bold);
+  color: var(--color-secondary-container);
+  white-space: nowrap;
+}
+
+.jdf-slider-wrap { padding: var(--spacing-xs) 0; }
+
+.jdf-slider {
+  width: 100%;
+  height: 8px;
+  border-radius: var(--radius-full);
+  background: var(--color-surface-container-highest);
+  appearance: none;
+  -webkit-appearance: none;
+  cursor: pointer;
+  outline: none;
+  accent-color: var(--color-secondary-container);
+}
+
+.jdf-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 22px;
+  height: 22px;
+  border-radius: var(--radius-full);
+  background: var(--color-secondary-container);
+  cursor: pointer;
+  border: 3px solid white;
+  box-shadow: var(--shadow-md);
+}
+
+.jdf-slider-labels {
+  display: flex;
+  justify-content: space-between;
+  margin-top: var(--spacing-base);
+  font-family: var(--font-body);
+  font-size: 13px;
+  font-weight: var(--fw-semibold);
+  letter-spacing: var(--ls-label);
+  color: var(--color-outline);
+}
+
+/* ---- Upload area ---- */
+.jdf-upload {
+  border: 2px dashed var(--color-outline-variant);
+  border-radius: var(--radius-lg);
+  padding: var(--spacing-md);
+  text-align: center;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--spacing-base);
+  transition: border-color var(--transition-fast);
+  background: var(--color-surface-container-lowest);
+  font-family: var(--font-body);
+  font-size: var(--text-body-sm);
+  color: var(--color-on-surface-variant);
+}
+
+.jdf-upload:hover { border-color: var(--color-secondary-container); }
+
+.jdf-upload__icon {
+  font-size: 36px !important;
+  color: var(--color-outline);
+  transition: color var(--transition-fast);
+}
+
+.jdf-upload:hover .jdf-upload__icon { color: var(--color-secondary-container); }
+
+/* ---- Terms note ---- */
+.jdf-review__note {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--spacing-base);
+  font-family: var(--font-body);
+  font-size: var(--text-body-sm);
+  color: var(--color-on-surface-variant);
+  background: var(--color-surface-container-low);
+  border-radius: var(--radius-lg);
+  padding: var(--spacing-sm) var(--spacing-sm);
+  line-height: 1.5;
+}
+
+.jdf-review__note .material-symbols-outlined {
+  font-size: 18px !important;
+  color: var(--color-primary);
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.jdf-link {
+  color: var(--color-primary);
+  font-weight: var(--fw-semibold);
+  text-decoration: none;
+}
+.jdf-link:hover { text-decoration: underline; }
+
+/* ---- Submit Button ---- */
+.jdf-submit-btn {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 15px 32px;
+  background: var(--color-primary-container);
+  color: var(--color-on-primary);
+  border: none;
+  border-radius: var(--radius-lg);
+  font-family: var(--font-body);
+  font-size: var(--text-body-md);
+  font-weight: var(--fw-bold);
+  cursor: pointer;
+  transition: box-shadow var(--transition-fast), transform var(--transition-fast);
+}
+
+.jdf-submit-btn:hover {
+  box-shadow: var(--shadow-lg);
+  transform: translateY(-2px);
+}
+
+.jdf-submit-btn .material-symbols-outlined {
+  font-size: 20px !important;
+}
+
+/* ════════════════════════════════════
+   WORKER TYPE DROPDOWN
+════════════════════════════════════ */
+
+.wt-dropdown {
+  position: relative;
+  user-select: none;
+}
+
+.wt-dropdown__trigger {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 13px 16px;
+  border: 1.5px solid var(--color-surface-variant);
+  border-radius: var(--radius-lg);
+  background: var(--color-surface-container-lowest);
+  cursor: pointer;
+  transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+  font-family: var(--font-body);
+}
+
+.wt-dropdown__trigger:hover,
+.wt-dropdown__trigger--open {
+  border-color: var(--color-secondary-container);
+  box-shadow: 0 0 0 3px rgba(0, 175, 254, 0.12);
+}
+
+.wt-dropdown__selected {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.wt-dropdown__selected-icon {
+  font-size: 22px !important;
+  color: var(--color-secondary-container);
+}
+
+.wt-dropdown__selected-label {
+  font-family: var(--font-body);
+  font-size: var(--text-body-md);
+  font-weight: var(--fw-semibold);
+  color: var(--color-on-surface);
+}
+
+.wt-dropdown__placeholder {
+  font-family: var(--font-body);
+  font-size: var(--text-body-md);
+  color: var(--color-outline);
+}
+
+.wt-dropdown__chevron {
+  font-size: 22px !important;
+  color: var(--color-outline);
+  transition: transform var(--transition-normal);
+  flex-shrink: 0;
+}
+
+.wt-dropdown__chevron--open { transform: rotate(180deg); }
+
+.wt-dropdown__list {
+  position: absolute;
+  top: calc(100% + 6px);
+  left: 0;
+  right: 0;
+  background: var(--color-surface-container-lowest);
+  border: 1px solid var(--color-outline-variant);
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-xl);
+  z-index: 50;
+  list-style: none;
+  overflow: hidden;
+  animation: dropdownSlide 180ms ease;
+  max-height: 280px;
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: var(--color-surface-container-highest) transparent;
+}
+
+@keyframes dropdownSlide {
+  from { opacity: 0; transform: translateY(-8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.wt-dropdown__option {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 16px;
+  cursor: pointer;
+  font-family: var(--font-body);
+  font-size: var(--text-body-md);
+  color: var(--color-on-surface);
+  transition: background var(--transition-fast);
+}
+
+.wt-dropdown__option:hover { background: var(--color-surface-container-low); }
+
+.wt-dropdown__option--selected {
+  background: rgba(0, 175, 254, 0.06);
+  color: var(--color-secondary-container);
+  font-weight: var(--fw-semibold);
+}
+
+.wt-dropdown__option-icon {
+  font-size: 22px !important;
+  color: var(--color-on-surface-variant);
+  flex-shrink: 0;
+  transition: color var(--transition-fast);
+}
+
+.wt-dropdown__option:hover .wt-dropdown__option-icon,
+.wt-dropdown__option--selected .wt-dropdown__option-icon {
+  color: var(--color-secondary-container);
+}
+
+.wt-dropdown__option-label { flex: 1; }
+
+.wt-dropdown__option-check {
+  font-size: 18px !important;
+  color: var(--color-secondary-container);
+  flex-shrink: 0;
+}
+
+/* ════════════════════════════════════
+   SUCCESS STATE
+════════════════════════════════════ */
+
+.jdf-success {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: var(--spacing-md);
+  padding: var(--spacing-xl) var(--spacing-md);
+}
+
+.jdf-success__icon {
+  font-size: 72px !important;
+  color: #2e7d32;
+}
+
+.jdf-success__heading {
+  font-family: var(--font-headline);
+  font-size: var(--text-headline-md);
+  font-weight: var(--fw-bold);
+  color: var(--color-on-surface);
+}
+
+.jdf-success__sub {
+  font-family: var(--font-body);
+  font-size: var(--text-body-md);
+  color: var(--color-on-surface-variant);
+  max-width: 360px;
+}
+
+.jdf-success__btn {
+  margin-top: var(--spacing-base);
+  padding: 14px 32px;
+  background: var(--color-primary-container);
+  color: var(--color-on-primary);
+  border: none;
+  border-radius: var(--radius-lg);
+  font-family: var(--font-body);
+  font-size: var(--text-body-md);
+  font-weight: var(--fw-bold);
+  cursor: pointer;
+  transition: box-shadow var(--transition-fast), transform var(--transition-fast);
+}
+
+.jdf-success__btn:hover { box-shadow: var(--shadow-lg); transform: translateY(-2px); }

@@ -1,0 +1,107 @@
+.hero {
+  background: linear-gradient(135deg, #1565c0 0%, #1e88e5 100%);
+  height: 350px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 0 var(--spacing-md);
+}
+
+.hero__content {
+  max-width: 800px;
+  width: 100%;
+}
+
+.hero__title {
+  font-family: var(--font-headline);
+  font-size: var(--text-headline-xl);
+  line-height: var(--lh-headline-xl);
+  font-weight: var(--fw-extrabold);
+  letter-spacing: -0.02em;
+  color: #ffffff;
+  margin-bottom: var(--spacing-base);
+}
+
+.hero__subtitle {
+  font-family: var(--font-body);
+  font-size: var(--text-body-lg);
+  line-height: var(--lh-body-lg);
+  color: var(--color-on-primary-container);
+  opacity: 0.9;
+  margin-bottom: var(--spacing-lg);
+}
+
+.hero__search-wrapper {
+  position: relative;
+  max-width: 600px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+.hero__search-icon {
+  position: absolute;
+  left: 16px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--color-primary);
+  font-size: 22px;
+}
+
+.hero__search-input {
+  width: 100%;
+  padding: 16px 16px 16px 48px;
+  border-radius: var(--radius-xl);
+  border: none;
+  font-family: var(--font-body);
+  font-size: var(--text-body-md);
+  color: var(--color-on-surface);
+  background: #ffffff;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+  outline: none;
+  transition: box-shadow var(--transition-normal);
+}
+
+.hero__search-input:focus {
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15), 0 0 0 4px rgba(0, 175, 254, 0.3);
+}
+
+.hero__search-input::placeholder {
+  color: var(--color-outline);
+}
+
+.hero__popular {
+  margin-top: var(--spacing-md);
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: var(--spacing-sm);
+}
+
+.hero__popular-label {
+  font-family: var(--font-body);
+  font-size: var(--text-body-sm);
+  font-weight: var(--fw-semibold);
+  letter-spacing: 0.05em;
+  color: var(--color-on-primary-container);
+  opacity: 0.8;
+}
+
+.hero__tag {
+  background: rgba(255, 255, 255, 0.1);
+  color: #ffffff;
+  padding: 4px 16px;
+  border-radius: var(--radius-full);
+  font-family: var(--font-body);
+  font-size: var(--text-body-sm);
+  font-weight: var(--fw-semibold);
+  letter-spacing: 0.05em;
+  border: none;
+  transition: background var(--transition-fast);
+}
+
+.hero__tag:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
