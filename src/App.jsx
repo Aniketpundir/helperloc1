@@ -18,114 +18,54 @@ import CurrentBooking from "./components/user_section/user_dashboard/CurrentBook
 import PastBooking from "./components/user_section/user_dashboard/PastBooking/PastBooking"
 import PostWork from "./components/user_section/user_dashboard/PostWork/PostWork";
 import MyPostedJobs from "./components/user_section/user_dashboard/MyPostedJobs/MyPostedJobs";
+import WorkerDashboard from "./components/worker_section/WorkerDashboard";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
     <Route>
-      <Route
-        path='/registration'
-        element={
-          // <PublicOnlyRoute>
-          <RegisterForm />
-          // </PublicOnlyRoute>
-        }
-      />
-      <Route
-        path='/login'
-        element={
-          // <PublicOnlyRoute>
-          <LoginForm />
-          // </PublicOnlyRoute>
-        }
-      />
+      <Route path='/registration' element={<PublicOnlyRoute><RegisterForm /></PublicOnlyRoute>} />
+      <Route path='/login' element={<PublicOnlyRoute><LoginForm /></PublicOnlyRoute>} />
 
       <Route path='/' element={<Layout />}>
-        <Route
-          index
-          element={
-            // <ProtectedRoute>
-            <Home />
-            // </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/how-it-works"
-          element={
-            // <ProtectedRoute>
-            <HowItWorks />
-            // </ProtectedRoute>
-          }
-        />
-        <Route
-          path='/about-us'
-          element={
-            // <ProtectedRoute>
-            <About />
-            // </ProtectedRoute>
-          }
-        />
-        <Route
-          path='/contact-us'
-          element={
-            // <ProtectedRoute>
-            <Contact />
-            // </ProtectedRoute>
-          }
-        />
+        {/* Public routes */}
+        <Route index element={<Home />} />
+        <Route path="/how-it-works" element={<HowItWorks />} />
+        <Route path='/about-us' element={<About />} />
+        <Route path='/contact-us' element={<Contact />} />
 
+        {/* User-only routes */}
         <Route path="/user-dashboard/user-profile"
-          element={
-            // <ProtectedRoute>
-            <UserProfile />
-            // </ProtectedRoute>
-          }
+          element={<ProtectedRoute allowedRoles={['user']}><UserProfile /></ProtectedRoute>}
         />
-
         <Route path="/user-dashboard/current-booking"
-          element={
-            // <ProtectedRoute>
-            <CurrentBooking />
-            // </ProtectedRoute>
-          }
+          element={<ProtectedRoute allowedRoles={['user']}><CurrentBooking /></ProtectedRoute>}
         />
-
         <Route path="/user-dashboard/past-booking"
-          element={
-            // <ProtectedRoute>
-            <PastBooking />
-            // </ProtectedRoute>
-          }
+          element={<ProtectedRoute allowedRoles={['user']}><PastBooking /></ProtectedRoute>}
         />
-
         <Route path="/user-dashboard/post-work"
-          element={
-            // <ProtectedRoute>
-            <PostWork />
-            // </ProtectedRoute>
-          }
+          element={<ProtectedRoute allowedRoles={['user']}><PostWork /></ProtectedRoute>}
         />
-
         <Route path="/user-dashboard/my-posted-jobs"
-          element={
-            // <ProtectedRoute>
-            <MyPostedJobs />
-            // </ProtectedRoute>
-          }
+          element={<ProtectedRoute allowedRoles={['user']}><MyPostedJobs /></ProtectedRoute>}
         />
-
         <Route path="/user-dashboard/help-and-support"
-          element={
-            // <ProtectedRoute>
-            <Help />
-            // </ProtectedRoute>
-          }
+          element={<ProtectedRoute allowedRoles={['user', 'worker']}><Help /></ProtectedRoute>}
         />
 
+        {/* Worker-only routes */}
+        <Route path="/worker/dashboard"
+          element={<ProtectedRoute allowedRoles={['worker']}><WorkerDashboard /></ProtectedRoute>}
+        />
+        {/* <Route path="/worker/profile"
+          element={<ProtectedRoute allowedRoles={['worker']}><WorkerProfile /></ProtectedRoute>}
+        /> */}
+        {/* Baaki worker routes jab pages banao tab add karna */}
+        {/* /worker/booking-requests, /worker/completed-projects, etc. */}
       </Route>
     </Route>
   )
-)
-
+);
 const App = () => {
   return (
     // Redux Provider — poori app ko wrap karta hai

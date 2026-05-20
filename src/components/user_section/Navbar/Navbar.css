@@ -338,6 +338,18 @@
   color: #c0392b;
 }
 
+.navbar__avatar--worker {
+  background: var(--color-secondary, #2e7d32);
+}
+
+.navbar__dropdown-avatar--worker {
+  background: var(--color-secondary, #2e7d32);
+}
+
+.navbar__dropdown-header--worker {
+  background: var(--color-secondary-container, #e8f5e9);
+}
+
 @media (max-width:750px) {
   .navbar__links{
     display: none;

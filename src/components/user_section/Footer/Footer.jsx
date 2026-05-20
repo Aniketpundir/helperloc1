@@ -49,18 +49,7 @@ const Footer = () => {
                         <li><a href="#">Contact</a></li>
                     </ul>
                 </div>
-
-                {/* ── Column 3: Top Services ── */}
-                <div className="footer__col">
-                    <h4 className="footer__col-title">Top Services</h4>
-                    <ul className="footer__list">
-                        <li><a href="#">Plumbing</a></li>
-                        <li><a href="#">House Cleaning</a></li>
-                        <li><a href="#">Electrical Repairs</a></li>
-                        <li><a href="#">AC Servicing</a></li>
-                    </ul>
-                </div>
-
+                
                 {/* ── Column 4: Contact & Legal ── */}
                 <div className="footer__col">
                     <h4 className="footer__col-title">Contact Us</h4>
