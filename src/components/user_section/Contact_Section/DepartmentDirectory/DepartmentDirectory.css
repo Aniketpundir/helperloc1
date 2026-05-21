@@ -1,7 +1,3 @@
-/* =============================================
-   DepartmentDirectory.css
-   ============================================= */
-
 .dept-dir {
   padding: var(--spacing-xl) 0;
   background-color: var(--color-surface-container-low);

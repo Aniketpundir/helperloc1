@@ -1,0 +1,113 @@
+.worker-dashboard {
+  min-height: 100vh;
+  background-color: #F0F4FF;
+  display: flex;
+  flex-direction: column;
+}
+
+.worker-dashboard__content {
+  flex: 1;
+  max-width: var(--max-width);
+  margin: 0 auto;
+  width: 100%;
+  padding: var(--spacing-sm);
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-sm);
+}
+
+@media (min-width: 480px) {
+  .worker-dashboard__content {
+    padding: var(--spacing-md);
+    gap: var(--spacing-md);
+  }
+}
+
+.worker-dashboard__middle {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--spacing-md);
+}
+
+@media (min-width: 1024px) {
+  .worker-dashboard__middle {
+    grid-template-columns: 7fr 5fr;
+    align-items: start;
+  }
+}
+
+.worker-dashboard__bookings {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-sm);
+}
+
+.worker-dashboard__bookings-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-sm);
+}
+
+.worker-dashboard__chart-wrap {
+  min-height: 280px;
+}
+
+@media (min-width: 480px) {
+  .worker-dashboard__chart-wrap { min-height: 320px; }
+}
+
+.worker-dashboard__section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 4px;
+  margin-bottom: var(--spacing-sm);
+}
+
+.worker-dashboard__section-title {
+  font-family: var(--font-headline);
+  font-size: var(--text-body-md);
+  font-weight: var(--fw-semibold);
+  color: #0D47A1;
+}
+
+@media (min-width: 480px) {
+  .worker-dashboard__section-title { font-size: var(--text-headline-sm); }
+}
+
+.worker-dashboard__view-all {
+  font-family: var(--font-body);
+  font-size: var(--text-body-sm);
+  font-weight: var(--fw-bold);
+  color: var(--color-primary);
+  text-decoration: none;
+  white-space: nowrap;
+  transition: opacity var(--transition-fast);
+}
+
+.worker-dashboard__view-all:hover {
+  text-decoration: underline;
+  opacity: 0.8;
+}
+
+.worker-dashboard__jobs-section {
+  display: flex;
+  flex-direction: column;
+}
+
+.worker-dashboard__jobs-scroll {
+  display: flex;
+  gap: var(--spacing-md);
+  overflow-x: auto;
+  padding-bottom: 12px;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: thin;
+  scrollbar-color: #c2c6d4 transparent;
+}
+
+.worker-dashboard__jobs-scroll::-webkit-scrollbar { height: 5px; }
+.worker-dashboard__jobs-scroll::-webkit-scrollbar-track { background: transparent; }
+.worker-dashboard__jobs-scroll::-webkit-scrollbar-thumb {
+  background: #c2c6d4;
+  border-radius: 10px;
+}

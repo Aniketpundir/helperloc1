@@ -1,4 +1,3 @@
-// FAQAccordion.jsx
 import { useState } from 'react';
 import './FAQAccordion.css';
 

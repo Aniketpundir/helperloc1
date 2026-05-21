@@ -1,8 +1,3 @@
-// ===========================================
-//  Footer.jsx — Footer Section Component
-//  HelperLoc — Professional Home Services
-// ===========================================
-
 import './Footer.css';
 
 const Footer = () => {

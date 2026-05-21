@@ -1,18 +1,9 @@
-/* =============================================
-   TESTIMONIALS.CSS - MARQUEE CAROUSEL
-   ============================================= */
-
 .testimonials {
   background-color: var(--color-surface);
   padding: var(--spacing-xl) 0;
   overflow: hidden;
 }
 
-.testimonials__inner {
-  /* uses .container from App.css */
-}
-
-/* --- Header --- */
 .testimonials__header {
   display: flex;
   justify-content: space-between;
@@ -212,11 +203,6 @@
   width: 24px;
 }
 
-/* =============================================
-   MEDIA QUERIES - RESPONSIVE CAROUSEL
-   ============================================= */
-
-/* Tablet: 768px and below */
 @media (max-width: 768px) {
   .testimonials__card {
     min-width: 340px;
@@ -232,7 +218,6 @@
   }
 }
 
-/* Small Phone: 480px and below */
 @media (max-width: 480px) {
   .testimonials__card {
     min-width: 300px;
@@ -267,7 +252,6 @@
   }
 }
 
-/* Large Desktop: 1440px and above */
 @media (min-width: 1440px) {
   .testimonials__card {
     min-width: 420px;

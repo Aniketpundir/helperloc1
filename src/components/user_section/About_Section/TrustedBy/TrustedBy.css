@@ -1,7 +1,3 @@
-/* =============================================
-   TrustedBy.css
-   ============================================= */
-
 .trusted-by {
   padding: var(--spacing-lg) 0;
   background-color: var(--color-surface-container-lowest);

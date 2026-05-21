@@ -1,0 +1,256 @@
+.wph {
+  background: var(--color-surface-container-lowest);
+  border-radius: 20px;
+  padding: var(--spacing-md);
+  box-shadow: 0px 4px 20px rgba(21, 101, 192, 0.08);
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-lg);
+  position: relative;
+}
+
+@media (min-width: 768px) {
+  .wph {
+    flex-direction: row;
+    align-items: flex-start;
+    padding: var(--spacing-lg);
+  }
+}
+
+/* ── Avatar ── */
+.wph__identity {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: var(--spacing-md);
+}
+
+@media (min-width: 768px) {
+  .wph__identity {
+    align-items: flex-start;
+    text-align: left;
+  }
+}
+
+.wph__avatar-wrap {
+  position: relative;
+  width: 120px;
+  height: 120px;
+  flex-shrink: 0;
+}
+
+.wph__avatar {
+  width: 120px;
+  height: 120px;
+  border-radius: var(--radius-full);
+  object-fit: cover;
+  border: 4px solid var(--color-primary-fixed);
+}
+
+.wph__avatar-edit {
+  position: absolute;
+  bottom: 4px;
+  right: 4px;
+  width: 30px;
+  height: 30px;
+  border-radius: var(--radius-full);
+  background: var(--color-secondary-container);
+  color: white;
+  border: 2px solid white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: var(--shadow-lg);
+  transition: transform var(--transition-fast);
+}
+
+.wph__avatar-edit:hover { transform: scale(1.1); }
+.wph__avatar-edit .material-symbols-outlined { font-size: 16px !important; }
+
+/* ── Name ── */
+.wph__info { display: flex; flex-direction: column; gap: 6px; }
+
+.wph__name-row {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-base);
+}
+
+.wph__name {
+  font-family: var(--font-headline);
+  font-size: var(--text-headline-lg);
+  font-weight: var(--fw-bold);
+  color: var(--color-on-surface);
+}
+
+.wph__inline-edit-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--color-outline);
+  display: flex;
+  align-items: center;
+  padding: 4px;
+  border-radius: var(--radius-sm);
+  transition: color var(--transition-fast), background var(--transition-fast);
+}
+
+.wph__inline-edit-btn:hover { color: var(--color-primary); background: var(--color-surface-container-low); }
+.wph__inline-edit-btn .material-symbols-outlined { font-size: 18px !important; }
+
+.wph__name-edit { display: flex; flex-direction: column; gap: 6px; }
+
+.wph__name-input {
+  font-family: var(--font-headline);
+  font-size: var(--text-headline-lg);
+  font-weight: var(--fw-bold);
+  color: var(--color-on-surface);
+  border: 1px solid var(--color-primary);
+  border-radius: var(--radius-lg);
+  padding: 4px 10px;
+  outline: none;
+  background: var(--color-surface-container-lowest);
+  box-shadow: 0 0 0 3px rgba(0,77,153,0.1);
+}
+
+.wph__name-actions { display: flex; gap: 6px; }
+
+.wph__name-btn {
+  padding: 4px 14px;
+  border-radius: var(--radius-full);
+  font-family: var(--font-body);
+  font-size: 13px;
+  font-weight: var(--fw-semibold);
+  cursor: pointer;
+  border: none;
+  transition: all var(--transition-fast);
+}
+
+.wph__name-btn--save   { background: var(--color-primary); color: var(--color-on-primary); }
+.wph__name-btn--cancel { background: var(--color-surface-container); color: var(--color-on-surface-variant); }
+
+/* ── Badges ── */
+.wph__badges {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--spacing-xs);
+  justify-content: center;
+}
+
+@media (min-width: 768px) { .wph__badges { justify-content: flex-start; } }
+
+.wph__role-badge {
+  background: rgba(0, 77, 153, 0.08);
+  color: var(--color-primary);
+  padding: 3px var(--spacing-sm);
+  border-radius: var(--radius-full);
+  font-family: var(--font-body);
+  font-size: 14px;
+  font-weight: var(--fw-semibold);
+  letter-spacing: var(--ls-label);
+}
+
+.wph__location {
+  display: flex;
+  align-items: center;
+  gap: 3px;
+  font-family: var(--font-body);
+  font-size: var(--text-body-sm);
+  color: var(--color-outline);
+}
+
+.wph__location .material-symbols-outlined { font-size: 16px !important; }
+
+.wph__since {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-family: var(--font-body);
+  font-size: var(--text-body-sm);
+  color: var(--color-on-surface-variant);
+  justify-content: center;
+}
+
+@media (min-width: 768px) { .wph__since { justify-content: flex-start; } }
+.wph__since .material-symbols-outlined { font-size: 16px !important; }
+
+/* ── Right column ── */
+.wph__right {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-md);
+}
+
+.wph__stats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--spacing-sm);
+}
+
+.wph__stat-card {
+  background: white;
+  border: 1px solid rgba(0, 77, 153, 0.15);
+  border-radius: var(--radius-xl);
+  padding: var(--spacing-md);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  box-shadow: var(--shadow-sm);
+  text-align: center;
+}
+
+.wph__stat-val {
+  font-family: var(--font-headline);
+  font-size: var(--text-headline-md);
+  font-weight: var(--fw-bold);
+  color: var(--color-primary);
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.wph__star {
+  font-size: 20px !important;
+  color: #ca8a04;
+  font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24 !important;
+}
+
+.wph__stat-label {
+  font-family: var(--font-body);
+  font-size: 14px;
+  font-weight: var(--fw-semibold);
+  letter-spacing: var(--ls-label);
+  color: var(--color-on-surface-variant);
+  margin-top: 2px;
+}
+
+.wph__verifications {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--spacing-sm);
+}
+
+.wph__verify-badge {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px var(--spacing-sm);
+  border-radius: var(--radius-full);
+  font-family: var(--font-body);
+  font-size: 14px;
+  font-weight: var(--fw-semibold);
+  letter-spacing: var(--ls-label);
+}
+
+.wph__verify-badge--green {
+  background: #dcfce7;
+  color: #15803d;
+  border: 1px solid #bbf7d0;
+}
+
+.wph__verify-badge .material-symbols-outlined { font-size: 16px !important; }

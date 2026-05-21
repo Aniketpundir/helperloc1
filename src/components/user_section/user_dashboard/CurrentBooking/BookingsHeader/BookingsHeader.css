@@ -20,7 +20,7 @@
 
 .bookings-header__heading {
   font-family: var(--font-headline);
-  font-size: var(--text-headline-lg);   /* xl se lg — thoda compact */
+  font-size: var(--text-headline-lg);
   font-weight: var(--fw-extrabold);
   color: var(--color-on-surface);
   letter-spacing: var(--ls-headline-lg);
@@ -30,7 +30,7 @@
 
 .bookings-header__sub {
   font-family: var(--font-body);
-  font-size: var(--text-body-md);       /* lg se md — subtitle chhoti */
+  font-size: var(--text-body-md);
   color: var(--color-on-surface-variant);
   margin: 0;
 }

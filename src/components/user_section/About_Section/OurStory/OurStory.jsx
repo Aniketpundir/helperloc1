@@ -1,4 +1,3 @@
-// OurStory.jsx
 import './OurStory.css';
 
 const milestones = [

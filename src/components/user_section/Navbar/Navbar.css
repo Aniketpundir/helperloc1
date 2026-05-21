@@ -157,10 +157,6 @@
   background: var(--color-primary-container);
 }
 
-/* ════════════════════════════════════════════
-   PROFILE AVATAR + DROPDOWN
-   ════════════════════════════════════════════ */
-
 .navbar__profile-wrap {
   position: relative;
 }

@@ -1,0 +1,279 @@
+.complete-project-card {
+  background: var(--color-surface-container-lowest);
+  border-radius: 20px;
+  box-shadow: 0px 4px 20px rgba(21, 101, 192, 0.08);
+  border-left: 8px solid #4CAF50;
+  padding: var(--spacing-md);
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-md);
+  transition: transform var(--transition-normal), box-shadow var(--transition-normal);
+  position: relative;
+  overflow: hidden;
+}
+
+@media (min-width: 768px) {
+  .complete-project-card {
+    flex-direction: row;
+    gap:6px;
+  }
+}
+
+.complete-project-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0px 12px 32px rgba(21, 101, 192, 0.14);
+}
+
+/* --- Icon Column --- */
+.complete-project-card__icon-col {
+  display: flex;
+  align-items: flex-start;
+  flex-shrink: 0;
+}
+
+@media (min-width: 768px) {
+  .complete-project-card__icon-col {
+    align-items: center;
+  }
+}
+
+.complete-project-card__icon-wrap {
+  width: 56px;
+  height: 56px;
+  background: rgba(76, 175, 80, 0.1);
+  border-radius: var(--radius-full);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.complete-project-card__icon {
+  font-size: 32px;
+  color: #4CAF50;
+}
+
+/* --- Body Grid --- */
+.complete-project-card__body {
+  flex: 1;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--spacing-md);
+}
+
+@media (min-width: 768px) {
+  .complete-project-card__body {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+/* --- Info (Left) --- */
+.complete-project-card__title {
+  font-family: var(--font-headline);
+  font-size: 18px;
+  font-weight: var(--fw-semibold);
+  color: var(--color-on-surface);
+  margin-bottom: var(--spacing-xs);
+}
+
+.complete-project-card__meta {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.complete-project-card__meta-item {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-xs);
+  font-family: var(--font-body);
+  font-size: var(--text-body-sm);
+  color: var(--color-on-surface-variant);
+}
+
+.complete-project-card__meta-highlight {
+  color: var(--color-on-surface);
+  font-weight: var(--fw-medium);
+}
+
+.complete-project-card__meta-icon {
+  font-size: 16px;
+  color: var(--color-on-surface-variant);
+}
+
+.complete-project-card__meta-row {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-md);
+  padding-top: var(--spacing-xs);
+}
+
+.complete-project-card__meta-chip {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-xs);
+  font-size: var(--text-body-sm);
+  color: var(--color-on-surface-variant);
+}
+
+/* Job Description */
+.complete-project-card__job-desc {
+  font-size: 13px;
+  font-style: italic;
+  color: var(--color-outline);
+  border-left: 2px solid var(--color-outline-variant);
+  padding-left: var(--spacing-sm);
+  margin-top: var(--spacing-sm);
+  line-height: 1.5;
+}
+
+/* Expand Button */
+.complete-project-card__expand-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  margin-top: var(--spacing-sm);
+  background: transparent;
+  border: none;
+  color: var(--color-primary);
+  font-family: var(--font-body);
+  font-size: var(--text-body-sm);
+  font-weight: var(--fw-semibold);
+  letter-spacing: var(--ls-label);
+  cursor: pointer;
+  padding: 0;
+  transition: opacity var(--transition-fast);
+}
+
+.complete-project-card__expand-btn:hover {
+  opacity: 0.75;
+}
+
+/* Expanded Section */
+.complete-project-card__expanded {
+  margin-top: var(--spacing-sm);
+  padding: var(--spacing-sm);
+  background: var(--color-surface-container-low);
+  border-radius: var(--radius-lg);
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-xs);
+  animation: completeExpandIn 0.2s ease;
+}
+
+@keyframes completeExpandIn {
+  from { opacity: 0; transform: translateY(-4px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.complete-project-card__expanded-row {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-xs);
+  font-size: var(--text-body-sm);
+  color: var(--color-on-surface-variant);
+}
+
+/* --- Right Column --- */
+.complete-project-card__right {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--spacing-sm);
+}
+
+@media (min-width: 768px) {
+  .complete-project-card__right {
+    align-items: flex-end;
+  }
+}
+
+/* Status Badge */
+.complete-project-card__badge {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--spacing-xs);
+  padding: 4px var(--spacing-md);
+  background: rgba(76, 175, 80, 0.1);
+  color: #2E7D32;
+  border: 1px solid rgba(76, 175, 80, 0.2);
+  border-radius: var(--radius-full);
+  font-family: var(--font-body);
+  font-size: var(--text-body-sm);
+  font-weight: var(--fw-semibold);
+  letter-spacing: var(--ls-label);
+  align-self: auto;
+}
+
+/* Amount Block */
+.complete-project-card__amount-block {
+  text-align: left;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--spacing-xs);
+}
+
+@media (min-width: 768px) {
+  .complete-project-card__amount-block {
+    text-align: right;
+    align-items: flex-end;
+  }
+}
+
+.complete-project-card__amount {
+  font-size: 20px;
+  font-weight: var(--fw-bold);
+  color: #2E7D32;
+}
+
+/* Stars */
+.complete-project-card__stars {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+}
+
+.complete-project-card__star {
+  font-size: 20px;
+  color: #FFD600;
+}
+
+/* Review */
+.complete-project-card__review {
+  font-size: 13px;
+  font-style: italic;
+  color: var(--color-on-surface-variant);
+  max-width: min(280px, 100%);
+  text-align: left;
+  line-height: 1.5;
+}
+
+@media (min-width: 768px) {
+  .complete-project-card__review {
+    text-align: right;
+  }
+}
+
+/* View Details Link */
+.complete-project-card__details-link {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--spacing-xs);
+  font-family: var(--font-body);
+  font-size: var(--text-body-sm);
+  font-weight: var(--fw-semibold);
+  letter-spacing: var(--ls-label);
+  color: var(--color-primary);
+  text-decoration: none;
+  margin-top: var(--spacing-md);
+  transition: gap var(--transition-normal);
+  align-self: flex-end;
+}
+
+.complete-project-card__details-link:hover {
+  gap: var(--spacing-sm);
+  text-decoration: underline;
+}

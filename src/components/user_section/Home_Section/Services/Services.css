@@ -1,7 +1,3 @@
-/* =============================================
-   SERVICES.CSS - MARQUEE CAROUSEL
-   ============================================= */
-
 .services {
   background-color: var(--color-surface);
   padding: var(--spacing-xl) 0;
@@ -269,11 +265,6 @@
   font-size: 18px;
 }
 
-/* =============================================
-   MEDIA QUERIES - RESPONSIVE CAROUSEL
-   ============================================= */
-
-/* Tablet: 768px and below */
 @media (max-width: 768px) {
   .services__card {
     min-width: 280px;
@@ -297,7 +288,6 @@
   }
 }
 
-/* Small Phone: 480px and below */
 @media (max-width: 480px) {
   .services__card {
     min-width: 250px;
@@ -327,7 +317,6 @@
   }
 }
 
-/* Large Desktop: 1440px and above */
 @media (min-width: 1440px) {
   .services__card {
     min-width: 350px;

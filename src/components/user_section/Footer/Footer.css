@@ -1,16 +1,9 @@
-/* =========================================
-   FOOTER.CSS — Footer Component Styles
-   HelperLoc — Professional Home Services
-   ========================================= */
-
-/* ---- FOOTER WRAPPER ---- */
 .footer {
   background-color: var(--color-primary);
   color: var(--color-on-primary);
   padding: var(--spacing-xl) 0 0 0;
 }
 
-/* ---- FOOTER GRID ---- */
 .footer__grid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
@@ -34,14 +27,12 @@
   }
 }
 
-/* ---- FOOTER COLUMN ---- */
 .footer__col {
   display: flex;
   flex-direction: column;
   gap: var(--spacing-base);
 }
 
-/* ---- BRAND SECTION ---- */
 .footer__brand {
   display: flex;
   align-items: center;
@@ -73,7 +64,6 @@
   margin-top: var(--spacing-xs);
 }
 
-/* ---- SOCIAL ICONS ---- */
 .footer__socials {
   display: flex;
   gap: var(--spacing-base);
@@ -100,7 +90,6 @@
   font-size: 18px;
 }
 
-/* ---- COLUMN HEADING ---- */
 .footer__col-title {
   font-family: var(--font-body);
   font-size: var(--text-body-sm);
@@ -113,7 +102,6 @@
   margin-bottom: var(--spacing-xs);
 }
 
-/* ---- LINK LIST ---- */
 .footer__list {
   list-style: none;
   display: flex;
@@ -133,7 +121,6 @@
   color: var(--color-secondary-fixed);
 }
 
-/* ---- CONTACT ITEMS ---- */
 .footer__contact-item {
   display: flex;
   align-items: center;
@@ -168,7 +155,6 @@
   color: var(--color-secondary-fixed);
 }
 
-/* ---- FOOTER BOTTOM BAR ---- */
 .footer__bottom {
   max-width: var(--max-width);
   margin: var(--spacing-xl) auto 0;

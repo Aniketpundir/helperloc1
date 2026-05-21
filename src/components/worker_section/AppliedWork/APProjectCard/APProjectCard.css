@@ -1,0 +1,429 @@
+.ap-project-card {
+  position: relative;
+  background: var(--color-surface-container-lowest);
+  border-radius: 20px;
+  box-shadow: 0px 4px 20px rgba(21, 101, 192, 0.08);
+  border-left: 6px solid transparent;
+  overflow: hidden;
+  transition: transform 250ms ease, box-shadow 250ms ease, opacity 300ms ease;
+}
+
+.ap-project-card:hover:not(.ap-project-card--muted) {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 32px rgba(21, 101, 192, 0.14);
+}
+
+.ap-project-card--withdrawn {
+  opacity: 0.5;
+  pointer-events: none;
+}
+
+/* Status border colors */
+.ap-project-card--accepted { border-left-color: #2E7D32; }
+.ap-project-card--pending  { border-left-color: #F57C00; }
+.ap-project-card--rejected { border-left-color: var(--color-outline-variant); }
+
+/* Muted overlay (rejected) */
+.ap-project-card--muted {
+  transition: none;
+}
+
+.ap-project-card__overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(2px);
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* ---- Body ---- */
+.ap-project-card__body {
+  padding: 24px;
+  position: relative;
+  z-index: 2;
+}
+
+/* ---- Top Row ---- */
+.ap-project-card__top-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.ap-project-card__category {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.ap-project-card__cat-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: var(--color-surface-container);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--color-primary);
+  flex-shrink: 0;
+}
+
+/* Category Chips */
+.ap-category-chip {
+  padding: 4px 12px;
+  border-radius: 9999px;
+  font-size: 12px;
+  font-weight: var(--fw-semibold);
+  letter-spacing: var(--ls-label);
+  text-transform: uppercase;
+  font-family: var(--font-body);
+}
+
+.ap-category-chip--active {
+  background: var(--color-primary-fixed);
+  color: var(--color-primary);
+}
+
+.ap-category-chip--muted {
+  background: var(--color-surface-variant);
+  color: var(--color-on-surface-variant);
+}
+
+/* Status Badges */
+.ap-badge {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 16px;
+  border-radius: 9999px;
+  font-weight: var(--fw-bold);
+  font-size: 14px;
+  font-family: var(--font-body);
+  flex-shrink: 0;
+}
+
+.ap-badge__icon {
+  font-size: 18px !important;
+}
+
+.ap-badge--accepted {
+  background: #2E7D32;
+  color: #ffffff;
+}
+
+.ap-badge--pending {
+  background: #F57C00;
+  color: #ffffff;
+}
+
+.ap-badge--rejected {
+  background: #C62828;
+  color: #ffffff;
+}
+
+/* ---- Content Grid ---- */
+.ap-project-card__grid {
+  display: grid;
+  grid-template-columns: 7fr 5fr;
+  gap: 24px;
+  align-items: center;
+}
+
+/* ---- Left: Info ---- */
+.ap-project-card__title {
+  font-family: var(--font-headline);
+  font-size: var(--text-headline-md);
+  font-weight: var(--fw-bold);
+  color: var(--color-on-surface);
+  margin-bottom: 8px;
+  line-height: 1.3;
+}
+
+.ap-project-card__desc {
+  font-family: var(--font-body);
+  font-size: var(--text-body-md);
+  color: var(--color-on-surface-variant);
+  margin-bottom: 16px;
+  line-height: 1.5;
+}
+
+.ap-project-card__meta {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px 16px;
+}
+
+.ap-meta-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--color-on-surface-variant);
+  font-size: var(--text-body-sm);
+  font-family: var(--font-body);
+}
+
+.ap-meta-item__icon {
+  font-size: 18px !important;
+  color: var(--color-outline);
+  flex-shrink: 0;
+}
+
+/* ---- Right: Actions ---- */
+.ap-project-card__actions {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 0;
+}
+
+.ap-project-card__budget-label {
+  font-family: var(--font-body);
+  font-size: 11px;
+  font-weight: var(--fw-semibold);
+  text-transform: uppercase;
+  letter-spacing: var(--ls-label);
+  color: var(--color-on-surface-variant);
+  margin-bottom: 4px;
+}
+
+.ap-project-card__budget {
+  font-family: var(--font-headline);
+  font-size: var(--text-headline-md);
+  font-weight: var(--fw-extrabold);
+  color: #2E7D32;
+  margin-bottom: 24px;
+}
+
+/* ---- Action Rows ---- */
+.ap-actions-row {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  align-items: center;
+}
+
+.ap-actions-row--pending {
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 10px;
+}
+
+.ap-actions-row--rejected {
+  align-items: center;
+  gap: 16px;
+}
+
+/* ---- Buttons ---- */
+.ap-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 20px;
+  border-radius: 8px;
+  font-family: var(--font-body);
+  font-weight: var(--fw-bold);
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 200ms ease;
+  border: none;
+  white-space: nowrap;
+}
+
+.ap-btn:active {
+  transform: scale(0.97);
+}
+
+.ap-btn--outline {
+  background: transparent;
+  border: 1.5px solid var(--color-primary);
+  color: var(--color-primary);
+}
+
+.ap-btn--outline:hover {
+  background: var(--color-primary-fixed);
+}
+
+.ap-btn--primary {
+  background: var(--color-secondary-container);
+  color: #ffffff;
+  border: none;
+}
+
+.ap-btn--primary:hover {
+  filter: brightness(0.9);
+}
+
+.ap-btn--withdraw {
+  background: transparent;
+  border: none;
+  color: #C62828;
+  font-weight: var(--fw-bold);
+  font-size: 13px;
+  text-transform: uppercase;
+  letter-spacing: var(--ls-label);
+  padding: 0;
+  border-bottom: 2px solid rgba(198, 40, 40, 0.2);
+  border-radius: 0;
+  padding-bottom: 2px;
+}
+
+.ap-btn--withdraw:hover {
+  border-bottom-color: #C62828;
+}
+
+.ap-btn--find-similar {
+  background: var(--color-primary);
+  color: #ffffff;
+  border: none;
+  font-size: 13px;
+  box-shadow: 0 4px 12px rgba(0, 77, 153, 0.25);
+}
+
+.ap-btn--find-similar:hover {
+  filter: brightness(1.1);
+}
+
+/* Chips */
+.ap-awaiting-chip {
+  background: var(--color-surface-container);
+  color: var(--color-on-surface-variant);
+  padding: 8px 16px;
+  border-radius: 9999px;
+  font-weight: var(--fw-bold);
+  font-size: 13px;
+  text-transform: uppercase;
+  letter-spacing: var(--ls-label);
+  font-family: var(--font-body);
+}
+
+.ap-awaiting-chip--withdrawn {
+  background: #fee2e2;
+  color: #C62828;
+}
+
+.ap-not-selected {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: #C62828;
+  font-weight: var(--fw-bold);
+  font-size: 13px;
+  text-transform: uppercase;
+  letter-spacing: var(--ls-label);
+  font-family: var(--font-body);
+  position: relative;
+  z-index: 5;
+}
+
+/* ---- Footer Banner ---- */
+.ap-project-card__footer {
+  padding: 10px 24px;
+  border-top: 1px solid;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--font-body);
+  font-weight: var(--fw-bold);
+  font-size: 13px;
+  letter-spacing: var(--ls-label);
+  position: relative;
+  z-index: 2;
+}
+
+.ap-project-card__footer--accepted {
+  background: #f0fdf4;
+  border-top-color: #bbf7d0;
+  color: #2E7D32;
+}
+
+.ap-footer__icon {
+  font-size: 18px !important;
+}
+
+/* ---- RESPONSIVE ---- */
+@media (max-width: 900px) {
+  .ap-project-card__grid {
+    grid-template-columns: 1fr;
+  }
+
+  .ap-project-card__actions {
+    align-items: flex-start;
+    border-top: 1px solid var(--color-outline-variant);
+    padding-top: 16px;
+    margin-top: 4px;
+  }
+
+  .ap-actions-row {
+    justify-content: flex-start;
+  }
+
+  .ap-actions-row--pending {
+    align-items: flex-start;
+  }
+
+  .ap-actions-row--rejected {
+    justify-content: flex-start;
+  }
+}
+
+@media (max-width: 600px) {
+  .ap-project-card__body {
+    padding: 16px;
+  }
+
+  .ap-project-card__top-row {
+    margin-bottom: 16px;
+  }
+
+  .ap-project-card__meta {
+    grid-template-columns: 1fr;
+    gap: 8px;
+  }
+
+  .ap-project-card__title {
+    font-size: 20px;
+  }
+
+  .ap-project-card__budget {
+    font-size: 20px;
+    margin-bottom: 16px;
+  }
+
+  .ap-actions-row {
+    flex-direction: column;
+    align-items: flex-start;
+    width: 100%;
+  }
+
+  .ap-btn {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .ap-awaiting-chip {
+    text-align: center;
+    width: 100%;
+  }
+
+  .ap-project-card__footer {
+    padding: 10px 16px;
+    font-size: 12px;
+  }
+}
+
+@media (max-width: 400px) {
+  .ap-badge {
+    font-size: 12px;
+    padding: 5px 12px;
+  }
+
+  .ap-project-card__cat-icon {
+    width: 34px;
+    height: 34px;
+  }
+}

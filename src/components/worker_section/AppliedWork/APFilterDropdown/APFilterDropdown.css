@@ -1,0 +1,113 @@
+.ap-filter {
+  position: relative;
+  display: inline-block;
+}
+
+/* Trigger Button */
+.ap-filter__trigger {
+  background: var(--color-surface-container-lowest);
+  padding: 10px 20px;
+  border-radius: 9999px;
+  box-shadow: 0px 4px 20px rgba(21, 101, 192, 0.08);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  border: 1px solid rgba(194, 198, 212, 0.3);
+  cursor: pointer;
+  transition: border-color 200ms ease, box-shadow 200ms ease;
+  font-family: var(--font-body);
+}
+
+.ap-filter__trigger:hover,
+.ap-filter__trigger--open {
+  border-color: var(--color-primary);
+  box-shadow: 0px 4px 20px rgba(21, 101, 192, 0.15);
+}
+
+.ap-filter__label {
+  font-family: var(--font-body);
+  font-size: 13px;
+  font-weight: var(--fw-semibold);
+  text-transform: uppercase;
+  letter-spacing: var(--ls-label);
+  color: var(--color-on-surface);
+}
+
+.ap-filter__arrow {
+  color: var(--color-primary);
+  font-size: 20px !important;
+  transition: transform 200ms ease;
+}
+
+/* Dropdown List */
+.ap-filter__dropdown {
+  position: absolute;
+  right: 0;
+  top: calc(100% + 8px);
+  width: 160px;
+  background: var(--color-surface-container-lowest);
+  border-radius: 12px;
+  box-shadow: 0px 8px 24px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  z-index: 50;
+  border: 1px solid rgba(194, 198, 212, 0.2);
+  list-style: none;
+  padding: 4px;
+  animation: ap-dropdown-in 180ms ease;
+}
+
+@keyframes ap-dropdown-in {
+  from {
+    opacity: 0;
+    transform: translateY(-6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.ap-filter__option {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 14px;
+  font-family: var(--font-body);
+  font-size: var(--text-body-sm);
+  color: var(--color-on-surface);
+  cursor: pointer;
+  border-radius: 8px;
+  transition: background 150ms ease;
+  outline: none;
+}
+
+.ap-filter__option:hover,
+.ap-filter__option:focus {
+  background: var(--color-primary-fixed);
+}
+
+.ap-filter__option--active {
+  background: var(--color-primary-fixed);
+  color: var(--color-primary);
+  font-weight: var(--fw-bold);
+}
+
+.ap-filter__check {
+  font-size: 16px !important;
+  color: var(--color-primary);
+}
+
+/* ---- RESPONSIVE ---- */
+@media (max-width: 480px) {
+  .ap-filter__trigger {
+    padding: 8px 16px;
+  }
+
+  .ap-filter__label {
+    font-size: 12px;
+  }
+
+  .ap-filter__dropdown {
+    width: 140px;
+  }
+}

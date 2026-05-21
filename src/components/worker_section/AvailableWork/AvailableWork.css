@@ -1,0 +1,111 @@
+.awp-page {
+  padding: 32px;
+  max-width: 1200px;
+  margin: 0 auto;
+  min-height: 100vh;
+  background: var(--color-background);
+}
+
+/* Header */
+.awp-page__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  margin-bottom: 32px;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.awp-page__title {
+  font-family: var(--font-headline);
+  font-size: var(--text-headline-lg);
+  font-weight: var(--fw-bold);
+  color: var(--color-on-background);
+  margin-bottom: 4px;
+  line-height: 1.2;
+}
+
+.awp-page__subtitle {
+  font-family: var(--font-body);
+  font-size: 15px;
+  color: var(--color-on-surface-variant);
+}
+
+.awp-page__location {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 16px;
+  border: 2px solid var(--color-primary);
+  border-radius: 9999px;
+  color: var(--color-primary);
+  font-family: var(--font-body);
+  font-size: var(--text-body-sm);
+  font-weight: var(--fw-bold);
+  background: rgba(0, 77, 153, 0.05);
+  flex-shrink: 0;
+}
+
+.awp-page__location-icon {
+  font-size: 18px !important;
+}
+
+/* Cards Stack */
+.awp-page__cards {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  margin-bottom: 48px;
+}
+
+/* Empty State */
+.awp-page__empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  padding: 64px 24px;
+  color: var(--color-on-surface-variant);
+  opacity: 0.5;
+  font-family: var(--font-body);
+  font-size: var(--text-body-lg);
+}
+
+.awp-page__empty-icon {
+  font-size: 56px !important;
+}
+
+/* ---- RESPONSIVE ---- */
+@media (max-width: 768px) {
+  .awp-page {
+    padding: 20px 16px;
+  }
+
+  .awp-page__header {
+    margin-bottom: 20px;
+  }
+
+  .awp-page__title {
+    font-size: var(--text-headline-lg-mobile);
+  }
+
+  .awp-page__cards {
+    gap: 16px;
+    margin-bottom: 32px;
+  }
+}
+
+@media (max-width: 480px) {
+  .awp-page {
+    padding: 16px 12px;
+  }
+
+  .awp-page__title {
+    font-size: 24px;
+  }
+
+  .awp-page__header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}

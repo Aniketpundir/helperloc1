@@ -1,0 +1,164 @@
+.worker-job-card {
+  min-width: 260px;
+  width: 280px;
+  background: #ffffff;
+  padding: var(--spacing-md);
+  border-radius: 20px;
+  box-shadow: 0px 4px 20px rgba(21,101,192,0.08);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: var(--spacing-sm);
+  height: 220px;
+  flex-shrink: 0;
+  transition: transform var(--transition-normal), box-shadow var(--transition-normal);
+}
+
+@media (min-width: 480px) {
+  .worker-job-card {
+    min-width: 300px;
+    width: 320px;
+    height: 240px;
+  }
+}
+
+.worker-job-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0px 8px 28px rgba(21,101,192,0.14);
+}
+
+/* Top row */
+.worker-job-card__top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+}
+
+.worker-job-card__category-wrap {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+}
+
+.worker-job-card__cat-icon-wrap {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.worker-job-card__cat-icon-wrap--blue   { background: rgba(0,176,255,0.2); }
+.worker-job-card__cat-icon-wrap--green  { background: rgba(46,125,50,0.2); }
+.worker-job-card__cat-icon-wrap--orange { background: rgba(245,124,0,0.2); }
+
+.worker-job-card__cat-icon { font-size: 18px !important; }
+
+.worker-job-card__cat-icon-wrap--blue   .worker-job-card__cat-icon { color: #00B0FF; }
+.worker-job-card__cat-icon-wrap--green  .worker-job-card__cat-icon { color: #2E7D32; }
+.worker-job-card__cat-icon-wrap--orange .worker-job-card__cat-icon { color: #F57C00; }
+
+.worker-job-card__category {
+  font-family: var(--font-body);
+  font-size: 10px;
+  font-weight: var(--fw-bold);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-on-surface-variant);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Priority */
+.worker-job-card__priority {
+  font-family: var(--font-body);
+  font-size: 10px;
+  font-weight: var(--fw-bold);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 3px 8px;
+  border-radius: var(--radius-lg);
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.worker-job-card__priority--urgent   { background: rgba(245,124,0,0.1); color: #F57C00; }
+.worker-job-card__priority--soon     { background: rgba(21,101,192,0.1); color: #1565C0; }
+.worker-job-card__priority--flexible { background: rgba(66,71,82,0.1);   color: #424752; }
+
+/* Title */
+.worker-job-card__title {
+  font-family: var(--font-headline);
+  font-size: var(--text-body-md);
+  font-weight: var(--fw-bold);
+  color: #0D47A1;
+  line-height: 1.3;
+}
+
+@media (min-width: 480px) {
+  .worker-job-card__title { font-size: var(--text-headline-sm); }
+}
+
+/* Info */
+.worker-job-card__info {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.worker-job-card__location {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-family: var(--font-body);
+  font-size: var(--text-body-sm);
+  color: var(--color-on-surface-variant);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.worker-job-card__info-icon { font-size: 15px !important; flex-shrink: 0; }
+
+.worker-job-card__price {
+  font-family: var(--font-body);
+  font-size: var(--text-body-sm);
+  font-weight: var(--fw-bold);
+  color: #2E7D32;
+}
+
+/* CTA Button */
+.worker-job-card__btn {
+  width: 100%;
+  background-color: #1565C0;
+  color: #ffffff;
+  padding: 10px var(--spacing-sm);
+  border-radius: var(--radius-xl);
+  font-family: var(--font-body);
+  font-size: var(--text-body-sm);
+  font-weight: var(--fw-bold);
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  transition: all var(--transition-normal);
+  white-space: nowrap;
+}
+
+.worker-job-card__btn:hover { background-color: #0D47A1; }
+.worker-job-card__btn:active { transform: scale(0.97); }
+
+.worker-job-card__btn--applied {
+  background-color: #2E7D32;
+  cursor: default;
+}
+
+.worker-job-card__btn--applied:hover { background-color: #2E7D32; }
+.worker-job-card__btn .material-symbols-outlined { font-size: 18px !important; }

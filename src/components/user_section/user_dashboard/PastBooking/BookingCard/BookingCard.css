@@ -1,4 +1,3 @@
-/* ===== PAST BOOKING CARD ===== */
 .past-card {
   background-color: #ffffff;
   border-radius: var(--radius-xl);
@@ -28,7 +27,6 @@
   filter: grayscale(0.2);
 }
 
-/* ===== IMAGE ===== */
 .past-card__img-wrap {
   width: 100%;
   height: 128px;
@@ -50,7 +48,6 @@
   object-fit: cover;
 }
 
-/* ===== CONTENT ===== */
 .past-card__content {
   flex: 1;
   display: flex;
@@ -58,7 +55,6 @@
   gap: var(--spacing-sm);
 }
 
-/* ===== TOP ROW ===== */
 .past-card__top {
   display: flex;
   flex-wrap: wrap;

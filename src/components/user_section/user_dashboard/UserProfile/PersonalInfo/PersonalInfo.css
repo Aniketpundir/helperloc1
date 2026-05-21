@@ -1,9 +1,3 @@
-/* =============================================
-   PersonalInfo.css
-   (also defines shared .profile-card base)
-   ============================================= */
-
-/* ---- Shared card base (reused by all profile cards) ---- */
 .profile-card {
   background: var(--color-surface-container-lowest);
   border-radius: var(--radius-xl);

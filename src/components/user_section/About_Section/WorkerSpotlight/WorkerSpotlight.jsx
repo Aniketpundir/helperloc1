@@ -39,9 +39,7 @@ export default function WorkerSpotlight() {
                 <h2 className="worker-spotlight__heading">Worker Spotlight</h2>
             </div>
 
-            {/* Track is OUTSIDE inner so it can bleed edge-to-edge on mobile */}
             <div className="worker-spotlight__track">
-                {/* Left padding spacer to align first card with content */}
                 <div className="worker-spotlight__spacer" aria-hidden="true" />
 
                 {workers.map((w) => (
@@ -60,8 +58,7 @@ export default function WorkerSpotlight() {
                         </div>
                     </div>
                 ))}
-
-                {/* Right padding spacer */}
+                
                 <div className="worker-spotlight__spacer" aria-hidden="true" />
             </div>
         </section>

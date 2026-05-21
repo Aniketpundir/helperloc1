@@ -1,0 +1,27 @@
+.review-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-md);
+  margin-bottom: var(--spacing-xl);
+}
+
+/* Empty state */
+.review-list__empty {
+  text-align: center;
+  padding: var(--spacing-lg) var(--spacing-md);
+  background-color: var(--color-surface-container-lowest);
+  border-radius: var(--radius-3xl);
+  border: 1px solid var(--color-outline-variant);
+}
+
+.review-list__empty-icon {
+  font-size: 48px;
+  color: var(--color-outline-variant);
+  margin-bottom: 12px;
+}
+
+.review-list__empty-text {
+  font-family: var(--font-body);
+  font-size: var(--text-body-md);
+  color: var(--color-on-surface-variant);
+}

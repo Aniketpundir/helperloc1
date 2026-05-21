@@ -1,0 +1,283 @@
+.review-card {
+  background-color: var(--color-surface-container-lowest);
+  border-radius: var(--radius-3xl);
+  padding: var(--spacing-md);
+  box-shadow: var(--shadow-rating);
+  border: 1px solid rgba(0, 77, 153, 0.05);
+  transition: transform var(--transition-normal), box-shadow var(--transition-normal);
+}
+
+.review-card:hover {
+  transform: scale(1.005);
+  box-shadow: 0 8px 28px rgba(21, 101, 192, 0.12);
+}
+
+/* --- Header Row --- */
+.review-card__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 16px;
+}
+
+.review-card__user {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.review-card__avatar {
+  width: 48px;
+  height: 48px;
+  border-radius: var(--radius-full);
+  border: 1px solid var(--color-outline-variant);
+  object-fit: cover;
+}
+
+.review-card__name {
+  font-family: var(--font-headline);
+  font-size: 16px;
+  font-weight: var(--fw-bold);
+  color: var(--color-on-surface);
+  line-height: 1.3;
+}
+
+.review-card__location {
+  font-family: var(--font-body);
+  font-size: 13px;
+  color: var(--color-on-surface-variant);
+  margin-top: 2px;
+}
+
+.review-card__time {
+  font-family: var(--font-body);
+  font-size: 12px;
+  color: var(--color-on-surface-variant);
+  white-space: nowrap;
+}
+
+/* --- Meta Row (Stars + Tag) --- */
+.review-card__meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.review-card__stars {
+  display: flex;
+  gap: 2px;
+}
+
+.review-card__star {
+  font-size: 18px;
+  color: var(--color-outline-variant);
+  font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+}
+
+.review-card__star--filled {
+  font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+  color: var(--color-rating-gold);
+}
+
+.review-card__tag {
+  padding: 4px 12px;
+  background-color: rgba(0, 77, 153, 0.1);
+  color: var(--color-primary);
+  font-family: var(--font-body);
+  font-size: 12px;
+  font-weight: var(--fw-semibold);
+  letter-spacing: var(--ls-label);
+  border-radius: var(--radius-full);
+  text-transform: uppercase;
+}
+
+/* --- Review Text --- */
+.review-card__text {
+  font-family: var(--font-body);
+  font-size: var(--text-body-sm);
+  color: var(--color-on-surface-variant);
+  line-height: 1.6;
+  margin-bottom: 8px;
+}
+
+.review-card__job {
+  font-family: var(--font-body);
+  font-size: 13px;
+  font-style: italic;
+  color: var(--color-outline);
+  margin-bottom: 16px;
+}
+
+/* --- Footer (Reply Button or Reply Box) --- */
+.review-card__footer {
+  padding-top: 16px;
+  border-top: 1px solid rgba(194, 198, 212, 0.3);
+}
+
+.review-card__reply-btn {
+  background: transparent;
+  color: var(--color-primary);
+  border: 1px solid var(--color-primary);
+  padding: 6px 16px;
+  border-radius: var(--radius-lg);
+  font-family: var(--font-body);
+  font-size: 14px;
+  font-weight: var(--fw-semibold);
+  letter-spacing: var(--ls-label);
+  cursor: pointer;
+  transition: background-color var(--transition-normal), color var(--transition-normal);
+}
+
+.review-card__reply-btn:hover {
+  background-color: var(--color-primary);
+  color: var(--color-on-primary);
+}
+
+.review-card__reply-btn:active {
+  transform: scale(0.97);
+}
+
+/* --- Reply Box (existing reply shown) --- */
+.review-card__reply-box {
+  background-color: var(--color-surface-container-low);
+  border-radius: var(--radius-xl);
+  padding: 16px;
+}
+
+.review-card__reply-box-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 4px;
+}
+
+.review-card__reply-box-title {
+  font-family: var(--font-body);
+  font-size: 13px;
+  font-weight: var(--fw-bold);
+  color: var(--color-on-surface);
+}
+
+.review-card__reply-box-edit {
+  background: transparent;
+  border: none;
+  color: var(--color-primary);
+  font-family: var(--font-body);
+  font-size: 12px;
+  font-weight: var(--fw-semibold);
+  cursor: pointer;
+  text-decoration: underline;
+  padding: 0;
+}
+
+.review-card__reply-box-edit:hover {
+  opacity: 0.75;
+}
+
+.review-card__reply-box-text {
+  font-family: var(--font-body);
+  font-size: var(--text-body-sm);
+  font-style: italic;
+  color: var(--color-on-surface-variant);
+  line-height: 1.5;
+}
+
+/* --- Reply Input (textarea shown on click) --- */
+.review-card__reply-input-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 12px;
+}
+
+.review-card__reply-textarea {
+  width: 100%;
+  min-height: 90px;
+  padding: 12px;
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--color-outline-variant);
+  background-color: var(--color-surface-container-low);
+  font-family: var(--font-body);
+  font-size: var(--text-body-sm);
+  color: var(--color-on-surface);
+  resize: vertical;
+  outline: none;
+  transition: border-color var(--transition-fast);
+}
+
+.review-card__reply-textarea:focus {
+  border-color: var(--color-primary);
+}
+
+.review-card__reply-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.review-card__reply-submit {
+  background-color: var(--color-primary);
+  color: var(--color-on-primary);
+  border: none;
+  padding: 8px 20px;
+  border-radius: var(--radius-lg);
+  font-family: var(--font-body);
+  font-size: 14px;
+  font-weight: var(--fw-semibold);
+  cursor: pointer;
+  transition: background-color var(--transition-normal);
+}
+
+.review-card__reply-submit:hover {
+  background-color: var(--color-primary-container);
+}
+
+.review-card__reply-cancel {
+  background: transparent;
+  color: var(--color-on-surface-variant);
+  border: 1px solid var(--color-outline-variant);
+  padding: 8px 16px;
+  border-radius: var(--radius-lg);
+  font-family: var(--font-body);
+  font-size: 14px;
+  font-weight: var(--fw-semibold);
+  cursor: pointer;
+  transition: border-color var(--transition-fast), color var(--transition-fast);
+}
+
+.review-card__reply-cancel:hover {
+  border-color: var(--color-outline);
+  color: var(--color-on-surface);
+}
+
+/* =============================================
+   RESPONSIVE
+   ============================================= */
+
+@media (max-width: 640px) {
+  .review-card {
+    padding: 16px;
+  }
+
+  .review-card__header {
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .review-card__time {
+    width: 100%;
+    text-align: left;
+  }
+}
+
+@media (max-width: 380px) {
+  .review-card__avatar {
+    width: 40px;
+    height: 40px;
+  }
+
+  .review-card__name {
+    font-size: 15px;
+  }
+}

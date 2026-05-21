@@ -1,4 +1,3 @@
-// ValuesGrid.jsx — Bento Grid
 import './ValuesGrid.css';
 
 const ValuesGrid = () => {

@@ -1,7 +1,3 @@
-/* =============================================
-   PaymentMethods.css
-   ============================================= */
-
 .payment-grid {
   display: grid;
   grid-template-columns: 1fr;

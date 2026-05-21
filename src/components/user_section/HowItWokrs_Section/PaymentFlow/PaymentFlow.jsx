@@ -1,4 +1,3 @@
-// PaymentFlow.jsx
 import './PaymentFlow.css';
 
 const steps = [

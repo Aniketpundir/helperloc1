@@ -1,4 +1,3 @@
-// AboutHero.jsx
 import './AboutHero.css';
 
 const AboutHero = ({

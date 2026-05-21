@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import './MyPostedJobs.css';
 
-/* ── Mock Data ── */
 const MOCK_JOBS = [
     {
         id: 1,

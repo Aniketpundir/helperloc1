@@ -89,11 +89,6 @@ const Testimonials = () => {
         });
     };
 
-    // const handleDotClick = (index) => {
-    //     setIsAutoScrolling(false);
-    //     setScrollPosition(index * cardWithGap);
-    // };
-
     return (
         <section className="testimonials">
             <div className="testimonials__inner container">
@@ -154,19 +149,6 @@ const Testimonials = () => {
                         ))}
                     </div>
                 </div>
-
-                {/* Dots
-                <div className="testimonials__dots">
-                    {testimonials.map((_, i) => (
-                        <button
-                            key={i}
-                            className={`testimonials__dot ${i * cardWithGap === Math.round(scrollPosition / cardWithGap) * cardWithGap ? 'testimonials__dot--active' : ''}`}
-                            onClick={() => handleDotClick(i)}
-                            aria-label={`Go to testimonial ${i + 1}`}
-                            type="button"
-                        />
-                    ))}
-                </div> */}
             </div>
         </section>
     );

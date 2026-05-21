@@ -1,0 +1,94 @@
+.ap-page {
+  padding: 32px;
+  max-width: 1200px;
+  margin: 0 auto;
+  min-height: 100vh;
+  background: #F0F4FF;
+  position: relative;
+}
+
+/* Header */
+.ap-page__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  margin-bottom: 32px;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.ap-page__title {
+  font-family: var(--font-headline);
+  font-size: var(--text-headline-lg);
+  font-weight: var(--fw-bold);
+  color: var(--color-on-surface);
+  margin-bottom: 4px;
+  line-height: 1.2;
+}
+
+.ap-page__subtitle {
+  font-family: var(--font-body);
+  font-size: var(--text-body-md);
+  color: var(--color-on-surface-variant);
+  opacity: 0.7;
+}
+
+/* Cards Stack */
+.ap-page__cards {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  padding-bottom: 100px;
+}
+
+/* Empty State */
+.ap-page__empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  padding: 64px 24px;
+  color: var(--color-on-surface-variant);
+  opacity: 0.5;
+  font-family: var(--font-body);
+  font-size: var(--text-body-lg);
+}
+
+.ap-page__empty-icon {
+  font-size: 56px !important;
+}
+
+/* ---- RESPONSIVE ---- */
+@media (max-width: 768px) {
+  .ap-page {
+    padding: 20px 16px;
+  }
+
+  .ap-page__header {
+    margin-bottom: 20px;
+  }
+
+  .ap-page__title {
+    font-size: var(--text-headline-lg-mobile);
+  }
+
+  .ap-page__cards {
+    gap: 16px;
+    padding-bottom: 80px;
+  }
+}
+
+@media (max-width: 480px) {
+  .ap-page {
+    padding: 16px 12px;
+  }
+
+  .ap-page__title {
+    font-size: 24px;
+  }
+
+  .ap-page__header {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+}

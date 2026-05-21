@@ -1,4 +1,3 @@
-// MeetTheTeam.jsx
 import './MeetTheTeam.css';
 
 const team = [

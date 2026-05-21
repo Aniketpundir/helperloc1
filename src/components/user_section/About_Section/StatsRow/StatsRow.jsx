@@ -1,4 +1,3 @@
-// StatsRow.jsx
 import './StatsRow.css';
 
 const stats = [

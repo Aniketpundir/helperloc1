@@ -159,23 +159,23 @@ const Navbar = () => {
                         <span className="material-symbols-outlined">account_circle</span>
                         <span>Worker Profile</span>
                     </Link>
-                    <Link to="/worker/booking-requests" className="navbar__dropdown-item" onClick={() => setProfileOpen(false)}>
+                    <Link to="/worker/booking-request" className="navbar__dropdown-item" onClick={() => setProfileOpen(false)}>
                         <span className="material-symbols-outlined">pending_actions</span>
                         <span>Booking Requests</span>
                     </Link>
-                    <Link to="/worker/completed-projects" className="navbar__dropdown-item" onClick={() => setProfileOpen(false)}>
+                    <Link to="/worker/completed-work" className="navbar__dropdown-item" onClick={() => setProfileOpen(false)}>
                         <span className="material-symbols-outlined">task_alt</span>
                         <span>Completed Projects</span>
                     </Link>
                     <Link to="/worker/available-work" className="navbar__dropdown-item" onClick={() => setProfileOpen(false)}>
                         <span className="material-symbols-outlined">work_outline</span>
-                        <span>Available Work Posts</span>
+                        <span>Available Work</span>
                     </Link>
-                    <Link to="/worker/applied-projects" className="navbar__dropdown-item" onClick={() => setProfileOpen(false)}>
+                    <Link to="/worker/applied-work" className="navbar__dropdown-item" onClick={() => setProfileOpen(false)}>
                         <span className="material-symbols-outlined">assignment_turned_in</span>
-                        <span>Applied Projects</span>
+                        <span>Applied Work</span>
                     </Link>
-                    <Link to="/worker/reviews" className="navbar__dropdown-item" onClick={() => setProfileOpen(false)}>
+                    <Link to="/worker/client-review" className="navbar__dropdown-item" onClick={() => setProfileOpen(false)}>
                         <span className="material-symbols-outlined">star_rate</span>
                         <span>Client Reviews</span>
                     </Link>

@@ -1,7 +1,3 @@
-/* =============================================
-   MyPostedJobs.css
-   ============================================= */
-
 .mpj-page {
   max-width: 860px;
   margin: 0 auto;
@@ -423,10 +419,6 @@
 }
 
 .mpj-chat-btn .material-symbols-outlined { font-size: 17px !important; }
-
-/* ════════════════════════════════════
-   CHAT MODAL
-════════════════════════════════════ */
 
 .mpj-modal-overlay {
   position: fixed;

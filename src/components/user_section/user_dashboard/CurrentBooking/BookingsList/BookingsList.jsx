@@ -1,7 +1,6 @@
 import './BookingsList.css';
 import BookingCard from '../BookingCard/BookingCard';
 
-/* ── All bookings data ── */
 const allBookings = {
     Active: [
         {

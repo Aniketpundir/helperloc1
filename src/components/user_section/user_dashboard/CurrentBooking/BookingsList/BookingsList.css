@@ -1,7 +1,3 @@
-/* =============================================
-   BookingsList.css
-   ============================================= */
-
 .bookings-list {
   display: flex;
   flex-direction: column;

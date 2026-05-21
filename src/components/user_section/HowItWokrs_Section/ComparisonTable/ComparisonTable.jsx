@@ -1,4 +1,3 @@
-// ComparisonTable.jsx
 import './ComparisonTable.css';
 
 const rows = [

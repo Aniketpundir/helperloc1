@@ -1,7 +1,3 @@
-/* =============================================
-   ProfileHeader.css
-   ============================================= */
-
 .profile-header {
   background: var(--color-surface-container-lowest);
   border-radius: var(--radius-xl);

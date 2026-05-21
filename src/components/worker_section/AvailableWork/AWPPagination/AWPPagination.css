@@ -1,0 +1,108 @@
+.awp-pagination {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  margin-bottom: 64px;
+  flex-wrap: wrap;
+}
+
+/* Prev / Next */
+.awp-pagination__prev,
+.awp-pagination__next {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: transparent;
+  border: none;
+  font-family: var(--font-body);
+  font-size: var(--text-body-sm);
+  font-weight: var(--fw-bold);
+  cursor: pointer;
+  padding: 8px 16px;
+  border-radius: 8px;
+  transition: color 200ms ease, background 200ms ease;
+  color: var(--color-primary);
+}
+
+.awp-pagination__prev:hover:not(:disabled),
+.awp-pagination__next:hover:not(:disabled) {
+  background: var(--color-primary-fixed);
+  color: var(--color-primary-container);
+}
+
+.awp-pagination__prev--disabled,
+.awp-pagination__next--disabled {
+  color: var(--color-outline);
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+.awp-pagination__prev .material-symbols-outlined,
+.awp-pagination__next .material-symbols-outlined {
+  font-size: 20px !important;
+}
+
+/* Pages */
+.awp-pagination__pages {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.awp-pagination__page-btn {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: none;
+  background: transparent;
+  font-family: var(--font-body);
+  font-size: var(--text-body-sm);
+  font-weight: var(--fw-bold);
+  color: var(--color-on-surface-variant);
+  cursor: pointer;
+  transition: all 200ms ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.awp-pagination__page-btn:hover:not(.awp-pagination__page-btn--active) {
+  background: var(--color-surface-container);
+}
+
+.awp-pagination__page-btn--active {
+  background: var(--color-primary);
+  color: #ffffff;
+  box-shadow: 0 4px 12px rgba(0, 77, 153, 0.25);
+}
+
+.awp-pagination__ellipsis {
+  font-family: var(--font-body);
+  color: var(--color-outline);
+  padding: 0 4px;
+}
+
+/* ---- RESPONSIVE ---- */
+@media (max-width: 480px) {
+  .awp-pagination {
+    gap: 8px;
+    margin-bottom: 40px;
+  }
+
+  .awp-pagination__prev,
+  .awp-pagination__next {
+    padding: 8px;
+    font-size: 0; /* hide text, show only icon */
+  }
+
+  .awp-pagination__prev .material-symbols-outlined,
+  .awp-pagination__next .material-symbols-outlined {
+    font-size: 20px !important;
+  }
+
+  .awp-pagination__page-btn {
+    width: 36px;
+    height: 36px;
+  }
+}

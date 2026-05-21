@@ -1,4 +1,3 @@
-// HeroBanner.jsx
 import './HeroBanner.css';
 
 const HeroBanner = () => {

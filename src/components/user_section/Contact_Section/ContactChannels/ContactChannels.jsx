@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import './ContactChannels.css';
 
-/* ---------- Channel cards data ---------- */
 const channels = [
     {
         icon: 'forum',
@@ -29,7 +28,6 @@ const channels = [
     },
 ];
 
-/* ---------- Office cards data ---------- */
 const offices = [
     {
         name: 'Meerut HQ (Corporate)',
@@ -51,7 +49,6 @@ const offices = [
     },
 ];
 
-/* ---------- Subject options ---------- */
 const subjects = [
     'Select an Inquiry Type',
     'Booking Issue',
@@ -60,7 +57,6 @@ const subjects = [
     'Partnership Request',
 ];
 
-/* ========== Main Component ========== */
 export default function ContactChannels() {
     const [form, setForm] = useState({
         name: '',

@@ -1,4 +1,3 @@
-// MissionVision.jsx
 import './MissionVision.css';
 
 const cards = [

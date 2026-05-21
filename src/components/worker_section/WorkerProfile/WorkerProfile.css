@@ -1,0 +1,16 @@
+.wp-page {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: var(--spacing-md);
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-md);
+  background: #f0f4ff;
+  min-height: 100vh;
+}
+
+@media (min-width: 768px) {
+  .wp-page {
+    padding: var(--spacing-lg);
+  }
+}

@@ -1,7 +1,3 @@
-/* =============================================
-   LiveTrackingMap.css
-   ============================================= */
-
 .live-map {
   background: var(--color-surface-container-lowest);
   border-radius: var(--radius-xl);

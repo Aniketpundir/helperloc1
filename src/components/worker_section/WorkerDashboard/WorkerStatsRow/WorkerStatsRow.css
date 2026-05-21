@@ -1,0 +1,71 @@
+.worker-stats {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--spacing-md);
+}
+
+@media (min-width: 600px)  { .worker-stats { grid-template-columns: repeat(2, 1fr); } }
+@media (min-width: 1024px) { .worker-stats { grid-template-columns: repeat(4, 1fr); } }
+
+.worker-stats__card {
+  background: #ffffff;
+  padding: var(--spacing-md);
+  border-radius: 20px;
+  box-shadow: 0px 4px 20px rgba(21,101,192,0.08);
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-md);
+  border-left: 4px solid transparent;
+  transition: transform var(--transition-normal), box-shadow var(--transition-normal);
+}
+
+.worker-stats__card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0px 8px 28px rgba(21,101,192,0.13);
+}
+
+.worker-stats__card--blue   { border-left-color: #1565C0; }
+.worker-stats__card--green  { border-left-color: #2E7D32; }
+.worker-stats__card--orange { border-left-color: #F57C00; }
+
+.worker-stats__icon-wrap {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.worker-stats__icon-wrap--blue   { background: rgba(21,101,192,0.1); }
+.worker-stats__icon-wrap--green  { background: rgba(46,125,50,0.1); }
+.worker-stats__icon-wrap--orange { background: rgba(245,124,0,0.1); }
+
+.worker-stats__icon { font-size: 24px !important; }
+.worker-stats__icon-wrap--blue   .worker-stats__icon { color: #1565C0; }
+.worker-stats__icon-wrap--green  .worker-stats__icon { color: #2E7D32; }
+.worker-stats__icon-wrap--orange .worker-stats__icon { color: #F57C00; }
+
+.worker-stats__value {
+  font-family: var(--font-headline);
+  font-weight: var(--fw-bold);
+  line-height: 1.1;
+  font-size: 28px;  /* mobile */
+}
+
+@media (min-width: 480px) { .worker-stats__value { font-size: 36px; } }
+
+.worker-stats__value--blue   { color: #1565C0; }
+.worker-stats__value--green  { color: #2E7D32; }
+.worker-stats__value--orange { color: #F57C00; }
+
+.worker-stats__label {
+  font-family: var(--font-body);
+  font-size: var(--text-body-sm);
+  font-weight: var(--fw-bold);
+  color: var(--color-on-surface-variant);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  margin-top: 2px;
+}
