@@ -90,7 +90,7 @@ const router = createBrowserRouter(
             // </ProtectedRoute>
           }
         />
-        <Route path="/user-dashboard/help-and-support"
+        <Route path="/help-and-support"
           element={
             // <ProtectedRoute allowedRoles={['user', 'worker']}>
             <Help />

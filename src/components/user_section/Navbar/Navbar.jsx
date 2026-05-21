@@ -105,7 +105,7 @@ const Navbar = () => {
                         <span className="material-symbols-outlined">list_alt</span>
                         <span>My Posted Jobs</span>
                     </Link>
-                    <Link to="/user-dashboard/help-and-support" className="navbar__dropdown-item" onClick={() => setProfileOpen(false)}>
+                    <Link to="/help-and-support" className="navbar__dropdown-item" onClick={() => setProfileOpen(false)}>
                         <span className="material-symbols-outlined">help_center</span>
                         <span>Help & Support</span>
                     </Link>
@@ -180,7 +180,7 @@ const Navbar = () => {
                         <span>Client Reviews</span>
                     </Link>
 
-                    <Link to="/user-dashboard/help-and-support" className="navbar__dropdown-item" onClick={() => setProfileOpen(false)}>
+                    <Link to="/help-and-support" className="navbar__dropdown-item" onClick={() => setProfileOpen(false)}>
                         <span className="material-symbols-outlined">help_center</span>
                         <span>Help & Support</span>
                     </Link>
