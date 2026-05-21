@@ -1,7 +1,8 @@
 import './AboutHero.css';
+import About_Hero_Image from "../../../../assets/About_Hero_Image.png"
 
 const AboutHero = ({
-    imgSrc = 'https://lh3.googleusercontent.com/aida-public/AB6AXuCRxrgyP571P2DvWvL3J0PP8BztN7JwEo_fD6pBUtreHpMi3bwIJcerqygL9i3_RC0-6Xlq9d01jfba7FZQWanDagtJL7COUZhUNxWrmDcOngMU1EF2CULInelEzv4EPfxVWyGwWT9_WpXK_bnCAQ43T0piv_ItfczdaTmgiCT0GPdqoLA0yF5y-f144A0HVfDBKn7IqBZMMxUiogFRzLf8yrD9TlvAOwovZEZfMEmpbxG3ok_GtfkxBbKAVPm-Abrx3dBYaFsSYVlP',
+    imgSrc = About_Hero_Image,
 }) => {
     return (
         <section className="about-hero">

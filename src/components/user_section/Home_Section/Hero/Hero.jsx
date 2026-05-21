@@ -1,5 +1,6 @@
 import React from 'react';
 import './Hero.css';
+import HelperLoc_Hero_Image from "../../../../assets/HelperLoc_Hero_Image.png"
 
 const Hero = () => {
     return (
@@ -59,8 +60,7 @@ const Hero = () => {
                 <div className="heroh__image-wrap">
                     <div className="heroh__image-container">
                         <img
-                            src="https://lh3.googleusercontent.com/aida-public/AB6AXuCF1v3mEBe6Nv37eZ13WubujA8raXRntZ-BMRfJ44_qz9DXJHLqZnTkDMWgF3uqQMb5s_PR-3zqx2_Jxw4h_k_i5rVSKPqtLxHn50BlsjhZso_78bEWV5_GLNc8J7h-QkCr6W-5JcWz0br46LValOCTUADLejS2dQYKyUl6_uoYUgERMW1ANLLY3q1_88z0Jx9TEq__uiLiJ6xPwlGVb5thd-A0yp649exNA1FllNyd7qhnvPHB_uIQC7zONW4oOKwwFPrETyeEoBJB"
-                            alt="Professional home service provider"
+                            src={HelperLoc_Hero_Image}
                             className="heroh__image"
                         />
                         <div className="heroh__image-overlay"></div>

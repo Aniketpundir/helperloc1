@@ -1,5 +1,6 @@
 import React from 'react';
 import './WhyChooseUs.css';
+import HelperLoc_why_Image from "../../../../assets/HelperLoc_why_Image.png"
 
 const features = [
     {
@@ -69,7 +70,7 @@ const WhyChooseUs = () => {
                 {/* Right Image */}
                 <div className="why__image-wrap">
                     <img
-                        src="https://lh3.googleusercontent.com/aida-public/AB6AXuD9HRSHaIo-JHFArxPORnhe3XuSeeYKP2Sx8tXft7UJR4sWeAO5lXdjWUdMB4idjSVkTY7-jDb8tLwskt6CW7NEnz7aK7L8OTfq9cQWv0TONi9uR81FmYiqeYPzY-W8xwHoOaOjh9CTitGn4MI9s0OtJN_rsh6KyPMPOeDghyzkszXXnKKSkZNo42gvFprkzmybhHKBJSRy1luYwcwyBh11qoSAtnnro7UJUxTcAZiaM3-v_8dpgSNMkSDWPxsKMM-CGaMhFY7w4vzR"
+                        src={HelperLoc_why_Image}
                         alt="Professional cleaner"
                         className="why__image"
                     />
