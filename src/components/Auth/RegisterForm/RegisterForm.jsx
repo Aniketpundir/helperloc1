@@ -170,7 +170,7 @@ export default function RegisterForm() {
 
         <div className="register-progress">
           <div className="register-progress__top">
-            <h2 className="register-progress__heading">Create Your Account</h2>
+            <h2 className="register-progress__heading">Create Your Accounts</h2>
           </div>
           <div className="register-progress__bar-track">
             <div className="register-progress__bar-fill" />
