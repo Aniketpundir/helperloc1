@@ -1,7 +1,7 @@
-// src/components/Auth/LoginForm/LoginForm.jsx
 import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate, useLocation } from 'react-router-dom';
+import { toast } from 'react-toastify';
 import { loginUser, clearError } from '../../../Redux/Slice/authSlice';
 import './LoginForm.css';
 
@@ -20,9 +20,7 @@ export default function LoginForm() {
   const location = useLocation();
 
   const from = location.state?.from?.pathname || '/';
-
-  // Redux se loading aur error lo — local state nahi chahiye
-  const { loading, error } = useSelector((state) => state.auth);
+  const { loading } = useSelector((state) => state.auth);
 
   const [role, setRole] = useState('user');
   const [showPassword, setShowPassword] = useState(false);
@@ -33,7 +31,6 @@ export default function LoginForm() {
     const { name, value, type, checked } = e.target;
     setForm((prev) => ({ ...prev, [name]: type === 'checkbox' ? checked : value }));
     setErrors((prev) => ({ ...prev, [name]: '' }));
-    if (error) dispatch(clearError());
   };
 
   const validate = () => {
@@ -65,9 +62,12 @@ export default function LoginForm() {
       role,
     }));
 
-    // Sirf fulfilled par navigate karo
     if (loginUser.fulfilled.match(result)) {
+      toast.success(`Welcome back! You're logged in successfully. 🎉`);
       navigate(from, { replace: true });
+    } else {
+      // result.payload = error message from rejectWithValue
+      toast.error(result.payload || 'Login failed. Please try again.');
     }
   };
 
@@ -89,13 +89,7 @@ export default function LoginForm() {
             onClick={() => setRole('worker')}>Worker</button>
         </div>
 
-        {/* Redux slice se error — koi local apiError state nahi */}
-        {error && (
-          <div className="login-api-error">
-            <span className="material-symbols-outlined">error</span>
-            <span>{error}</span>
-          </div>
-        )}
+        {/* ✅ Removed inline error div — toast handles it now */}
 
         <form className="login-form" onSubmit={handleSubmit} noValidate>
 
@@ -156,22 +150,6 @@ export default function LoginForm() {
               <><span className="login-btn__spinner" />Signing In…</>
             ) : 'Sign In'}
           </button>
-
-          {/* <div className="login-divider">
-            <div className="login-divider__line" />
-            <span className="login-divider__text">Or continue with</span>
-            <div className="login-divider__line" />
-          </div>
-
-          <div className="login-social-row">
-            <button type="button" className="login-social__btn">
-              <GoogleIcon /><span>Google</span>
-            </button>
-            <button type="button" className="login-social__btn">
-              <span className="material-symbols-outlined login-social__phone-icon">phone_iphone</span>
-              <span>Phone</span>
-            </button>
-          </div> */}
 
           <p className="login-signup">
             Don't have an account?{' '}

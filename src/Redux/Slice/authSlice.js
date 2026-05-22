@@ -1,13 +1,8 @@
-// src/Redux/Slice/authSlice.js
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
 
-// ✅ FIX 1: Hardcoded URL hata ke env variable use karo
-const BASE_URL = import.meta.env.VITE_API_URL
-    ? `${import.meta.env.VITE_API_URL}/auth`
-    : 'https://your-api.example.com/api/auth';
+const BASE_URL = `${import.meta.env.VITE_API_URL}auth/`;
 
-/* ── Storage helpers ── */
 const getStoredToken = () =>
     localStorage.getItem('hl_token') || sessionStorage.getItem('hl_token') || null;
 
@@ -15,50 +10,19 @@ const getStoredUser = () => {
     try {
         const raw = localStorage.getItem('hl_user') || sessionStorage.getItem('hl_user');
         return raw ? JSON.parse(raw) : null;
-    } catch {
-        return null;
-    }
+    } catch { return null; }
 };
 
-// ✅ FIX 2: Agar token already stored hai toh axios ko globally set karo
-// (app startup pe hi token headers mein rahega)
 const storedToken = getStoredToken();
-if (storedToken) {
-    axios.defaults.headers.common['Authorization'] = `Bearer ${storedToken}`;
-}
+if (storedToken) axios.defaults.headers.common['Authorization'] = `Bearer ${storedToken}`;
 
-/* ── Thunks ── */
-
-export const loginUser = createAsyncThunk(
-    'auth/loginUser',
-    async ({ identifier, password, remember, role }, { rejectWithValue }) => {
-        try {
-            const { data } = await axios.post(`${BASE_URL}/login`, {
-                identifier,
-                password,
-                remember,
-                role,
-            });
-            return { ...data, remember };
-        } catch (err) {
-            return rejectWithValue(
-                err.response?.data?.message || 'Invalid credentials. Please try again.'
-            );
-        }
-    }
-);
-
+// ✅ registerUser thunk
 export const registerUser = createAsyncThunk(
     'auth/registerUser',
-    async ({ fullName, email, phone, password, otp, role }, { rejectWithValue }) => {
+    async ({ fullName, email, phone, password, role }, { rejectWithValue }) => {
         try {
-            const { data } = await axios.post(`${BASE_URL}/register`, {
-                fullName,
-                email,
-                phone,
-                password,
-                otp,
-                role,
+            const { data } = await axios.post(`${BASE_URL}register`, {
+                fullName, email, phone, password, role,
             });
             return { ...data, remember: false };
         } catch (err) {
@@ -69,11 +33,12 @@ export const registerUser = createAsyncThunk(
     }
 );
 
+// ✅ sendOtp thunk
 export const sendOtp = createAsyncThunk(
     'auth/sendOtp',
     async ({ email }, { rejectWithValue }) => {
         try {
-            const { data } = await axios.post(`${BASE_URL}/send-otp`, { email });
+            const { data } = await axios.post(`${BASE_URL}send-otp`, { email });
             return data;
         } catch (err) {
             return rejectWithValue(
@@ -83,7 +48,24 @@ export const sendOtp = createAsyncThunk(
     }
 );
 
-/* ── Slice ── */
+// ✅ loginUser thunk
+export const loginUser = createAsyncThunk(
+    'auth/loginUser',
+    async ({ identifier, password, remember, role }, { rejectWithValue }) => {
+        try {
+            const { data } = await axios.post(`${BASE_URL}login`, {
+                identifier,
+                password,
+                role,
+            });
+            return { ...data, remember };
+        } catch (err) {
+            return rejectWithValue(
+                err.response?.data?.message || 'Invalid credentials. Please try again.'
+            );
+        }
+    }
+);
 
 const authSlice = createSlice({
     name: 'auth',
@@ -97,18 +79,25 @@ const authSlice = createSlice({
         otpError: null,
     },
     reducers: {
+        setCredentials(state, { payload }) {
+            const { token, user, remember } = payload;
+            state.token = token;
+            state.user = user;
+            state.isAuthenticated = true;
+            axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+            const storage = remember ? localStorage : sessionStorage;
+            storage.setItem('hl_token', token);
+            storage.setItem('hl_user', JSON.stringify(user));
+        },
         logout(state) {
             state.token = null;
             state.user = null;
             state.isAuthenticated = false;
             state.error = null;
-
-            localStorage.removeItem('hl_token');
-            localStorage.removeItem('hl_user');
-            sessionStorage.removeItem('hl_token');
-            sessionStorage.removeItem('hl_user');
-
-            // ✅ FIX 3: Logout pe axios header bhi clear karo
+            ['hl_token', 'hl_user'].forEach(k => {
+                localStorage.removeItem(k);
+                sessionStorage.removeItem(k);
+            });
             delete axios.defaults.headers.common['Authorization'];
         },
         clearError(state) {
@@ -117,35 +106,6 @@ const authSlice = createSlice({
         },
     },
     extraReducers: (builder) => {
-
-        /* ── LOGIN ── */
-        builder
-            .addCase(loginUser.pending, (state) => {
-                state.loading = true;
-                state.error = null;
-            })
-            .addCase(loginUser.fulfilled, (state, action) => {
-                const { token, user, remember } = action.payload;
-                state.loading = false;
-                state.token = token;
-                state.user = user;
-                state.isAuthenticated = true;
-
-                // ✅ FIX 4: Token milne ke baad axios header set karo — baaki API calls ke liye
-                axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
-
-                if (remember) {
-                    localStorage.setItem('hl_token', token);
-                    localStorage.setItem('hl_user', JSON.stringify(user));
-                } else {
-                    sessionStorage.setItem('hl_token', token);
-                    sessionStorage.setItem('hl_user', JSON.stringify(user));
-                }
-            })
-            .addCase(loginUser.rejected, (state, action) => {
-                state.loading = false;
-                state.error = action.payload;
-            });
 
         /* ── REGISTER ── */
         builder
@@ -159,10 +119,8 @@ const authSlice = createSlice({
                 state.token = token;
                 state.user = user;
                 state.isAuthenticated = true;
-
-                // ✅ FIX 4: Register ke baad bhi axios header set karo
+                state.error = null;
                 axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
-
                 sessionStorage.setItem('hl_token', token);
                 sessionStorage.setItem('hl_user', JSON.stringify(user));
             })
@@ -184,8 +142,31 @@ const authSlice = createSlice({
                 state.otpLoading = false;
                 state.otpError = action.payload;
             });
+
+        /* ── LOGIN ── */
+        builder
+            .addCase(loginUser.pending, (state) => {
+                state.loading = true;
+                state.error = null;
+            })
+            .addCase(loginUser.fulfilled, (state, action) => {
+                const { token, user, remember } = action.payload;
+                state.loading = false;
+                state.token = token;
+                state.user = user;
+                state.isAuthenticated = true;
+                state.error = null;
+                axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+                const storage = remember ? localStorage : sessionStorage;
+                storage.setItem('hl_token', token);
+                storage.setItem('hl_user', JSON.stringify(user));
+            })
+            .addCase(loginUser.rejected, (state, action) => {
+                state.loading = false;
+                state.error = action.payload;
+            });
     },
 });
 
-export const { logout, clearError } = authSlice.actions;
+export const { setCredentials, logout, clearError } = authSlice.actions;
 export default authSlice.reducer;

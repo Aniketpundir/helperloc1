@@ -1,7 +1,8 @@
 // src/components/Auth/RegisterForm/RegisterForm.jsx
 import { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useNavigate, Link } from 'react-router-dom'; // ✅ FIX 1: Link import karo
+import { useNavigate, Link } from 'react-router-dom';
+import { toast } from 'react-toastify';
 import { registerUser, sendOtp, clearError } from '../../../Redux/Slice/authSlice';
 import './RegisterForm.css';
 
@@ -26,7 +27,7 @@ export default function RegisterForm() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const { loading, error, otpLoading, otpError } = useSelector((state) => state.auth);
+  const { loading, otpLoading, otpError } = useSelector((state) => state.auth);
 
   const [role, setRole] = useState('user');
   const [form, setForm] = useState({
@@ -39,14 +40,11 @@ export default function RegisterForm() {
   const [otpSent, setOtpSent] = useState(false);
   const [otpCooldown, setOtpCooldown] = useState(0);
 
-  // ✅ FIX 2: otpVerified ab sirf digit count se nahi — OTP field 4-6 digits ho tab valid maano
-  // Actual verification backend karta hai submit pe — yahan sirf UI ke liye basic check
   const otpLooksValid = /^\d{4,6}$/.test(form.otp.trim());
 
   const strength = getStrength(form.password);
   const strengthInfo = strengthMeta[strength];
 
-  // ✅ FIX 3: Component unmount pe error clear karo
   useEffect(() => {
     return () => {
       dispatch(clearError());
@@ -60,13 +58,12 @@ export default function RegisterForm() {
       setOtpSent(false);
       setForm((prev) => ({ ...prev, email: value, otp: '' }));
       setErrors((prev) => ({ ...prev, email: '', otp: '' }));
-      if (error) dispatch(clearError());
+      dispatch(clearError());
       return;
     }
 
     setForm((prev) => ({ ...prev, [name]: type === 'checkbox' ? checked : value }));
     setErrors((prev) => ({ ...prev, [name]: '' }));
-    if (error) dispatch(clearError());
   };
 
   /* ── OTP cooldown timer ── */
@@ -97,6 +94,9 @@ export default function RegisterForm() {
       setOtpSent(true);
       setForm((prev) => ({ ...prev, otp: '' }));
       startCooldown();
+      toast.success(`OTP sent to ${form.email} 📧`);
+    } else {
+      toast.error(result.payload || 'Failed to send OTP. Please try again.');
     }
   };
 
@@ -114,12 +114,9 @@ export default function RegisterForm() {
     else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email))
       e.email = 'Enter a valid email address.';
 
-    if (!otpSent)
-      e.otp = 'Please click "Get OTP" and enter the OTP sent to your email.';
-    else if (!form.otp.trim())
-      e.otp = 'OTP is required.';
-    else if (!/^\d{4,6}$/.test(form.otp.trim()))
-      e.otp = 'Enter the valid 4–6 digit OTP sent to your email.';
+    // ✅ OTP optional — sirf format validate karo agar filled ho
+    if (form.otp.trim() && !/^\d{4,6}$/.test(form.otp.trim()))
+      e.otp = 'Enter a valid 4–6 digit OTP.';
 
     if (!form.phone.trim())
       e.phone = 'Phone number is required.';
@@ -155,12 +152,15 @@ export default function RegisterForm() {
       email: form.email.trim().toLowerCase(),
       phone: '+91' + form.phone.replace(/\s/g, ''),
       password: form.password,
-      otp: form.otp.trim(),
       role,
+      // ✅ otp nahi bhej rahe abhi
     }));
 
     if (registerUser.fulfilled.match(result)) {
+      toast.success('Account created successfully! Welcome 🎉');
       navigate('/', { replace: true });
+    } else {
+      toast.error(result.payload || 'Registration failed. Please try again.');
     }
   };
 
@@ -186,12 +186,7 @@ export default function RegisterForm() {
             onClick={() => setRole('worker')}>Worker</button>
         </div>
 
-        {error && (
-          <div className="register-api-error">
-            <span className="material-symbols-outlined">error</span>
-            <span>{error}</span>
-          </div>
-        )}
+        {/* ✅ Removed inline error divs — toast handles it now */}
         {otpError && (
           <div className="register-api-error">
             <span className="material-symbols-outlined">error</span>
@@ -255,11 +250,9 @@ export default function RegisterForm() {
                     className={`register-input${errors.otp ? ' register-input--error' : ''}${otpLooksValid ? ' register-input--verified' : ''}`}
                     value={form.otp}
                     onChange={(e) => {
-                      // ✅ FIX 4: Sirf digits allow karo, errors clear karo
                       const val = e.target.value.replace(/\D/g, '');
                       setForm((prev) => ({ ...prev, otp: val }));
                       setErrors((prev) => ({ ...prev, otp: '' }));
-                      if (error) dispatch(clearError());
                     }} />
                   {otpLooksValid && (
                     <span className="material-symbols-outlined register-otp-verified-badge">check_circle</span>
@@ -352,7 +345,6 @@ export default function RegisterForm() {
               checked={form.terms} onChange={handleChange} />
             <span className="register-terms__text">
               I agree to the{' '}
-              {/* ✅ FIX 5: href="#" hata ke Link lagao */}
               <Link className="register-link" to="/terms">Terms of Service</Link>{' '}
               and{' '}
               <Link className="register-link" to="/privacy">Privacy Policy</Link>.
@@ -373,7 +365,6 @@ export default function RegisterForm() {
 
           <p className="register-signin">
             Already have an account?{' '}
-            {/* ✅ FIX 1: href hata ke Link lagao */}
             <Link className="register-link register-link--bold" to="/login">Sign In Here</Link>
           </p>
 
