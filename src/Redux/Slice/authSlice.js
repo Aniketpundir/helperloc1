@@ -1,7 +1,7 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
 
-const BASE_URL = `${import.meta.env.VITE_API_URL}auth/`;
+const BASE_URL = `${import.meta.env.VITE_API_URL}/auth/`;
 
 const getStoredToken = () =>
     localStorage.getItem('hl_token') || sessionStorage.getItem('hl_token') || null;
