@@ -1,7 +1,7 @@
 // src/components/Auth/LoginForm/LoginForm.jsx
 import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useNavigate, useLocation } from 'react-router-dom';
+import { useNavigate, useLocation, Link } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { loginUser } from '../../../Redux/Slice/authSlice';
 import './LoginForm.css';
@@ -147,7 +147,7 @@ export default function LoginForm() {
 
           <p className="login-signup">
             Don't have an account?{' '}
-            <a className="login-link" href="/registration">Sign Up Here</a>
+            <Link className="login-link" to="/registration">Sign Up Here</Link>
           </p>
 
         </form>
