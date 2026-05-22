@@ -1,8 +1,9 @@
+// src/components/Auth/LoginForm/LoginForm.jsx
 import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { toast } from 'react-toastify';
-import { loginUser, clearError } from '../../../Redux/Slice/authSlice';
+import { loginUser } from '../../../Redux/Slice/authSlice';
 import './LoginForm.css';
 
 const GoogleIcon = () => (
@@ -24,7 +25,7 @@ export default function LoginForm() {
 
   const [role, setRole] = useState('user');
   const [showPassword, setShowPassword] = useState(false);
-  const [form, setForm] = useState({ identifier: '', password: '', remember: false });
+  const [form, setForm] = useState({ email: '', password: '', remember: false });
   const [errors, setErrors] = useState({});
 
   const handleChange = (e) => {
@@ -35,13 +36,10 @@ export default function LoginForm() {
 
   const validate = () => {
     const e = {};
-    if (!form.identifier.trim()) {
-      e.identifier = 'Email or phone number is required.';
-    } else {
-      const isEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.identifier);
-      const isPhone = /^[6-9]\d{9}$/.test(form.identifier.replace(/\s/g, ''));
-      if (!isEmail && !isPhone)
-        e.identifier = 'Enter a valid email address or 10-digit mobile number.';
+    if (!form.email.trim()) {
+      e.email = 'Email is required.';
+    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email)) {
+      e.email = 'Enter a valid email address.';
     }
     if (!form.password)
       e.password = 'Password is required.';
@@ -56,17 +54,15 @@ export default function LoginForm() {
     if (Object.keys(errs).length > 0) { setErrors(errs); return; }
 
     const result = await dispatch(loginUser({
-      identifier: form.identifier.trim().toLowerCase(),
+      email: form.email.trim().toLowerCase(),
       password: form.password,
-      remember: form.remember,
-      role,
+      remember: form.remember, // ✅ 30 din ya 7 din expiry ke liye
     }));
 
     if (loginUser.fulfilled.match(result)) {
       toast.success(`Welcome back! You're logged in successfully. 🎉`);
       navigate(from, { replace: true });
     } else {
-      // result.payload = error message from rejectWithValue
       toast.error(result.payload || 'Login failed. Please try again.');
     }
   };
@@ -89,22 +85,20 @@ export default function LoginForm() {
             onClick={() => setRole('worker')}>Worker</button>
         </div>
 
-        {/* ✅ Removed inline error div — toast handles it now */}
-
         <form className="login-form" onSubmit={handleSubmit} noValidate>
 
           <div className="login-field">
-            <label className="login-label" htmlFor="identifier">Email or Phone Number</label>
+            <label className="login-label" htmlFor="email">Email Address</label>
             <div className="login-input-wrap">
               <span className="material-symbols-outlined login-input-icon">mail</span>
               <input
-                id="identifier" name="identifier" type="text"
+                id="email" name="email" type="email"
                 placeholder="name@example.com" autoComplete="username"
-                className={`login-input${errors.identifier ? ' login-input--error' : ''}`}
-                value={form.identifier} onChange={handleChange}
+                className={`login-input${errors.email ? ' login-input--error' : ''}`}
+                value={form.email} onChange={handleChange}
               />
             </div>
-            {errors.identifier && <span className="login-error">{errors.identifier}</span>}
+            {errors.email && <span className="login-error">{errors.email}</span>}
           </div>
 
           <div className="login-field">
