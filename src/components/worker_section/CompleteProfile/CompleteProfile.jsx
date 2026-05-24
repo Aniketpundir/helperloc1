@@ -161,12 +161,12 @@ function CompletedProfile() {
                 </div>
 
                 {/* Summary Banner */}
-                {filtered.length > 0 && (
+                {/* {filtered.length > 0 && (
                     <SummaryBanner
                         totalEarned={totalEarned}
                         totalProjects={filtered.length}
                     />
-                )}
+                )} */}
             </main>
         </div>
     );

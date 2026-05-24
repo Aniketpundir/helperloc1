@@ -189,7 +189,7 @@ export default function PersonalInfoTab() {
                 <EditableField label="Date of Birth" icon="calendar_month" value={data.dob} onSave={(v) => update('dob', v)} type="date" />
                 <GenderField value={data.gender} onSave={(v) => update('gender', v)} />
                 <EditableField label="Current Address" icon="home" value={data.address} onSave={(v) => update('address', v)} type="textarea" />
-                <TagField label="Service Area" icon="map" tags={data.cities} placeholder="Add city…" onSave={(v) => update('cities', v)} />
+                {/* <TagField label="Service Area" icon="map" tags={data.cities} placeholder="Add city…" onSave={(v) => update('cities', v)} /> */}
                 <TagField label="Languages Known" icon="translate" tags={data.languages} placeholder="Add language…" onSave={(v) => update('languages', v)} />
             </div>
 

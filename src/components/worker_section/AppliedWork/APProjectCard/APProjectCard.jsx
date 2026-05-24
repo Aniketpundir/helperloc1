@@ -109,10 +109,10 @@ export default function APProjectCard({
 
           {/* Right: Budget + Actions */}
           <div className="ap-project-card__actions">
-            <p className="ap-project-card__budget-label">Estimated Budget</p>
+            {/* <p className="ap-project-card__budget-label">Estimated Budget</p>
             <p className="ap-project-card__budget">
               ₹{card.budgetMin} – ₹{card.budgetMax}
-            </p>
+            </p> */}
 
             {/* ACCEPTED actions */}
             {card.status === "accepted" && (

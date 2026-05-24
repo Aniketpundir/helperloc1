@@ -101,9 +101,9 @@ export default function WorkerDashboard() {
                     </div>
 
                     {/* Earnings Chart */}
-                    <div className="worker-dashboard__chart-wrap">
+                    {/* <div className="worker-dashboard__chart-wrap">
                         <WorkerEarningsChart />
-                    </div>
+                    </div> */}
                 </div>
 
                 {/* Available Jobs */}

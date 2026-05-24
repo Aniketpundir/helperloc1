@@ -228,7 +228,7 @@ export default function JobDetailsForm() {
                         ₹{Math.round(form.budget * 0.4).toLocaleString()} – ₹{Number(form.budget).toLocaleString()}
                     </span>
                 </div>
-                <div className="jdf-slider-wrap">
+                {/* <div className="jdf-slider-wrap">
                     <input
                         className="jdf-slider"
                         type="range"
@@ -242,7 +242,7 @@ export default function JobDetailsForm() {
                         <span>₹200</span>
                         <span>₹50,000</span>
                     </div>
-                </div>
+                </div> */}
             </div>
 
             {/* Description */}

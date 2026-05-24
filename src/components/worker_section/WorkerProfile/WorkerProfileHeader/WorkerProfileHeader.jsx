@@ -83,20 +83,20 @@ export default function WorkerProfileHeader() {
                         </span>
                         <span className="wph__stat-label">Avg Rating</span>
                     </div>
-                    <div className="wph__stat-card">
+                    {/* <div className="wph__stat-card">
                         <span className="wph__stat-val">{initialStats.earned}</span>
                         <span className="wph__stat-label">Total Earned</span>
-                    </div>
+                    </div> */}
                 </div>
 
-                <div className="wph__verifications">
+                {/* <div className="wph__verifications">
                     <span className="wph__verify-badge wph__verify-badge--green">
                         <span className="material-symbols-outlined">verified</span> Aadhaar Verified
                     </span>
                     <span className="wph__verify-badge wph__verify-badge--green">
                         <span className="material-symbols-outlined">policy</span> Police Verified
                     </span>
-                </div>
+                </div> */}
             </div>
         </section>
     );

@@ -9,7 +9,6 @@ const MOCK_JOBS = [
         title: 'Fix leaking tap in kitchen',
         address: 'Sector 12, Noida, UP',
         urgency: 'urgent',
-        budget: '₹600 – ₹1,500',
         postedAt: '2 hours ago',
         status: 'active',
         applicants: [
@@ -19,7 +18,6 @@ const MOCK_JOBS = [
                 rating: 4.8,
                 reviews: 124,
                 experience: '6 years',
-                price: '₹900',
                 image: 'https://ui-avatars.com/api/?name=Ramesh+Kumar&background=1565c0&color=fff&size=128&bold=true',
                 skills: ['Pipe Repair', 'Tap Fitting', 'Drainage'],
                 available: 'Today, 3 PM onwards',
@@ -31,7 +29,6 @@ const MOCK_JOBS = [
                 rating: 4.5,
                 reviews: 87,
                 experience: '4 years',
-                price: '₹750',
                 image: 'https://ui-avatars.com/api/?name=Sunil+Verma&background=006493&color=fff&size=128&bold=true',
                 skills: ['Tap Fitting', 'Bathroom Plumbing'],
                 available: 'Tomorrow, 10 AM',
@@ -43,7 +40,6 @@ const MOCK_JOBS = [
                 rating: 4.2,
                 reviews: 45,
                 experience: '3 years',
-                price: '₹650',
                 image: 'https://ui-avatars.com/api/?name=Mohan+Das&background=813900&color=fff&size=128&bold=true',
                 skills: ['General Plumbing', 'Pipe Repair'],
                 available: 'Today, 6 PM',
@@ -58,7 +54,6 @@ const MOCK_JOBS = [
         title: 'Install ceiling fan in bedroom',
         address: 'Rajouri Garden, Delhi',
         urgency: 'soon',
-        budget: '₹400 – ₹1,000',
         postedAt: '1 day ago',
         status: 'active',
         applicants: [
@@ -68,7 +63,6 @@ const MOCK_JOBS = [
                 rating: 4.9,
                 reviews: 210,
                 experience: '8 years',
-                price: '₹600',
                 image: 'https://ui-avatars.com/api/?name=Ajay+Singh&background=004d99&color=fff&size=128&bold=true',
                 skills: ['Fan Installation', 'Wiring', 'MCB Fitting'],
                 available: 'Today, 5 PM',
@@ -79,8 +73,7 @@ const MOCK_JOBS = [
                 name: 'Vijay Sharma',
                 rating: 4.6,
                 reviews: 98,
-                experience: '5 years',
-                price: '₹500',
+                experience: '5 years',  
                 image: 'https://ui-avatars.com/api/?name=Vijay+Sharma&background=00affe&color=fff&size=128&bold=true',
                 skills: ['Fan Installation', 'Switch Repair'],
                 available: 'Tomorrow, 9 AM',
@@ -95,7 +88,6 @@ const MOCK_JOBS = [
         title: 'Deep cleaning of 2BHK flat',
         address: 'Indirapuram, Ghaziabad',
         urgency: 'flexible',
-        budget: '₹1,200 – ₹3,000',
         postedAt: '3 days ago',
         status: 'closed',
         applicants: [],
@@ -143,7 +135,7 @@ function ApplicantCard({ applicant, onChat }) {
                         <span className="mpj-applicant__exp">{applicant.experience} exp.</span>
                     </div>
                 </div>
-                <div className="mpj-applicant__price">{applicant.price}</div>
+                {/* <div className="mpj-applicant__price">{applicant.price}</div> */}
             </div>
 
             <div className="mpj-applicant__skills">

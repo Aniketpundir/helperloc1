@@ -59,9 +59,6 @@ export default function WorkerTopBar({ workerName = 'Ramesh' }) {
 
                 {/* Date */}
                 <p className="worker-topbar__date">{today}</p>
-
-                {/* Settings */}
-                <span className="material-symbols-outlined worker-topbar__settings-icon">settings</span>
             </div>
         </header>
     );

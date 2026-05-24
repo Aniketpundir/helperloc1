@@ -86,10 +86,10 @@ export default function AWPWorkCard({ card, onWantJob, onViewDetails }) {
                         {card.workersNeeded} {card.workersNeeded === 1 ? "Worker" : "Workers"} Needed
                     </div>
                     <div className="awp-work-card__budget">
-                        <span className="awp-work-card__budget-label">Budget</span>
-                        <span className="awp-work-card__budget-value">
+                        {/* <span className="awp-work-card__budget-label">Budget</span> */}
+                        {/* <span className="awp-work-card__budget-value">
                             ₹{card.budgetMin} – ₹{card.budgetMax}
-                        </span>
+                        </span> */}
                     </div>
                 </div>
             </div>

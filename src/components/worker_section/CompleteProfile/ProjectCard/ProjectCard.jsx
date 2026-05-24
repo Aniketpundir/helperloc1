@@ -128,13 +128,13 @@ const ProjectCard = ({
                     </span>
 
                     {/* Amount + Stars + Review */}
-                    <div className="complete-project-card__amount-block">
+                    {/* <div className="complete-project-card__amount-block">
                         <p className="complete-project-card__amount">
                             Paid: ₹{amountPaid.toLocaleString('en-IN')}
                         </p>
                         <StarRating count={starCount} />
                         <p className="complete-project-card__review">"{review}"</p>
-                    </div>
+                    </div> */}
 
                     {/* View Details */}
                     <a href="#" className="complete-project-card__details-link">

@@ -3,9 +3,9 @@ import ProfileHeader    from './ProfileHeader/ProfileHeader';
 import QuickStats       from './QuickStats/QuickStats';
 import PersonalInfo     from './PersonalInfo/PersonalInfo';
 import Addresses        from './Addresses/Addresses';
-import PaymentMethods   from './PaymentMethods/PaymentMethods';
+// import PaymentMethods   from './PaymentMethods/PaymentMethods';
 import AccountSettings  from './AccountSettings/AccountSettings';
-import Preferences      from './Preferences/Preferences';
+// import Preferences      from './Preferences/Preferences';
 import Verification     from './Verification/Verification';
 
 export default function UserProfile() {
@@ -20,13 +20,13 @@ export default function UserProfile() {
         <div className="profile-page__col profile-page__col--left">
           <PersonalInfo />
           <Addresses />
-          <PaymentMethods />
+          {/* <PaymentMethods /> */}
         </div>
 
         {/* Right column — 35% */}
         <div className="profile-page__col profile-page__col--right">
           <AccountSettings />
-          <Preferences />
+          {/* <Preferences /> */}
           <Verification />
         </div>
       </div>

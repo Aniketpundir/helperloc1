@@ -67,12 +67,12 @@ export default function BookingCard({
                         </p>
                     </div>
                     <div className="past-card__price-wrap">
-                        <p className={`past-card__price ${isCancelled ? 'past-card__price--cancelled' : ''}`}>
+                        {/* <p className={`past-card__price ${isCancelled ? 'past-card__price--cancelled' : ''}`}>
                             {price}
-                        </p>
-                        {paymentNote && (
+                        </p> */}
+                        {/* {paymentNote && (
                             <p className="past-card__payment-note">{paymentNote}</p>
-                        )}
+                        )} */}
                     </div>
                 </div>
 

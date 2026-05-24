@@ -10,14 +10,14 @@ const stats = [
         value: '9 Jobs Done',
         valueColor: '#4CAF50',
     },
-    {
-        icon: 'payments',
-        iconColor: '#1565c0',
-        borderColor: '#1565c0',
-        label: 'Earnings',
-        value: '₹18,500 Total Earned',
-        valueColor: '#1565c0',
-    },
+    // {
+    //     icon: 'payments',
+    //     iconColor: '#1565c0',
+    //     borderColor: '#1565c0',
+    //     label: 'Earnings',
+    //     value: '₹18,500 Total Earned',
+    //     valueColor: '#1565c0',
+    // },
     {
         icon: 'star',
         iconColor: '#FF9800',

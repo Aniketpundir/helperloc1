@@ -4,7 +4,7 @@ const STATS = [
     { icon: 'assignment', label: 'Total Bookings', value: '12', color: 'blue' },
     { icon: 'check_circle', label: 'Completed Jobs', value: '9', color: 'green' },
     { icon: 'star', label: 'Average Rating', value: '4.8', color: 'orange' },
-    { icon: 'payments', label: 'Total Earned', value: '₹18,500', color: 'blue' },
+    // { icon: 'payments', label: 'Total Earned', value: '₹18,500', color: 'blue' },
 ];
 
 export default function WorkerStatsRow() {

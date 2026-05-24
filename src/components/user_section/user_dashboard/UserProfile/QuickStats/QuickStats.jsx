@@ -3,8 +3,8 @@ import './QuickStats.css';
 const stats = [
     { label: 'Total Bookings', value: '24', color: 'primary', icon: 'calendar_month' },
     { label: 'Completed Services', value: '22', color: 'secondary', icon: 'task_alt' },
-    { label: 'Average Rating', value: '4.8', color: 'tertiary', icon: 'star', isStar: true },
-    { label: 'Total Saved', value: '₹2,840', color: 'primary-container', icon: 'savings' },
+    // { label: 'Average Rating', value: '4.8', color: 'tertiary', icon: 'star', isStar: true },
+    // { label: 'Total Saved', value: '₹2,840', color: 'primary-container', icon: 'savings' },
 ];
 
 export default function QuickStats() {
