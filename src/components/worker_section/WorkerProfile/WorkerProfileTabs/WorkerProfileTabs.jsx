@@ -9,8 +9,8 @@ import BankDetailsTab from '../BankDetailsTab/BankDetailsTab';
 const tabs = [
     { id: 'personal', label: 'Personal Info' },
     { id: 'skills', label: 'Skills & Services' },
-    // { id: 'docs', label: 'Documents' },
-    // { id: 'bank', label: 'Bank Details' },
+    { id: 'docs', label: 'Documents' },
+    { id: 'bank', label: 'Bank Details' },
 ];
 
 export default function WorkerProfileTabs() {
