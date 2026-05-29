@@ -1,5 +1,10 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import axios from 'axios';
+import { toast } from 'react-toastify';
 import './SkillsTab.css';
+
+const API = import.meta.env.VITE_API_URL.replace(/\/$/, '');
+const WORKER_URL = `${API}/workers`;
 
 const allServices = [
     { id: 'electrician', label: 'Electrician Services', icon: 'bolt' },
@@ -15,6 +20,16 @@ const expOptions = [
     { value: 'expert', label: 'Expert (5+ years)' },
 ];
 
+const serviceLabelById = allServices.reduce((acc, service) => {
+    acc[service.id] = service.label;
+    return acc;
+}, {});
+
+const serviceIdByLabel = allServices.reduce((acc, service) => {
+    acc[service.label.toLowerCase()] = service.id;
+    return acc;
+}, {});
+
 export default function SkillsTab() {
     const [services, setServices] = useState(['electrician', 'cleaning']);
     const [experience, setExperience] = useState('intermediate');
@@ -23,16 +38,94 @@ export default function SkillsTab() {
     const [draftRate, setDraftRate] = useState(350);
     const [years, setYears] = useState(4);
     const [saveMsg, setSaveMsg] = useState('');
+    const [loadingProfile, setLoadingProfile] = useState(true);
+    const [saving, setSaving] = useState(false);
+
+    useEffect(() => {
+        const fetchProfile = async () => {
+            try {
+                const { data } = await axios.get(`${WORKER_URL}/me`);
+                const worker = data.worker;
+                const activeServiceIds = (worker?.services || [])
+                    .filter((service) => service.isActive)
+                    .map((service) => serviceIdByLabel[service.name.toLowerCase()])
+                    .filter(Boolean);
+
+                if (activeServiceIds.length > 0) setServices(activeServiceIds);
+                if (worker?.experienceLevel) setExperience(worker.experienceLevel);
+                if (worker?.hourlyRate !== undefined) {
+                    setRate(worker.hourlyRate);
+                    setDraftRate(worker.hourlyRate);
+                }
+                if (worker?.yearsOfExperience !== undefined) {
+                    setYears(worker.yearsOfExperience);
+                }
+            } catch (error) {
+                if (error.response?.status !== 404) {
+                    toast.error(error.response?.data?.message || 'Failed to load skills.');
+                }
+            } finally {
+                setLoadingProfile(false);
+            }
+        };
+
+        fetchProfile();
+    }, []);
 
     const toggleService = (id) =>
         setServices((prev) => prev.includes(id) ? prev.filter((s) => s !== id) : [...prev, id]);
 
     const saveRate = () => { setRate(draftRate); setEditingRate(false); };
 
-    const handleSave = () => {
-        setSaveMsg('Skills saved!');
-        setTimeout(() => setSaveMsg(''), 2500);
+    const handleSave = async () => {
+        if (services.length === 0) {
+            toast.error('Please select at least one service.');
+            return;
+        }
+
+        try {
+            setSaving(true);
+
+            const payload = {
+                services: allServices.map((service) => ({
+                    name: service.label,
+                    isActive: services.includes(service.id),
+                })),
+                primaryService: serviceLabelById[services[0]],
+                experienceLevel: experience,
+                yearsOfExperience: years,
+                hourlyRate: rate,
+            };
+
+            const { data } = await axios.patch(`${WORKER_URL}/me/services`, payload);
+            const worker = data.worker;
+            const activeServiceIds = (worker?.services || [])
+                .filter((service) => service.isActive)
+                .map((service) => serviceIdByLabel[service.name.toLowerCase()])
+                .filter(Boolean);
+
+            setServices(activeServiceIds);
+            setExperience(worker.experienceLevel);
+            setRate(worker.hourlyRate);
+            setDraftRate(worker.hourlyRate);
+            setYears(worker.yearsOfExperience);
+            setSaveMsg('Skills saved!');
+            toast.success('Skills and services updated successfully.');
+            setTimeout(() => setSaveMsg(''), 2500);
+        } catch (error) {
+            toast.error(error.response?.data?.message || 'Failed to save skills.');
+        } finally {
+            setSaving(false);
+        }
     };
+
+    if (loadingProfile) {
+        return (
+            <div className="skills-card">
+                <span className="pit-save-msg">Loading skills...</span>
+            </div>
+        );
+    }
 
     return (
         <div className="skills-card">
@@ -144,7 +237,9 @@ export default function SkillsTab() {
 
             <div className="pit-footer">
                 {saveMsg && <span className="pit-save-msg">{saveMsg}</span>}
-                <button className="pit-save-btn" onClick={handleSave}>Save Skills</button>
+                <button className="pit-save-btn" onClick={handleSave} disabled={saving}>
+                    {saving ? 'Saving...' : 'Save Skills'}
+                </button>
             </div>
         </div>
     );

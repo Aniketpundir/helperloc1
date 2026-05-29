@@ -1,5 +1,23 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import axios from 'axios';
+import { useSelector } from 'react-redux';
+import { toast } from 'react-toastify';
 import './PersonalInfoTab.css';
+
+const API = import.meta.env.VITE_API_URL.replace(/\/$/, '');
+const WORKER_URL = `${API}/workers`;
+
+const formatDate = (date) => {
+    if (!date) return '';
+    return new Date(date).toISOString().split('T')[0];
+};
+
+const toDisplayGender = (gender) => {
+    if (!gender) return 'Male';
+    return gender.charAt(0).toUpperCase() + gender.slice(1);
+};
+
+const toApiGender = (gender) => gender.toLowerCase();
 
 function EditableField({ label, icon, value, type = 'text', onSave, disabled, rightSlot }) {
     const [editing, setEditing] = useState(false);
@@ -117,6 +135,10 @@ function TagField({ label, icon, tags: initTags, placeholder, onSave }) {
     const [tags, setTags] = useState(initTags);
     const [input, setInput] = useState('');
 
+    useEffect(() => {
+        setTags(initTags);
+    }, [initTags]);
+
     const addTag = () => {
         const t = input.trim();
         if (t && !tags.includes(t)) {
@@ -162,30 +184,111 @@ function TagField({ label, icon, tags: initTags, placeholder, onSave }) {
 }
 
 export default function PersonalInfoTab() {
+    const { user } = useSelector((state) => state.auth);
     const [data, setData] = useState({
         fullName: 'Ramesh Kumar',
         email: 'ramesh.kumar@example.com',
+        phone: '+91 9876543210',
         dob: '1990-05-15',
         gender: 'Male',
         address: 'House No. 452, Sector 15, Dwarka, New Delhi - 110075',
         cities: ['Delhi', 'Gurugram'],
         languages: ['Hindi', 'English'],
     });
+    const [loadingProfile, setLoadingProfile] = useState(true);
+    const [saving, setSaving] = useState(false);
 
     const update = (key, val) => setData((prev) => ({ ...prev, [key]: val }));
 
     const [saveMsg, setSaveMsg] = useState('');
-    const handleSave = () => {
-        setSaveMsg('Changes saved!');
-        setTimeout(() => setSaveMsg(''), 2500);
+
+    useEffect(() => {
+        const fetchProfile = async () => {
+            try {
+                const { data: response } = await axios.get(`${WORKER_URL}/me`);
+                const worker = response.worker;
+
+                setData({
+                    fullName: worker?.user?.fullName || user?.fullName || '',
+                    email: worker?.user?.email || user?.email || '',
+                    phone: worker?.user?.phone || user?.phone || '',
+                    dob: formatDate(worker?.dateOfBirth),
+                    gender: toDisplayGender(worker?.gender),
+                    address: worker?.currentAddress || '',
+                    cities: worker?.city ? [worker.city] : [],
+                    languages: worker?.languagesKnown || [],
+                });
+            } catch (error) {
+                if (error.response?.status === 404) {
+                    setData((prev) => ({
+                        ...prev,
+                        fullName: user?.fullName || prev.fullName,
+                        email: user?.email || prev.email,
+                        phone: user?.phone || prev.phone,
+                    }));
+                    return;
+                }
+
+                toast.error(error.response?.data?.message || 'Failed to load profile.');
+            } finally {
+                setLoadingProfile(false);
+            }
+        };
+
+        fetchProfile();
+    }, [user]);
+
+    const handleSave = async () => {
+        try {
+            setSaving(true);
+
+            const { data: response } = await axios.patch(`${WORKER_URL}/me/personal-info`, {
+                fullName: data.fullName,
+                phone: data.phone,
+                dateOfBirth: data.dob || null,
+                gender: toApiGender(data.gender),
+                currentAddress: data.address,
+                city: data.cities[0] || null,
+                languagesKnown: data.languages,
+            });
+
+            const worker = response.worker;
+
+            setData({
+                fullName: worker?.user?.fullName || data.fullName,
+                email: worker?.user?.email || data.email,
+                phone: worker?.user?.phone || data.phone,
+                dob: formatDate(worker?.dateOfBirth),
+                gender: toDisplayGender(worker?.gender),
+                address: worker?.currentAddress || '',
+                cities: worker?.city ? [worker.city] : [],
+                languages: worker?.languagesKnown || [],
+            });
+
+            setSaveMsg('Changes saved!');
+            toast.success('Personal info updated successfully.');
+            setTimeout(() => setSaveMsg(''), 2500);
+        } catch (error) {
+            toast.error(error.response?.data?.message || 'Failed to save changes.');
+        } finally {
+            setSaving(false);
+        }
     };
+
+    if (loadingProfile) {
+        return (
+            <div className="pit-card">
+                <p className="pit-save-msg">Loading profile...</p>
+            </div>
+        );
+    }
 
     return (
         <div className="pit-card">
             <div className="pit-grid">
                 <EditableField label="Full Name" icon="person" value={data.fullName} onSave={(v) => update('fullName', v)} />
-                <EditableField label="Phone Number" icon="call" value="+91 9876543210" disabled />
-                <EditableField label="Email Address" icon="mail" value={data.email} onSave={(v) => update('email', v)} type="email" />
+                <EditableField label="Phone Number" icon="call" value={data.phone} onSave={(v) => update('phone', v)} />
+                <EditableField label="Email Address" icon="mail" value={data.email} disabled />
                 <EditableField label="Date of Birth" icon="calendar_month" value={data.dob} onSave={(v) => update('dob', v)} type="date" />
                 <GenderField value={data.gender} onSave={(v) => update('gender', v)} />
                 <EditableField label="Current Address" icon="home" value={data.address} onSave={(v) => update('address', v)} type="textarea" />
@@ -195,7 +298,9 @@ export default function PersonalInfoTab() {
 
             <div className="pit-footer">
                 {saveMsg && <span className="pit-save-msg">{saveMsg}</span>}
-                <button className="pit-save-btn" onClick={handleSave}>Save Changes</button>
+                <button className="pit-save-btn" onClick={handleSave} disabled={saving}>
+                    {saving ? 'Saving...' : 'Save Changes'}
+                </button>
             </div>
         </div>
     );

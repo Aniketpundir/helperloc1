@@ -47,10 +47,10 @@ if (storedToken) axios.defaults.headers.common['Authorization'] = `Bearer ${stor
 // ✅ registerUser thunk
 export const registerUser = createAsyncThunk(
     'auth/registerUser',
-    async ({ fullName, email, phone, password, role }, { rejectWithValue }) => {
+    async ({ fullName, email, phone, password, role, otp }, { rejectWithValue }) => {
         try {
             const { data } = await axios.post(`${BASE_URL}register`, {
-                fullName, email, phone, password, role,
+                fullName, email, phone, password, role, otp,
             });
             return { token: data.token, user: data.user };
         } catch (err) {

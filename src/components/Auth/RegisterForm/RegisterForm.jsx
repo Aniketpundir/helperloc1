@@ -114,8 +114,9 @@ export default function RegisterForm() {
     else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email))
       e.email = 'Enter a valid email address.';
 
-    // ✅ OTP optional — sirf format validate karo agar filled ho
-    if (form.otp.trim() && !/^\d{4,6}$/.test(form.otp.trim()))
+    if (!form.otp.trim())
+      e.otp = 'OTP is required.';
+    else if (!/^\d{4,6}$/.test(form.otp.trim()))
       e.otp = 'Enter a valid 4–6 digit OTP.';
 
     if (!form.phone.trim())
@@ -153,7 +154,7 @@ export default function RegisterForm() {
       phone: '+91' + form.phone.replace(/\s/g, ''),
       password: form.password,
       role,
-      // ✅ otp nahi bhej rahe abhi
+      otp: form.otp.trim(),
     }));
 
     if (registerUser.fulfilled.match(result)) {
