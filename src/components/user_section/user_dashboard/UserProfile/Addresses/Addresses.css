@@ -1,127 +1,503 @@
-.addr-list {
-  display: flex;
-  flex-direction: column;
-  gap: var(--spacing-md);
+/* =============================================
+   ADDRESSES.CSS — Complete Rewrite
+   ============================================= */
+
+/* ── Add Button ── */
+.addr__add-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--spacing-xs);
+    padding: 8px var(--spacing-md);
+    background-color: var(--color-primary);
+    color: var(--color-on-primary);
+    border: none;
+    border-radius: var(--radius-lg);
+    font-family: var(--font-body);
+    font-size: var(--text-body-sm);
+    font-weight: var(--fw-semibold);
+    cursor: pointer;
+    transition: background-color var(--transition-normal), transform var(--transition-fast);
 }
 
-/* Address item */
-.addr-item {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  padding: var(--spacing-md);
-  border: 1px solid var(--color-surface-container);
-  border-radius: var(--radius-lg);
-  background: var(--color-surface);
-  transition: border-color var(--transition-fast);
+.addr__add-btn svg {
+    font-size: 18px;
 }
 
-.addr-item:hover { border-color: var(--color-primary-container); }
-.addr-item--default { border-color: var(--color-outline-variant); }
-
-.addr-item__left {
-  display: flex;
-  gap: var(--spacing-md);
-  align-items: flex-start;
-  flex: 1;
+.addr__add-btn:hover {
+    background-color: var(--color-primary-container);
 }
 
-.addr-item__icon {
-  color: var(--color-outline);
-  font-size: 22px !important;
-  flex-shrink: 0;
-  margin-top: 2px;
+.addr__add-btn:active {
+    transform: scale(0.97);
 }
 
-.addr-item__type-row {
-  display: flex;
-  align-items: center;
-  gap: var(--spacing-base);
-  margin-bottom: 4px;
+.addr__add-btn--disabled {
+    background-color: var(--color-surface-container);
+    color: var(--color-outline);
+    cursor: not-allowed;
 }
 
-.addr-item__type {
-  font-family: var(--font-body);
-  font-size: var(--text-body-md);
-  font-weight: var(--fw-bold);
-  color: var(--color-on-surface);
+.addr__add-btn--disabled:hover {
+    background-color: var(--color-surface-container);
 }
 
-.addr-item__default-badge {
-  padding: 2px 8px;
-  background: var(--color-primary-fixed);
-  color: var(--color-on-primary-fixed);
-  font-size: 10px;
-  font-weight: var(--fw-bold);
-  text-transform: uppercase;
-  letter-spacing: 0.04em;
-  border-radius: var(--radius-sm);
+/* ── Form ── */
+.addr__form {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-md);
+    padding: var(--spacing-md);
+    background-color: var(--color-surface-container-low);
+    border-radius: var(--radius-lg);
+    border: 1px dashed var(--color-outline-variant);
+    margin-bottom: var(--spacing-md);
+    animation: addr-slide-down 220ms ease;
 }
 
-.addr-item__address {
-  font-family: var(--font-body);
-  font-size: var(--text-body-sm);
-  color: var(--color-on-surface-variant);
-  line-height: var(--lh-body-sm);
+@keyframes addr-slide-down {
+    from { opacity: 0; transform: translateY(-8px); }
+    to   { opacity: 1; transform: translateY(0); }
 }
 
-.addr-item__actions {
-  display: flex;
-  align-items: center;
-  gap: var(--spacing-sm);
-  flex-shrink: 0;
+.addr__form-title {
+    font-family: var(--font-headline);
+    font-size: var(--text-body-md);
+    font-weight: var(--fw-bold);
+    color: var(--color-on-surface);
+    margin-bottom: var(--spacing-xs);
 }
 
-.addr-item__action-btn {
-  background: none;
-  border: none;
-  cursor: pointer;
-  padding: 4px;
-  color: var(--color-on-surface-variant);
-  border-radius: var(--radius-sm);
-  display: flex;
-  align-items: center;
-  transition: color var(--transition-fast), background var(--transition-fast);
+/* Radio Group */
+.addr__radio-group {
+    display: flex;
+    gap: var(--spacing-sm);
+    flex-wrap: wrap;
 }
 
-.addr-item__action-btn:hover { color: var(--color-primary); background: var(--color-surface-container-low); }
-.addr-item__action-btn--delete:hover { color: var(--color-error); background: var(--color-error-container); }
-
-.addr-item__action-btn .material-symbols-outlined { font-size: 20px !important; }
-
-/* Inline form */
-.addr-form {
-  display: flex;
-  flex-direction: column;
-  gap: var(--spacing-md);
-  padding: var(--spacing-md);
-  background: var(--color-surface-container-low);
-  border-radius: var(--radius-lg);
-  border: 1px dashed var(--color-outline-variant);
-  animation: fadeIn 200ms ease;
+.addr__radio-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--spacing-xs);
+    padding: 8px var(--spacing-md);
+    border: 1.5px solid var(--color-outline-variant);
+    border-radius: var(--radius-full);
+    font-size: var(--text-body-sm);
+    font-weight: var(--fw-semibold);
+    color: var(--color-on-surface-variant);
+    background-color: var(--color-surface-container-lowest);
+    cursor: pointer;
+    transition: all var(--transition-normal);
+    user-select: none;
 }
 
-@keyframes fadeIn { from { opacity: 0; transform: translateY(-4px); } to { opacity: 1; transform: translateY(0); } }
-
-.addr-form__row {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: var(--spacing-md);
+.addr__radio-pill:hover {
+    border-color: var(--color-primary);
+    color: var(--color-primary);
 }
 
-.addr-form__field {
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
+.addr__radio-pill--active {
+    border-color: var(--color-primary);
+    background-color: var(--color-primary-fixed);
+    color: var(--color-primary);
 }
 
-.addr-form__textarea {
-  resize: vertical;
-  min-height: 64px;
+.addr__radio-icon {
+    display: flex;
+    align-items: center;
+    font-size: 17px;
 }
 
-.addr-form__actions {
-  display: flex;
-  justify-content: flex-end;
-  gap: var(--spacing-sm);
+/* Form Fields */
+.addr__form-field {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.addr__form-field--half {
+    max-width: 200px;
+}
+
+.addr__form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--spacing-md);
+}
+
+.addr__required {
+    color: var(--color-error);
+    margin-left: 2px;
+}
+
+.addr__error-msg {
+    font-size: 12px;
+    color: var(--color-error);
+    font-weight: var(--fw-medium);
+}
+
+/* Input error state */
+.pinfo-input--error {
+    border-color: var(--color-error) !important;
+    box-shadow: 0 0 0 2px rgba(186, 26, 26, 0.1);
+}
+
+/* Default Checkbox */
+.addr__default-check {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+    cursor: pointer;
+    user-select: none;
+}
+
+.addr__default-check input[type="checkbox"] {
+    width: 16px;
+    height: 16px;
+    accent-color: var(--color-primary);
+    cursor: pointer;
+}
+
+.addr__default-check-label {
+    font-size: var(--text-body-sm);
+    color: var(--color-on-surface-variant);
+    font-weight: var(--fw-medium);
+}
+
+/* Form Actions */
+.addr__form-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: var(--spacing-sm);
+    padding-top: var(--spacing-xs);
+}
+
+/* ── Saved Address List ── */
+.addr__list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-md);
+}
+
+/* Empty State */
+.addr__empty {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--spacing-sm);
+    padding: var(--spacing-lg) var(--spacing-md);
+    color: var(--color-outline);
+    text-align: center;
+}
+
+.addr__empty-icon {
+    font-size: 40px !important;
+    color: var(--color-outline-variant);
+}
+
+.addr__empty p {
+    font-size: var(--text-body-sm);
+    color: var(--color-on-surface-variant);
+}
+
+/* Address Card */
+.addr__card {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    padding: var(--spacing-md);
+    border: 1px solid var(--color-surface-container);
+    border-radius: var(--radius-lg);
+    background-color: var(--color-surface-container-lowest);
+    transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+    animation: addr-slide-down 220ms ease;
+}
+
+.addr__card:hover {
+    border-color: var(--color-primary-container);
+    box-shadow: var(--shadow-sm);
+}
+
+.addr__card--default {
+    border-color: var(--color-outline-variant);
+    background-color: var(--color-surface-container-low);
+}
+
+.addr__card-left {
+    display: flex;
+    gap: var(--spacing-md);
+    align-items: flex-start;
+    flex: 1;
+}
+
+.addr__card-type-icon {
+    font-size: 22px;
+    color: var(--color-outline);
+    margin-top: 2px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+}
+
+.addr__card-info {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.addr__card-top-row {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+    flex-wrap: wrap;
+    margin-bottom: 2px;
+}
+
+.addr__card-label {
+    font-size: var(--text-body-md);
+    font-weight: var(--fw-bold);
+    color: var(--color-on-surface);
+}
+
+.addr__card-type-badge {
+    padding: 2px 8px;
+    background-color: var(--color-surface-container);
+    color: var(--color-on-surface-variant);
+    font-size: 11px;
+    font-weight: var(--fw-semibold);
+    border-radius: var(--radius-full);
+}
+
+.addr__card-default-badge {
+    padding: 2px 8px;
+    background-color: var(--color-primary-fixed);
+    color: var(--color-on-primary-fixed);
+    font-size: 10px;
+    font-weight: var(--fw-bold);
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    border-radius: var(--radius-sm);
+}
+
+.addr__card-address {
+    font-size: var(--text-body-sm);
+    color: var(--color-on-surface-variant);
+    line-height: var(--lh-body-sm);
+}
+
+/* Card Action Buttons */
+.addr__card-actions {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+    flex-shrink: 0;
+    margin-left: var(--spacing-md);
+}
+
+.addr__action-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 34px;
+    height: 34px;
+    border: none;
+    border-radius: var(--radius-lg);
+    background-color: transparent;
+    cursor: pointer;
+    font-size: 18px;
+    transition: color var(--transition-fast), background-color var(--transition-fast);
+}
+
+.addr__action-btn--edit {
+    color: var(--color-on-surface-variant);
+}
+
+.addr__action-btn--edit:hover {
+    color: var(--color-primary);
+    background-color: var(--color-surface-container-low);
+}
+
+.addr__action-btn--delete {
+    color: var(--color-on-surface-variant);
+}
+
+.addr__action-btn--delete:hover {
+    color: var(--color-error);
+    background-color: var(--color-error-container);
+}
+
+/* ── Delete Confirmation Modal ── */
+.addr__modal-overlay {
+    position: fixed;
+    inset: 0;
+    background-color: rgba(0, 0, 0, 0.45);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: var(--z-modal);
+    animation: addr-fade-in 180ms ease;
+    padding: var(--spacing-md);
+}
+
+@keyframes addr-fade-in {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+}
+
+.addr__modal {
+    background-color: var(--color-surface-container-lowest);
+    border-radius: 20px;
+    padding: var(--spacing-lg);
+    max-width: 380px;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: var(--spacing-sm);
+    box-shadow: var(--shadow-xl);
+    animation: addr-modal-pop 220ms cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+@keyframes addr-modal-pop {
+    from { opacity: 0; transform: scale(0.88); }
+    to   { opacity: 1; transform: scale(1); }
+}
+
+.addr__modal-icon {
+    width: 56px;
+    height: 56px;
+    border-radius: var(--radius-full);
+    background-color: var(--color-error-container);
+    color: var(--color-error);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 28px;
+    margin-bottom: var(--spacing-xs);
+}
+
+.addr__modal-title {
+    font-family: var(--font-headline);
+    font-size: var(--text-headline-sm);
+    font-weight: var(--fw-bold);
+    color: var(--color-on-surface);
+}
+
+.addr__modal-desc {
+    font-size: var(--text-body-sm);
+    color: var(--color-on-surface-variant);
+    line-height: var(--lh-body-sm);
+    max-width: 280px;
+}
+
+.addr__modal-actions {
+    display: flex;
+    gap: var(--spacing-sm);
+    margin-top: var(--spacing-sm);
+    width: 100%;
+    justify-content: center;
+}
+
+/* Delete button variant */
+.pinfo-btn--delete {
+    padding: 10px var(--spacing-md);
+    background-color: var(--color-error);
+    color: var(--color-on-error);
+    border: none;
+    border-radius: var(--radius-lg);
+    font-family: var(--font-body);
+    font-size: var(--text-body-sm);
+    font-weight: var(--fw-semibold);
+    cursor: pointer;
+    transition: opacity var(--transition-fast);
+}
+
+.pinfo-btn--delete:hover {
+    opacity: 0.88;
+}
+
+/* ── Responsive ── */
+@media (max-width: 768px) {
+    .addr__form-row {
+        grid-template-columns: 1fr;
+    }
+
+    .addr__form-field--half {
+        max-width: 100%;
+    }
+
+    .addr__card {
+        flex-direction: column;
+        gap: var(--spacing-sm);
+    }
+
+    .addr__card-actions {
+        margin-left: 0;
+        align-self: flex-end;
+    }
+
+    .addr__modal {
+        padding: var(--spacing-md);
+    }
+}
+
+@media (max-width: 480px) {
+    .addr__add-btn span:not(.addr__add-btn svg) {
+        display: none;
+    }
+
+    .addr__radio-group {
+        gap: var(--spacing-xs);
+    }
+
+    .addr__radio-pill {
+        padding: 6px var(--spacing-sm);
+        font-size: 12px;
+    }
+}
+
+/* ── Booking Mode — Selectable Cards ── */
+.profile-card--booking {
+    background-color: transparent;
+    box-shadow: none;
+    padding: 0;
+}
+
+.addr__card--selectable {
+    cursor: pointer;
+}
+
+.addr__card--selected {
+    border-color: var(--color-primary);
+    background-color: rgba(0, 77, 153, 0.04);
+    box-shadow: 0 0 0 3px rgba(0, 77, 153, 0.1);
+}
+
+.addr__card--selectable:hover {
+    border-color: var(--color-primary);
+    box-shadow: 0 0 0 3px rgba(0, 77, 153, 0.06);
+}
+
+/* Select ring */
+.addr__select-ring {
+    width: 20px;
+    height: 20px;
+    border-radius: var(--radius-full);
+    border: 2px solid var(--color-outline-variant);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    margin-top: 2px;
+    transition: border-color var(--transition-fast);
+}
+
+.addr__card--selected .addr__select-ring {
+    border-color: var(--color-primary);
+}
+
+.addr__check-icon {
+    font-size: 20px;
+    color: var(--color-primary);
+    margin: -2px;
 }

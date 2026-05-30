@@ -1,4 +1,6 @@
 import React, { useState } from 'react';
+import { useSelector } from 'react-redux';
+import Addresses from '../../user_dashboard/UserProfile/Addresses/Addresses';
 import './WorkerDetail_BookingForm.css';
 
 const dateSlots = [
@@ -18,15 +20,45 @@ const WorkerDetail_BookingForm = ({ worker }) => {
     const [selectedDate, setSelectedDate] = useState(0);
     const [selectedTime, setSelectedTime] = useState(1);
     const [workerCount, setWorkerCount] = useState(1);
+    const [selectedAddressId, setSelectedAddressId] = useState(null);
 
-    const updateCounter = (val) => {
-        setWorkerCount(prev => Math.max(1, prev + val));
+    // Redux se addresses lo
+    const addresses = useSelector(state => state.address.addresses);
+
+    const updateCounter = (val) => setWorkerCount(prev => Math.max(1, prev + val));
+
+ const handleSubmit = (e) => {
+    e.preventDefault();
+    if (!selectedAddressId) {
+        alert('Please select a service address!');
+        return;
+    }
+
+    // Selected address ka pura data Redux se nikalo
+    const selectedAddress = addresses.find(a => a.id === selectedAddressId);
+
+    const bookingData = {
+        category: worker.category,
+        date: dateSlots[selectedDate],
+        time: timeSlots[selectedTime].time,
+        workerCount,
+        address: {
+            id: selectedAddress.id,
+            label: selectedAddress.label,
+            addressType: selectedAddress.addressType,
+            street: selectedAddress.street,
+            area: selectedAddress.area,
+            city: selectedAddress.city,
+            state: selectedAddress.state,
+            pincode: selectedAddress.pincode,
+        },
     };
 
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        alert('Booking Confirmed!');
-    };
+    console.log('✅ Booking Data:', bookingData);
+    alert(`Booking Confirmed!\n📍 Address: ${selectedAddress.label} — ${selectedAddress.city}`);
+};
+
+    const selectedAddress = addresses.find(a => a.id === selectedAddressId);
 
     return (
         <div className="worker-detail__booking-card">
@@ -34,46 +66,16 @@ const WorkerDetail_BookingForm = ({ worker }) => {
 
             <form className="worker-detail__booking-form" onSubmit={handleSubmit}>
 
-                {/* User Info */}
-                <div className="worker-detail__booking-row">
-                    <div className="worker-detail__booking-field">
-                        <label className="worker-detail__booking-label">Full Name</label>
-                        <input
-                            className="worker-detail__booking-input"
-                            type="text"
-                            placeholder="Your Name"
-                            required
-                        />
-                    </div>
-                    <div className="worker-detail__booking-field">
-                        <label className="worker-detail__booking-label">Phone Number</label>
-                        <div className="worker-detail__booking-phone-wrap">
-                            <span className="worker-detail__booking-phone-prefix">+91</span>
-                            <input
-                                className="worker-detail__booking-input worker-detail__booking-input--phone"
-                                type="tel"
-                                placeholder="XXXXX XXXXX"
-                                required
-                            />
-                        </div>
-                    </div>
-                </div>
-
-                {/* Address */}
+                {/* ── Addresses Component ── */}
                 <div className="worker-detail__booking-field">
-                    <label className="worker-detail__booking-label">Service Address</label>
-                    <div className="worker-detail__booking-icon-wrap">
-                        <span className="material-symbols-outlined worker-detail__booking-icon">location_on</span>
-                        <input
-                            className="worker-detail__booking-input worker-detail__booking-input--icon"
-                            type="text"
-                            placeholder="Street, Apartment, Area"
-                            required
-                        />
-                    </div>
+                    <Addresses
+                        selectedAddressId={selectedAddressId}
+                        onSelect={setSelectedAddressId}
+                        isBookingMode={true}
+                    />
                 </div>
 
-                {/* Work Description */}
+                {/* ── Work Description ── */}
                 <div className="worker-detail__booking-field">
                     <label className="worker-detail__booking-label">Work Needed</label>
                     <textarea
@@ -83,7 +85,7 @@ const WorkerDetail_BookingForm = ({ worker }) => {
                     />
                 </div>
 
-                {/* Date Selection */}
+                {/* ── Date Selection ── */}
                 <div className="worker-detail__booking-field">
                     <label className="worker-detail__booking-label">Select Date</label>
                     <div className="worker-detail__booking-date-row">
@@ -101,7 +103,7 @@ const WorkerDetail_BookingForm = ({ worker }) => {
                     </div>
                 </div>
 
-                {/* Time Slots */}
+                {/* ── Time Slots ── */}
                 <div className="worker-detail__booking-field">
                     <label className="worker-detail__booking-label">Select Time Slot</label>
                     <div className="worker-detail__booking-time-grid">
@@ -118,24 +120,16 @@ const WorkerDetail_BookingForm = ({ worker }) => {
                     </div>
                 </div>
 
-                {/* Worker Counter & Special Instructions */}
+                {/* ── Worker Counter & Instructions ── */}
                 <div className="worker-detail__booking-row">
                     <div className="worker-detail__booking-field">
                         <label className="worker-detail__booking-label">Number of Workers</label>
                         <div className="worker-detail__booking-counter">
-                            <button
-                                type="button"
-                                className="worker-detail__booking-counter-btn"
-                                onClick={() => updateCounter(-1)}
-                            >
+                            <button type="button" className="worker-detail__booking-counter-btn" onClick={() => updateCounter(-1)}>
                                 <span className="material-symbols-outlined">remove</span>
                             </button>
                             <span className="worker-detail__booking-counter-val">{workerCount}</span>
-                            <button
-                                type="button"
-                                className="worker-detail__booking-counter-btn"
-                                onClick={() => updateCounter(1)}
-                            >
+                            <button type="button" className="worker-detail__booking-counter-btn" onClick={() => updateCounter(1)}>
                                 <span className="material-symbols-outlined">add</span>
                             </button>
                         </div>
@@ -150,7 +144,7 @@ const WorkerDetail_BookingForm = ({ worker }) => {
                     </div>
                 </div>
 
-                {/* Booking Summary */}
+                {/* ── Booking Summary ── */}
                 <div className="worker-detail__booking-summary">
                     <h3 className="worker-detail__booking-summary-title">Booking Summary</h3>
                     <div className="worker-detail__booking-summary-rows">
@@ -166,6 +160,14 @@ const WorkerDetail_BookingForm = ({ worker }) => {
                                 {dateSlots[selectedDate].label}, {dateSlots[selectedDate].date} at {timeSlots[selectedTime].time}
                             </span>
                         </div>
+                        {selectedAddress && (
+                            <div className="worker-detail__booking-summary-row">
+                                <span className="worker-detail__booking-summary-key">Address</span>
+                                <span className="worker-detail__booking-summary-val">
+                                    {selectedAddress.label} — {selectedAddress.city}
+                                </span>
+                            </div>
+                        )}
                     </div>
                     <div className="worker-detail__booking-summary-total">
                         <span className="worker-detail__booking-summary-total-label">Est. Budget</span>
@@ -177,7 +179,7 @@ const WorkerDetail_BookingForm = ({ worker }) => {
                     </div>
                 </div>
 
-                {/* Submit */}
+                {/* ── Submit ── */}
                 <button className="worker-detail__booking-submit" type="submit">
                     <span className="material-symbols-outlined">calendar_today</span>
                     Confirm Booking

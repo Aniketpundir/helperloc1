@@ -1,12 +1,13 @@
 import React from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import './WorkerCard.css';
 
 export default function WorkerCard({ worker }) {
     const navigate = useNavigate();
+    const { category } = useParams();
 
     const handleBookNow = () => {
-        navigate(`/worker-category/listed-worker/:category/${worker.id}`);
+        navigate(`/worker-category/listed-worker/${category}/${worker.id}`);
     };
 
     const renderStars = (rating) => {
