@@ -110,12 +110,14 @@ const router = createBrowserRouter(
         />
         <Route path="/worker-category"
           element={
+            <ProtectedRoute allowedRoles={['user', 'worker']}>
               <Worker_Category />
+            </ProtectedRoute>
           }
         />
         <Route path="/worker-category/listed-worker/:category"
           element={
-            <ProtectedRoute allowedRoles={['worker']}>
+            <ProtectedRoute allowedRoles={['user', 'worker']}>
               <Listed_Worker />
             </ProtectedRoute>
           }
@@ -123,7 +125,7 @@ const router = createBrowserRouter(
 
         <Route path="/worker-category/listed-worker/:category/:id"
           element={
-            <ProtectedRoute allowedRoles={['worker']}>
+            <ProtectedRoute allowedRoles={['user', 'worker']}>
               <Worker_Detail />
             </ProtectedRoute>
           }
