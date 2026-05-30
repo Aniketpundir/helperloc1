@@ -1,0 +1,105 @@
+.Listed_Worker-page-header {
+  background: linear-gradient(135deg, #1565C0 0%, #1E88E5 100%);
+  width: 100%;
+  min-height: 220px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 0 16px;
+}
+
+@media (max-width: 768px) {
+  .Listed_Worker-page-header {
+    min-height: 200px;
+    padding: 0 var(--spacing-margin-mobile);
+  }
+}
+
+.Listed_Worker-header-badge {
+  display: inline-flex;
+  align-items: center;
+  background-color: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(8px);
+  padding: 6px 16px;
+  border-radius: var(--radius-full);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  margin-bottom: 16px;
+  font-family: var(--font-body);
+  font-size: var(--text-body-sm);
+  font-weight: var(--fw-semibold);
+  color: white;
+  letter-spacing: var(--ls-label);
+}
+
+.Listed_Worker-header-title {
+  font-family: var(--font-headline);
+  font-size: var(--text-headline-xl);
+  font-weight: var(--fw-extrabold);
+  color: white;
+  margin-bottom: 8px;
+  line-height: var(--lh-headline-xl);
+  letter-spacing: var(--ls-headline-xl);
+}
+
+@media (max-width: 768px) {
+  .Listed_Worker-header-title {
+    font-size: var(--text-headline-lg-mobile);
+    line-height: var(--lh-headline-lg);
+  }
+}
+
+.Listed_Worker-header-subtitle {
+  font-family: var(--font-body);
+  font-size: var(--text-body-md);
+  font-weight: var(--fw-regular);
+  color: rgba(255, 255, 255, 0.8);
+  max-width: 600px;
+  margin-bottom: 24px;
+  line-height: var(--lh-body-md);
+}
+
+@media (max-width: 768px) {
+  .Listed_Worker-header-subtitle {
+    font-size: var(--text-body-sm);
+    line-height: var(--lh-body-sm);
+    margin-bottom: 16px;
+  }
+}
+
+.Listed_Worker-header-stats {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 32px;
+  color: rgba(255, 255, 255, 0.9);
+}
+
+@media (max-width: 768px) {
+  .Listed_Worker-header-stats {
+    gap: 16px;
+    font-size: var(--text-body-sm);
+  }
+}
+
+.Listed_Worker-stat-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--font-body);
+  font-size: var(--text-body-sm);
+  font-weight: var(--fw-semibold);
+}
+
+.Listed_Worker-stat-item .material-symbols-outlined {
+  font-size: 20px;
+  color: var(--color-secondary-container);
+}
+
+@media (max-width: 480px) {
+  .Listed_Worker-header-stats {
+    flex-direction: column;
+    gap: 12px;
+  }
+}

@@ -1,0 +1,93 @@
+/* =============================================
+   BOOKINGCONFIRMED_ACTIONS.CSS
+   ============================================= */
+
+.booking-confirmed__actions {
+    background-color: var(--color-surface-container-lowest);
+    border-radius: 20px;
+    box-shadow: 0px 4px 20px rgba(21, 101, 192, 0.08);
+    padding: var(--spacing-md);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--spacing-md);
+    margin-bottom: var(--spacing-gutter);
+    flex-wrap: wrap;
+}
+
+.booking-confirmed__actions-left {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--spacing-sm);
+}
+
+.booking-confirmed__actions-btn {
+    padding: var(--spacing-sm) var(--spacing-md);
+    border-radius: var(--radius-lg);
+    font-family: var(--font-body);
+    font-size: var(--text-body-sm);
+    font-weight: var(--fw-bold);
+    cursor: pointer;
+    transition: all var(--transition-normal);
+    white-space: nowrap;
+}
+
+.booking-confirmed__actions-btn--primary {
+    background-color: var(--color-primary);
+    color: var(--color-on-primary);
+    border: none;
+}
+
+.booking-confirmed__actions-btn--primary:hover {
+    opacity: 0.9;
+}
+
+.booking-confirmed__actions-btn--outline {
+    background-color: transparent;
+    color: var(--color-primary);
+    border: 2px solid var(--color-primary);
+}
+
+.booking-confirmed__actions-btn--outline:hover {
+    background-color: var(--color-primary-fixed);
+}
+
+.booking-confirmed__actions-btn--neutral {
+    background-color: transparent;
+    color: var(--color-on-surface-variant);
+    border: 2px solid var(--color-outline-variant);
+}
+
+.booking-confirmed__actions-btn--neutral:hover {
+    background-color: var(--color-surface-variant);
+}
+
+.booking-confirmed__actions-btn--danger {
+    background-color: transparent;
+    color: var(--color-error);
+    border: 2px solid var(--color-error);
+}
+
+.booking-confirmed__actions-btn--danger:hover {
+    background-color: var(--color-error-container);
+}
+
+/* --- Responsive --- */
+@media (max-width: 768px) {
+    .booking-confirmed__actions {
+        flex-direction: column;
+        align-items: stretch;
+        padding: var(--spacing-sm);
+    }
+
+    .booking-confirmed__actions-left {
+        flex-direction: column;
+    }
+
+    .booking-confirmed__actions-btn {
+        width: 100%;
+        text-align: center;
+        justify-content: center;
+    }
+}

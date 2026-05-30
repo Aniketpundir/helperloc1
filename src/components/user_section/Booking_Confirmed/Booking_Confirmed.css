@@ -1,0 +1,55 @@
+/* =============================================
+   BOOKING_CONFIRMED.CSS — Page Wrapper & Layout
+   ============================================= */
+
+.booking-confirmed {
+    background-color: var(--color-background);
+    min-height: 100vh;
+}
+
+/* --- Main Content --- */
+.booking-confirmed__main {
+    max-width: var(--max-width);
+    margin: 0 auto;
+    padding: 0 var(--spacing-gutter) var(--spacing-xl);
+    margin-top: -48px;
+    position: relative;
+    z-index: 1;
+}
+
+/* --- Two Column Grid --- */
+.booking-confirmed__grid {
+    display: grid;
+    grid-template-columns: 45% 1fr;
+    gap: var(--spacing-gutter);
+    margin-bottom: var(--spacing-gutter);
+}
+
+.booking-confirmed__left,
+.booking-confirmed__right {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-gutter);
+}
+
+/* --- Responsive --- */
+@media (max-width: 1024px) {
+    .booking-confirmed__grid {
+        grid-template-columns: 1fr;
+    }
+
+    .booking-confirmed__main {
+        margin-top: -32px;
+    }
+}
+
+@media (max-width: 768px) {
+    .booking-confirmed__main {
+        padding: 0 var(--spacing-margin-mobile) var(--spacing-lg);
+        margin-top: -24px;
+    }
+
+    .booking-confirmed__grid {
+        gap: var(--spacing-md);
+    }
+}

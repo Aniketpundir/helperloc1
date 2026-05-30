@@ -1,0 +1,93 @@
+/* =============================================
+   WORKER_DETAIL.CSS — Page Wrapper & Layout
+   ============================================= */
+
+.worker-detail {
+    background-color: var(--color-background);
+    padding-top: var(--spacing-md);
+    padding-bottom: var(--spacing-xl);
+    padding-left: var(--spacing-gutter);
+    padding-right: var(--spacing-gutter);
+    max-width: var(--max-width);
+    margin: 0 auto;
+}
+
+/* --- Breadcrumb --- */
+.worker-detail__breadcrumb {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-xs);
+    padding: var(--spacing-md) 0;
+    margin-bottom: var(--spacing-md);
+    overflow-x: auto;
+    white-space: nowrap;
+}
+
+.worker-detail__breadcrumb-link {
+    font-size: var(--text-body-sm);
+    color: var(--color-on-surface-variant);
+    text-decoration: none;
+    transition: color var(--transition-fast);
+}
+
+.worker-detail__breadcrumb-link:hover {
+    color: var(--color-primary);
+}
+
+.worker-detail__breadcrumb-sep {
+    font-size: var(--text-body-sm);
+    color: var(--color-outline);
+}
+
+.worker-detail__breadcrumb-current {
+    font-size: var(--text-body-sm);
+    font-weight: var(--fw-semibold);
+    color: var(--color-primary);
+}
+
+/* --- Main Layout: 2 column --- */
+.worker-detail__layout {
+    display: grid;
+    grid-template-columns: 38% 1fr;
+    gap: var(--spacing-lg);
+    align-items: start;
+}
+
+.worker-detail__left {
+    position: sticky;
+    top: 96px;
+}
+
+.worker-detail__right {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-lg);
+}
+
+/* --- Responsive --- */
+@media (max-width: 1024px) {
+    .worker-detail__layout {
+        grid-template-columns: 1fr;
+    }
+
+    .worker-detail__left {
+        position: static;
+    }
+}
+
+@media (max-width: 768px) {
+    .worker-detail {
+        padding-left: var(--spacing-margin-mobile);
+        padding-right: var(--spacing-margin-mobile);
+        padding-bottom: var(--spacing-lg);
+    }
+
+    .worker-detail__breadcrumb {
+        padding: var(--spacing-sm) 0;
+        margin-bottom: var(--spacing-sm);
+    }
+
+    .worker-detail__layout {
+        gap: var(--spacing-md);
+    }
+}
