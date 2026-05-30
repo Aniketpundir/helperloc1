@@ -1,23 +1,18 @@
 import './QuickStats.css';
 
-const stats = [
-    { label: 'Total Bookings', value: '24', color: 'primary', icon: 'calendar_month' },
-    { label: 'Completed Services', value: '22', color: 'secondary', icon: 'task_alt' },
-    // { label: 'Average Rating', value: '4.8', color: 'tertiary', icon: 'star', isStar: true },
-    // { label: 'Total Saved', value: '₹2,840', color: 'primary-container', icon: 'savings' },
-];
+export default function QuickStats({ stats }) {
+    const items = [
+        { label: 'Total Bookings', value: stats?.totalBookings ?? 0, color: 'primary' },
+        { label: 'Completed Services', value: stats?.completedServices ?? 0, color: 'secondary' },
+    ];
 
-export default function QuickStats() {
     return (
         <section className="quick-stats">
-            {stats.map((s) => (
-                <div key={s.label} className={`quick-stat quick-stat--${s.color}`}>
-                    <p className="quick-stat__label">{s.label}</p>
-                    <p className={`quick-stat__value quick-stat__value--${s.color}`}>
-                        {s.value}
-                        {s.isStar && (
-                            <span className="material-symbols-outlined quick-stat__star">star</span>
-                        )}
+            {items.map((item) => (
+                <div key={item.label} className={`quick-stat quick-stat--${item.color}`}>
+                    <p className="quick-stat__label">{item.label}</p>
+                    <p className={`quick-stat__value quick-stat__value--${item.color}`}>
+                        {item.value}
                     </p>
                 </div>
             ))}

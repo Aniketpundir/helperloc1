@@ -1,16 +1,11 @@
 import { useState } from 'react';
+import { toast } from 'react-toastify';
 import './Addresses.css';
 
-const initialAddresses = [
-    { id: 1, type: 'Home', icon: 'home', address: '402, Sunshine Apartments, Saket, New Delhi - 110017', isDefault: true },
-    { id: 2, type: 'Office', icon: 'work', address: 'Cyber City, Tower B, 12th Floor, Gurgaon, Haryana - 122002', isDefault: false },
-];
+const emptyDraft = { label: '', icon: 'home', address: '', isDefault: false };
 
-const emptyDraft = { type: '', icon: 'home', address: '', isDefault: false };
-
-export default function Addresses() {
-    const [addresses, setAddresses] = useState(initialAddresses);
-    const [editingId, setEditingId] = useState(null); // null = view, 0 = new
+export default function Addresses({ addresses, onAddAddress, onUpdateAddress, onDeleteAddress }) {
+    const [editingId, setEditingId] = useState(null);
     const [draft, setDraft] = useState(emptyDraft);
 
     const openNew = () => {
@@ -18,28 +13,80 @@ export default function Addresses() {
         setEditingId(0);
     };
 
-    const openEdit = (addr) => {
-        setDraft({ ...addr });
-        setEditingId(addr.id);
+    const openEdit = (address) => {
+        setDraft({
+            label: address.label || '',
+            icon: address.icon || 'home',
+            address: address.address || '',
+            isDefault: !!address.isDefault,
+        });
+        setEditingId(address._id);
     };
 
-    const handleDelete = (id) => {
-        setAddresses((prev) => prev.filter((a) => a.id !== id));
-    };
-
-    const handleSave = () => {
-        if (!draft.type.trim() || !draft.address.trim()) return;
-
-        if (editingId === 0) {
-            const newId = Date.now();
-            setAddresses((prev) => [...prev, { ...draft, id: newId }]);
-        } else {
-            setAddresses((prev) => prev.map((a) => (a.id === editingId ? { ...draft } : a)));
+    const handleDelete = async (id) => {
+        try {
+            await onDeleteAddress(id);
+            toast.success('Address deleted.');
+        } catch (error) {
+            toast.error(error.response?.data?.message || 'Failed to delete address.');
         }
-        setEditingId(null);
+    };
+
+    const handleSave = async () => {
+        if (!draft.label.trim() || !draft.address.trim()) return;
+
+        try {
+            if (editingId === 0) {
+                await onAddAddress(draft);
+                toast.success('Address added.');
+            } else {
+                await onUpdateAddress(editingId, draft);
+                toast.success('Address updated.');
+            }
+            setEditingId(null);
+            setDraft(emptyDraft);
+        } catch (error) {
+            toast.error(error.response?.data?.message || 'Failed to save address.');
+        }
     };
 
     const handleCancel = () => setEditingId(null);
+
+    const renderForm = (saveLabel) => (
+        <div className="addr-form">
+            <div className="addr-form__row">
+                <div className="addr-form__field">
+                    <label className="pinfo-label">Label (e.g. Home, Office)</label>
+                    <input
+                        className="pinfo-input"
+                        value={draft.label}
+                        onChange={(e) => setDraft({ ...draft, label: e.target.value })}
+                    />
+                </div>
+            </div>
+            <div className="addr-form__field">
+                <label className="pinfo-label">Full Address</label>
+                <textarea
+                    className="pinfo-input addr-form__textarea"
+                    rows={2}
+                    value={draft.address}
+                    onChange={(e) => setDraft({ ...draft, address: e.target.value })}
+                />
+            </div>
+            <label className="addr-form__field">
+                <input
+                    type="checkbox"
+                    checked={draft.isDefault}
+                    onChange={(e) => setDraft({ ...draft, isDefault: e.target.checked })}
+                />{' '}
+                Set as default
+            </label>
+            <div className="addr-form__actions">
+                <button className="pinfo-btn pinfo-btn--cancel" onClick={handleCancel}>Cancel</button>
+                <button className="pinfo-btn pinfo-btn--save" onClick={handleSave}>{saveLabel}</button>
+            </div>
+        </div>
+    );
 
     return (
         <article className="profile-card">
@@ -52,46 +99,30 @@ export default function Addresses() {
             </div>
 
             <div className="addr-list">
-                {addresses.map((a) =>
-                    editingId === a.id ? (
-                        /* ── Inline edit form ── */
-                        <div key={a.id} className="addr-form">
-                            <div className="addr-form__row">
-                                <div className="addr-form__field">
-                                    <label className="pinfo-label">Label (e.g. Home, Office)</label>
-                                    <input className="pinfo-input" value={draft.type}
-                                        onChange={(e) => setDraft({ ...draft, type: e.target.value })} />
-                                </div>
-                            </div>
-                            <div className="addr-form__field">
-                                <label className="pinfo-label">Full Address</label>
-                                <textarea className="pinfo-input addr-form__textarea" rows={2} value={draft.address}
-                                    onChange={(e) => setDraft({ ...draft, address: e.target.value })} />
-                            </div>
-                            <div className="addr-form__actions">
-                                <button className="pinfo-btn pinfo-btn--cancel" onClick={handleCancel}>Cancel</button>
-                                <button className="pinfo-btn pinfo-btn--save" onClick={handleSave}>Save</button>
-                            </div>
-                        </div>
+                {addresses.length === 0 && editingId !== 0 && (
+                    <p className="addr-item__address">No addresses saved yet. Add one above!</p>
+                )}
+
+                {addresses.map((address) =>
+                    editingId === address._id ? (
+                        <div key={address._id}>{renderForm('Save')}</div>
                     ) : (
-                        /* ── View row ── */
-                        <div key={a.id} className={`addr-item${a.isDefault ? ' addr-item--default' : ''}`}>
+                        <div key={address._id} className={`addr-item${address.isDefault ? ' addr-item--default' : ''}`}>
                             <div className="addr-item__left">
-                                <span className="material-symbols-outlined addr-item__icon">{a.icon}</span>
+                                <span className="material-symbols-outlined addr-item__icon">{address.icon || 'home'}</span>
                                 <div>
                                     <div className="addr-item__type-row">
-                                        <span className="addr-item__type">{a.type}</span>
-                                        {a.isDefault && <span className="addr-item__default-badge">Default</span>}
+                                        <span className="addr-item__type">{address.label}</span>
+                                        {address.isDefault && <span className="addr-item__default-badge">Default</span>}
                                     </div>
-                                    <p className="addr-item__address">{a.address}</p>
+                                    <p className="addr-item__address">{address.address}</p>
                                 </div>
                             </div>
                             <div className="addr-item__actions">
-                                <button className="addr-item__action-btn" onClick={() => openEdit(a)} aria-label="Edit">
+                                <button className="addr-item__action-btn" onClick={() => openEdit(address)} aria-label="Edit">
                                     <span className="material-symbols-outlined">edit</span>
                                 </button>
-                                <button className="addr-item__action-btn addr-item__action-btn--delete"
-                                    onClick={() => handleDelete(a.id)} aria-label="Delete">
+                                <button className="addr-item__action-btn addr-item__action-btn--delete" onClick={() => handleDelete(address._id)} aria-label="Delete">
                                     <span className="material-symbols-outlined">delete</span>
                                 </button>
                             </div>
@@ -99,28 +130,7 @@ export default function Addresses() {
                     )
                 )}
 
-                {/* New address form */}
-                {editingId === 0 && (
-                    <div className="addr-form">
-                        <div className="addr-form__row">
-                            <div className="addr-form__field">
-                                <label className="pinfo-label">Label (e.g. Home, Office)</label>
-                                <input className="pinfo-input" placeholder="Home"
-                                    value={draft.type} onChange={(e) => setDraft({ ...draft, type: e.target.value })} />
-                            </div>
-                        </div>
-                        <div className="addr-form__field">
-                            <label className="pinfo-label">Full Address</label>
-                            <textarea className="pinfo-input addr-form__textarea" rows={2}
-                                placeholder="Enter full address..."
-                                value={draft.address} onChange={(e) => setDraft({ ...draft, address: e.target.value })} />
-                        </div>
-                        <div className="addr-form__actions">
-                            <button className="pinfo-btn pinfo-btn--cancel" onClick={handleCancel}>Cancel</button>
-                            <button className="pinfo-btn pinfo-btn--save" onClick={handleSave}>Add Address</button>
-                        </div>
-                    </div>
-                )}
+                {editingId === 0 && renderForm('Add Address')}
             </div>
         </article>
     );
