@@ -1,0 +1,162 @@
+/* =============================================
+   SERVICES.CSS — Section & Layout Styles
+   (Card styles are in ServiceCard/ServiceCard.css)
+   ============================================= */
+
+.services {
+    background-color: var(--color-surface);
+    padding: var(--spacing-xl) 0;
+}
+
+.services__inner {
+    /* uses .container from App.css */
+}
+
+/* --- Header --- */
+.services__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    margin-bottom: var(--spacing-lg);
+    gap: var(--spacing-md);
+    flex-wrap: wrap;
+}
+
+.services__title {
+    font-family: var(--font-headline);
+    font-size: var(--text-headline-lg);
+    font-weight: var(--fw-bold);
+    line-height: var(--lh-headline-lg);
+    letter-spacing: var(--ls-headline-lg);
+    color: var(--color-on-surface);
+    margin-bottom: 8px;
+}
+
+@media (max-width: 768px) {
+    .services__header {
+        flex-wrap: nowrap;
+        gap: var(--spacing-sm);
+    }
+
+    .services__title {
+        font-size: 24px;
+        white-space: nowrap;
+    }
+}
+
+@media (max-width: 480px) {
+    .services__header {
+        flex-direction: column;
+        align-items: flex-start;
+        flex-wrap: wrap;
+    }
+
+    .services__nav-btns {
+        align-self: flex-start;
+    }
+}
+
+.services__subtitle {
+    font-size: var(--text-body-md);
+    color: var(--color-on-surface-variant);
+}
+
+@media (max-width: 480px) {
+    .services__subtitle {
+        font-size: var(--text-body-sm);
+    }
+}
+
+/* --- Nav Buttons --- */
+.services__nav-btns {
+    display: flex;
+    gap: var(--spacing-sm);
+    flex-shrink: 0;
+}
+
+.services__nav-btn {
+    width: 40px;
+    height: 40px;
+    border-radius: var(--radius-full);
+    border: 1px solid var(--color-outline-variant);
+    background: transparent;
+    color: var(--color-on-surface);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all var(--transition-normal);
+    padding: 0;
+    margin: 0;
+    position: relative;
+    z-index: 10;
+}
+
+.services__nav-btn:hover {
+    background: var(--color-surface-container);
+}
+
+.services__nav-btn:active {
+    transform: scale(0.95);
+}
+
+.services__nav-btn:focus {
+    outline: 2px solid var(--color-primary);
+    outline-offset: 2px;
+}
+
+/* --- Carousel --- */
+.services__carousel-wrapper {
+    width: 100%;
+    overflow: hidden;
+    position: relative;
+    margin-bottom: var(--spacing-lg);
+}
+
+.services__carousel {
+    display: flex;
+    gap: 16px;
+    width: max-content;
+    will-change: transform;
+}
+
+/* --- Footer --- */
+.services__footer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--spacing-md);
+    margin-top: var(--spacing-xl);
+}
+
+.services__more-link {
+    font-family: var(--font-body);
+    font-size: var(--text-body-sm);
+    font-weight: var(--fw-semibold);
+    letter-spacing: var(--ls-label);
+    color: var(--color-primary);
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-xs);
+    text-decoration: none;
+    transition: gap var(--transition-normal);
+    padding: 0;
+    margin: 0;
+    border: none;
+    background: transparent;
+    cursor: pointer;
+}
+
+.services__more-link:hover {
+    gap: var(--spacing-base);
+    text-decoration: underline;
+}
+
+.services__more-link:focus {
+    outline: 2px solid var(--color-primary);
+    outline-offset: 2px;
+}
+
+.services__more-link .material-symbols-outlined {
+    font-size: 18px;
+}

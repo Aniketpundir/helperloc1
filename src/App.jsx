@@ -12,6 +12,10 @@ import RegisterForm from './components/Auth/RegisterForm/RegisterForm'
 import LoginForm from './components/Auth/LoginForm/LoginForm'
 import ProtectedRoute from './components/Auth/ProtectedRoute'
 import PublicOnlyRoute from './components/Auth/PublicOnlyRoute'
+import Worker_Category from "./components/user_section/Worker_Category/Worker_Category"
+import Listed_Worker from "./components/user_section/Listed_Worker/Listed_Worker"
+import Worker_Detail from "./components/user_section/Worker_Detail/Worker_Detail"
+import Booking_Confirmed from "./components/user_section/Booking_Confirmed/Booking_Confirmed"
 
 // user profile
 import UserProfile from "./components/user_section/user_dashboard/UserProfile/UserProfile";
@@ -39,7 +43,7 @@ const router = createBrowserRouter(
         </PublicOnlyRoute>
       }
       />
-  
+
       <Route path='/login' element={
         <PublicOnlyRoute>
           <LoginForm />
@@ -57,101 +61,131 @@ const router = createBrowserRouter(
         {/* User-only routes */}
         <Route path="/user-dashboard/user-profile"
           element={
-            // <ProtectedRoute allowedRoles={['user']}>
-            <UserProfile />
-            // </ProtectedRoute>
+            <ProtectedRoute allowedRoles={['user']}>
+              <UserProfile />
+            </ProtectedRoute>
           }
         />
         <Route path="/user-dashboard/current-booking"
           element={
-            // <ProtectedRoute allowedRoles={['user']}>
-            <CurrentBooking />
-            // </ProtectedRoute>
+            <ProtectedRoute allowedRoles={['user']}>
+              <CurrentBooking />
+            </ProtectedRoute>
           }
         />
         <Route path="/user-dashboard/past-booking"
           element={
-            // <ProtectedRoute allowedRoles={['user']}>
-            <PastBooking />
-            // </ProtectedRoute>
+            <ProtectedRoute allowedRoles={['user']}>
+              <PastBooking />
+            </ProtectedRoute>
           }
         />
         <Route path="/user-dashboard/post-work"
           element={
-            // <ProtectedRoute allowedRoles={['user']}>
-            <PostWork />
-            // </ProtectedRoute>
+            <ProtectedRoute allowedRoles={['user']}>
+              <PostWork />
+            </ProtectedRoute>
           }
         />
         <Route path="/user-dashboard/my-posted-jobs"
           element={
-            // <ProtectedRoute allowedRoles={['user']}>
-            <MyPostedJobs />
-            // </ProtectedRoute>
+            <ProtectedRoute allowedRoles={['user']}>
+              <MyPostedJobs />
+            </ProtectedRoute>
+          }
+        />
+        <Route path="/booking-confirmed"
+          element={
+            <ProtectedRoute allowedRoles={['user']}>
+              <Booking_Confirmed />
+            </ProtectedRoute>
           }
         />
         <Route path="/help-and-support"
           element={
-            // <ProtectedRoute allowedRoles={['user', 'worker']}>
-            <Help />
-            //  </ProtectedRoute>
+            <ProtectedRoute allowedRoles={['user', 'worker']}>
+              <Help />
+            </ProtectedRoute>
           }
         />
+        <Route path="/worker-category"
+          element={
+            <ProtectedRoute allowedRoles={['user', 'worker']}>
+              <Worker_Category />
+            </ProtectedRoute>
+          }
+        />
+        <Route path="/worker-category/listed-worker/:category"
+          element={
+            <ProtectedRoute allowedRoles={['user', 'worker']}>
+              <Listed_Worker />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route path="/worker-category/listed-worker/:category/:id"
+          element={
+            <ProtectedRoute allowedRoles={['user', 'worker']}>
+              <Worker_Detail />
+            </ProtectedRoute>
+          }
+        />
+
 
         {/* Worker-only routes */}
         <Route path="/worker/dashboard"
           element={
-            // <ProtectedRoute allowedRoles={['worker']}>
-            <WorkerDashboard />
-            // </ProtectedRoute>
+            <ProtectedRoute allowedRoles={['worker']}>
+              <WorkerDashboard />
+            </ProtectedRoute>
           }
         />
 
         <Route path="/worker/profile"
           element={
-            // <ProtectedRoute allowedRoles={['worker']}>
-            <WorkerProfile />
-            // </ProtectedRoute>
+            <ProtectedRoute allowedRoles={['worker']}>
+              <WorkerProfile />
+            </ProtectedRoute>
           }
         />
 
         <Route path="/worker/completed-work"
           element={
-            // <ProtectedRoute allowedRoles={['worker']}>
-            <CompleteProfile />
-            // </ProtectedRoute>
+            <ProtectedRoute allowedRoles={['worker']}>
+              <CompleteProfile />
+            </ProtectedRoute>
           }
         />
 
         <Route path="/worker/booking-request"
           element={
-            // <ProtectedRoute allowedRoles={['worker']}>
-            <BookingRequestsPage />
-            // </ProtectedRoute>
+            <ProtectedRoute allowedRoles={['worker']}>
+              <BookingRequestsPage />
+            </ProtectedRoute>
           }
         />
 
         <Route path="/worker/available-work"
           element={
-            // <ProtectedRoute allowedRoles={['worker']}>
-            <AvailableWork />
-            // </ProtectedRoute>
+            <ProtectedRoute allowedRoles={['worker']}>
+              <AvailableWork />
+            </ProtectedRoute>
           }
         />
 
         <Route path="/worker/applied-work"
           element={
-            // <ProtectedRoute allowedRoles={['worker']}>
-            <AppliedWork />
-            // </ProtectedRoute>
+            <ProtectedRoute allowedRoles={['worker']}>
+              <AppliedWork />
+            </ProtectedRoute>
           }
         />
 
         <Route path="/worker/client-review"
           element={
-            // <ProtectedRoute allowedRoles={['worker']}>
-            <ClientReviews />
-            // </ProtectedRoute>
+            <ProtectedRoute allowedRoles={['worker']}>
+              <ClientReviews />
+            </ProtectedRoute>
           }
         />
 

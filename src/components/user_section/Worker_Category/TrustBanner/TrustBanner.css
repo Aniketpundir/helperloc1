@@ -1,0 +1,172 @@
+/* =============================================
+   TRUSTBANNER.CSS — Trust Section Styles
+   HelperLoc — Professional Home Services
+   ============================================= */
+
+.worker-category-trust {
+    background-color: var(--color-background);
+    padding: var(--spacing-xl) 0;
+}
+
+.worker-category-trust__inner {
+    max-width: var(--max-width);
+    margin: 0 auto;
+    padding: 0 var(--spacing-gutter);
+}
+
+/* --- Grid --- */
+.worker-category-trust__grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--spacing-lg);
+    text-align: center;
+}
+
+/* --- Item --- */
+.worker-category-trust__item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--spacing-base);
+    padding: var(--spacing-md);
+}
+
+/* --- Icon Wrap --- */
+.worker-category-trust__icon-wrap {
+    width: 64px;
+    height: 64px;
+    background-color: rgba(0, 77, 153, 0.10);
+    border-radius: var(--radius-full);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: var(--spacing-base);
+    flex-shrink: 0;
+}
+
+.worker-category-trust__icon {
+    font-size: 32px;
+    color: var(--color-primary);
+}
+
+/* --- Item Title --- */
+.worker-category-trust__item-title {
+    font-family: var(--font-headline);
+    font-size: var(--text-headline-sm);
+    font-weight: var(--fw-bold);
+    line-height: var(--lh-headline-sm);
+    color: var(--color-on-surface);
+    margin: 0;
+}
+
+/* --- Item Description --- */
+.worker-category-trust__item-desc {
+    font-family: var(--font-body);
+    font-size: var(--text-body-sm);
+    line-height: var(--lh-body-sm);
+    color: var(--color-on-surface-variant);
+    margin: 0;
+    max-width: 260px;
+}
+
+/* =============================================
+   MEDIA QUERIES
+   ============================================= */
+
+/* --- Tablet (max 1024px) --- */
+@media (max-width: 1024px) {
+    .worker-category-trust__grid {
+        gap: var(--spacing-md);
+    }
+
+    .worker-category-trust__item-desc {
+        max-width: 220px;
+    }
+}
+
+/* --- Small Tablet (max 768px) --- */
+@media (max-width: 768px) {
+    .worker-category-trust {
+        padding: 48px 0;
+    }
+
+    .worker-category-trust__inner {
+        padding: 0 var(--spacing-md);
+    }
+
+    .worker-category-trust__grid {
+        grid-template-columns: repeat(3, 1fr);
+        gap: var(--spacing-sm);
+    }
+
+    .worker-category-trust__item {
+        padding: var(--spacing-sm);
+    }
+
+    .worker-category-trust__icon-wrap {
+        width: 52px;
+        height: 52px;
+    }
+
+    .worker-category-trust__icon {
+        font-size: 26px;
+    }
+
+    .worker-category-trust__item-title {
+        font-size: 16px;
+    }
+
+    .worker-category-trust__item-desc {
+        font-size: 13px;
+        max-width: 100%;
+    }
+}
+
+/* --- Mobile (max 480px) --- */
+@media (max-width: 480px) {
+    .worker-category-trust {
+        padding: 32px 0;
+    }
+
+    .worker-category-trust__inner {
+        padding: 0 var(--spacing-margin-mobile);
+    }
+
+    .worker-category-trust__grid {
+        grid-template-columns: 1fr;
+        gap: var(--spacing-md);
+    }
+
+    .worker-category-trust__item {
+        flex-direction: row;
+        text-align: left;
+        align-items: flex-start;
+        gap: var(--spacing-md);
+        padding: var(--spacing-sm) 0;
+        border-bottom: 1px solid var(--color-outline-variant);
+    }
+
+    .worker-category-trust__item:last-child {
+        border-bottom: none;
+    }
+
+    .worker-category-trust__icon-wrap {
+        width: 48px;
+        height: 48px;
+        flex-shrink: 0;
+        margin-bottom: 0;
+    }
+
+    .worker-category-trust__icon {
+        font-size: 22px;
+    }
+
+    .worker-category-trust__item-title {
+        font-size: 15px;
+        margin-bottom: 4px;
+    }
+
+    .worker-category-trust__item-desc {
+        font-size: var(--text-body-sm);
+    }
+}

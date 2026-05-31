@@ -1,0 +1,256 @@
+/* =============================================
+   WORKERDETAIL_PROFILE.CSS
+   ============================================= */
+
+.worker-detail__profile-card {
+    background-color: var(--color-surface-container-lowest);
+    border-radius: 20px;
+    box-shadow: var(--shadow-md);
+    overflow: hidden;
+}
+
+/* --- Top Section --- */
+.worker-detail__profile-top {
+    background-color: #E3F2FD;
+    padding: var(--spacing-lg);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--spacing-md);
+}
+
+.worker-detail__profile-avatar-wrap {
+    position: relative;
+}
+
+.worker-detail__profile-avatar {
+    width: 100px;
+    height: 100px;
+    border-radius: var(--radius-full);
+    object-fit: cover;
+    border: 4px solid var(--color-surface-container-lowest);
+}
+
+.worker-detail__profile-verified {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    background-color: var(--color-primary-container);
+    color: var(--color-on-primary);
+    border-radius: var(--radius-full);
+    padding: 4px;
+    border: 2px solid var(--color-surface-container-lowest);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.worker-detail__profile-verified .material-symbols-outlined {
+    font-size: 14px;
+}
+
+.worker-detail__profile-name-wrap {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--spacing-xs);
+}
+
+.worker-detail__profile-name {
+    font-family: var(--font-headline);
+    font-size: var(--text-headline-md);
+    font-weight: var(--fw-bold);
+    line-height: var(--lh-headline-md);
+    color: var(--color-on-surface);
+    text-align: center;
+}
+
+.worker-detail__profile-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--spacing-xs);
+    background-color: rgba(0, 77, 153, 0.1);
+    color: var(--color-primary);
+    padding: 4px 12px;
+    border-radius: var(--radius-full);
+    font-size: var(--text-body-sm);
+    font-weight: var(--fw-semibold);
+    letter-spacing: var(--ls-label);
+}
+
+.worker-detail__profile-badge .material-symbols-outlined {
+    font-size: 16px;
+}
+
+.worker-detail__profile-meta {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.worker-detail__profile-rating {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    color: var(--color-primary);
+}
+
+.worker-detail__profile-star {
+    font-size: 18px;
+    color: var(--color-primary);
+}
+
+.worker-detail__profile-rating-val {
+    font-size: var(--text-body-md);
+    font-weight: var(--fw-bold);
+    color: var(--color-primary);
+}
+
+.worker-detail__profile-reviews {
+    font-size: var(--text-body-sm);
+    color: var(--color-on-surface-variant);
+}
+
+.worker-detail__profile-meta-sep {
+    color: var(--color-outline);
+}
+
+.worker-detail__profile-location {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    color: var(--color-on-surface-variant);
+    font-size: var(--text-body-sm);
+}
+
+.worker-detail__profile-location .material-symbols-outlined {
+    font-size: 18px;
+}
+
+/* --- Body Section --- */
+.worker-detail__profile-body {
+    padding: var(--spacing-lg);
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-lg);
+}
+
+/* Stats Grid */
+.worker-detail__profile-stats {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--spacing-md);
+}
+
+.worker-detail__profile-stat {
+    background-color: var(--color-surface);
+    border-radius: var(--radius-lg);
+    padding: var(--spacing-md);
+    text-align: center;
+}
+
+.worker-detail__profile-stat-label {
+    font-size: var(--text-body-sm);
+    font-weight: var(--fw-semibold);
+    letter-spacing: var(--ls-label);
+    color: var(--color-outline);
+    margin-bottom: 4px;
+}
+
+.worker-detail__profile-stat-value {
+    font-size: var(--text-body-md);
+    font-weight: var(--fw-bold);
+    color: var(--color-primary);
+}
+
+/* Skills */
+.worker-detail__profile-section-label {
+    font-size: var(--text-body-sm);
+    font-weight: var(--fw-semibold);
+    letter-spacing: var(--ls-label);
+    color: var(--color-on-surface-variant);
+    text-transform: uppercase;
+    margin-bottom: var(--spacing-sm);
+}
+
+.worker-detail__profile-skills {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--spacing-xs);
+}
+
+.worker-detail__profile-skill-tag {
+    background-color: var(--color-surface-container);
+    color: var(--color-on-surface-variant);
+    padding: 4px 12px;
+    border-radius: var(--radius-full);
+    font-size: var(--text-body-sm);
+    font-weight: var(--fw-medium);
+}
+
+/* About */
+.worker-detail__profile-about-text {
+    font-size: var(--text-body-sm);
+    color: var(--color-on-surface-variant);
+    line-height: 1.6;
+}
+
+/* Message Button */
+.worker-detail__profile-msg-btn {
+    width: 100%;
+    border: 2px solid var(--color-primary);
+    background: transparent;
+    color: var(--color-primary);
+    font-size: var(--text-body-sm);
+    font-weight: var(--fw-semibold);
+    letter-spacing: var(--ls-label);
+    padding: 12px var(--spacing-md);
+    border-radius: var(--radius-lg);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--spacing-sm);
+    cursor: pointer;
+    transition: background-color var(--transition-normal);
+}
+
+.worker-detail__profile-msg-btn:hover {
+    background-color: rgba(0, 77, 153, 0.05);
+}
+
+.worker-detail__profile-msg-btn:active {
+    transform: scale(0.97);
+}
+
+/* --- Responsive --- */
+@media (max-width: 1024px) {
+    .worker-detail__profile-top {
+        padding: var(--spacing-md);
+    }
+
+    .worker-detail__profile-body {
+        padding: var(--spacing-md);
+        gap: var(--spacing-md);
+    }
+}
+
+@media (max-width: 768px) {
+    .worker-detail__profile-avatar {
+        width: 80px;
+        height: 80px;
+    }
+
+    .worker-detail__profile-name {
+        font-size: var(--text-headline-sm);
+    }
+
+    .worker-detail__profile-stats {
+        gap: var(--spacing-sm);
+    }
+
+    .worker-detail__profile-stat {
+        padding: var(--spacing-sm);
+    }
+}

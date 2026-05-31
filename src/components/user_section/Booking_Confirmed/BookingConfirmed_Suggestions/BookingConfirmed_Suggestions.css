@@ -1,0 +1,127 @@
+/* =============================================
+   BOOKINGCONFIRMED_SUGGESTIONS.CSS
+   ============================================= */
+
+.booking-confirmed__suggestions {
+    margin-top: var(--spacing-xl);
+}
+
+.booking-confirmed__suggestions-title {
+    font-family: var(--font-headline);
+    font-size: var(--text-headline-md);
+    font-weight: var(--fw-bold);
+    color: var(--color-on-surface);
+    margin-bottom: var(--spacing-lg);
+}
+
+/* --- Grid --- */
+.booking-confirmed__suggestions-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--spacing-gutter);
+}
+
+/* --- Suggestion Card --- */
+.booking-confirmed__suggestion-card {
+    background-color: var(--color-surface-container-lowest);
+    border-radius: 20px;
+    box-shadow: 0px 4px 20px rgba(21, 101, 192, 0.08);
+    padding: var(--spacing-sm);
+    transition: transform var(--transition-normal);
+    overflow: hidden;
+}
+
+.booking-confirmed__suggestion-card:hover {
+    transform: translateY(-4px);
+}
+
+.booking-confirmed__suggestion-img {
+    width: 100%;
+    height: 180px;
+    object-fit: cover;
+    border-radius: var(--radius-xl);
+    margin-bottom: var(--spacing-sm);
+    display: block;
+}
+
+.booking-confirmed__suggestion-body {
+    padding: var(--spacing-xs);
+}
+
+.booking-confirmed__suggestion-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 4px;
+}
+
+.booking-confirmed__suggestion-name {
+    font-family: var(--font-headline);
+    font-size: var(--text-headline-sm);
+    font-weight: var(--fw-bold);
+    color: var(--color-on-surface);
+}
+
+.booking-confirmed__suggestion-rating {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 12px;
+    font-weight: var(--fw-bold);
+    color: var(--color-secondary);
+}
+
+.booking-confirmed__suggestion-desc {
+    font-size: var(--text-body-sm);
+    color: var(--color-on-surface-variant);
+    margin-bottom: var(--spacing-md);
+    line-height: var(--lh-body-sm);
+}
+
+.booking-confirmed__suggestion-btn {
+    width: 100%;
+    background-color: var(--color-surface-container);
+    color: var(--color-primary);
+    font-family: var(--font-body);
+    font-size: var(--text-body-sm);
+    font-weight: var(--fw-bold);
+    padding: var(--spacing-sm) var(--spacing-md);
+    border-radius: var(--radius-lg);
+    border: none;
+    cursor: pointer;
+    transition: all var(--transition-normal);
+}
+
+.booking-confirmed__suggestion-btn:hover {
+    background-color: var(--color-primary);
+    color: var(--color-on-primary);
+}
+
+/* --- Responsive --- */
+@media (max-width: 1024px) {
+    .booking-confirmed__suggestions-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 768px) {
+    .booking-confirmed__suggestions-title {
+        font-size: var(--text-headline-sm);
+        margin-bottom: var(--spacing-md);
+    }
+
+    .booking-confirmed__suggestions-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: var(--spacing-md);
+    }
+
+    .booking-confirmed__suggestion-img {
+        height: 140px;
+    }
+}
+
+@media (max-width: 480px) {
+    .booking-confirmed__suggestions-grid {
+        grid-template-columns: 1fr;
+    }
+}
