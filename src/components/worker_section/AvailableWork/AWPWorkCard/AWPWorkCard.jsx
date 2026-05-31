@@ -1,9 +1,6 @@
-import { useState } from "react";
 import "./AWPWorkCard.css";
 
-export default function AWPWorkCard({ card, onWantJob, onViewDetails }) {
-    const [applied, setApplied] = useState(false);
-
+export default function AWPWorkCard({ card, actionLoading, onWantJob, onWithdrawJob, onViewDetails }) {
     const urgencyConfig = {
         urgent: {
             className: "awp-work-card__urgency-badge--urgent",
@@ -26,10 +23,17 @@ export default function AWPWorkCard({ card, onWantJob, onViewDetails }) {
     };
 
     const urgencyCfg = urgencyConfig[card.urgency] || urgencyConfig.flexible;
+    const isBusy = actionLoading === card.id;
+    const isApplied = card.hasApplied;
 
     const handleWantJob = () => {
-        if (applied) return;
-        setApplied(true);
+        if (isBusy) return;
+
+        if (isApplied) {
+            onWithdrawJob && onWithdrawJob(card);
+            return;
+        }
+
         onWantJob && onWantJob(card);
     };
 
@@ -38,7 +42,7 @@ export default function AWPWorkCard({ card, onWantJob, onViewDetails }) {
     };
 
     return (
-        <div className={`awp-work-card ${applied ? "awp-work-card--applied" : ""}`}>
+        <div className={`awp-work-card ${isApplied ? "awp-work-card--applied" : ""}`}>
             {/* Top Row */}
             <div className="awp-work-card__top-row">
                 <div className="awp-work-card__category">
@@ -97,15 +101,15 @@ export default function AWPWorkCard({ card, onWantJob, onViewDetails }) {
             {/* Action Buttons */}
             <div className="awp-work-card__actions">
                 <button
-                    className={`awp-work-card__btn awp-work-card__btn--primary ${applied ? "awp-work-card__btn--applied" : ""
+                    className={`awp-work-card__btn awp-work-card__btn--primary ${isApplied ? "awp-work-card__btn--applied" : ""
                         }`}
                     onClick={handleWantJob}
-                    disabled={applied}
+                    disabled={isBusy}
                 >
                     <span className="material-symbols-outlined">
-                        {applied ? "check_circle" : "chat_bubble"}
+                        {isApplied ? "check_circle" : "chat_bubble"}
                     </span>
-                    {applied ? "Application Sent!" : "I Want This Job"}
+                    {isBusy ? "Please wait..." : isApplied ? "Withdraw Application" : "I Want This Job"}
                 </button>
 
                 <button

@@ -109,6 +109,38 @@
   color: #1565C0;
 }
 
+.request-page__search-wrap {
+  position: relative;
+  margin-bottom: 24px;
+  max-width: 520px;
+}
+
+.request-page__search-icon {
+  position: absolute;
+  left: 16px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #727783;
+  font-size: 20px;
+}
+
+.request-page__search-input {
+  width: 100%;
+  padding: 13px 16px 13px 48px;
+  border: 1px solid rgba(21, 101, 192, 0.12);
+  border-radius: 14px;
+  background: #ffffff;
+  box-shadow: 0px 4px 20px rgba(21, 101, 192, 0.06);
+  font-family: 'Work Sans', sans-serif;
+  font-size: 14px;
+  color: #111d23;
+  outline: none;
+}
+
+.request-page__search-input:focus {
+  border-color: #1565C0;
+}
+
 /* Cards stack */
 .request-page__cards {
   display: flex;

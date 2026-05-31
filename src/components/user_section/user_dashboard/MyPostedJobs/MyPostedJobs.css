@@ -684,6 +684,18 @@
 
 .mpj-empty__icon { font-size: 48px !important; opacity: 0.4; }
 
+.mpj-retry-btn {
+  padding: 10px 18px;
+  border: none;
+  border-radius: var(--radius-lg);
+  background: var(--color-primary-container);
+  color: white;
+  font-family: var(--font-body);
+  font-size: var(--text-body-sm);
+  font-weight: var(--fw-bold);
+  cursor: pointer;
+}
+
 /* ── Avatar as img ── */
 .mpj-applicant__avatar {
   width: 44px;

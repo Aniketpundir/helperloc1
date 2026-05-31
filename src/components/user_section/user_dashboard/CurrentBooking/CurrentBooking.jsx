@@ -1,26 +1,37 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import './CurrentBooking.css';
-import BookingsHeader  from './BookingsHeader/BookingsHeader';
-import BookingsList    from './BookingsList/BookingsList';
+import BookingsHeader from './BookingsHeader/BookingsHeader';
+import BookingsList from './BookingsList/BookingsList';
 import LiveTrackingMap from './LiveTrackingMap/LiveTrackingMap';
+import { fetchCurrentBookings } from '../../../../Redux/Slice/currentBookingSlice';
 
 export default function CurrentBooking() {
+  const dispatch = useDispatch();
   const [activeTab, setActiveTab] = useState('Active');
+  const { bookings, counts, loading, error } = useSelector((state) => state.currentBookings);
+
+  useEffect(() => {
+    dispatch(fetchCurrentBookings());
+  }, [dispatch]);
 
   return (
     <>
-      <BookingsHeader activeTab={activeTab} onTabChange={setActiveTab} />
+      <BookingsHeader activeTab={activeTab} counts={counts} onTabChange={setActiveTab} />
 
       <main className="bookings-page">
         <div className="bookings-page__grid">
-          {/* Left — booking cards */}
           <div className="bookings-page__left">
-            <BookingsList activeTab={activeTab} />
+            <BookingsList
+              activeTab={activeTab}
+              bookings={bookings}
+              loading={loading}
+              error={error}
+            />
           </div>
 
-          {/* Right — live map */}
           <div className="bookings-page__right">
-            <LiveTrackingMap />
+            <LiveTrackingMap booking={bookings[0]} />
           </div>
         </div>
       </main>

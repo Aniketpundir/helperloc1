@@ -1,12 +1,12 @@
 import './BookingsHeader.css';
 
-const tabs = [
-    { label: 'Active', count: 2 },
-    { label: 'Upcoming', count: 1 },
-    { label: 'Rescheduled', count: 0 },
-];
+export default function BookingsHeader({ activeTab, counts, onTabChange }) {
+    const tabs = [
+        { label: 'Active', count: counts?.active || 0 },
+        { label: 'Upcoming', count: counts?.upcoming || 0 },
+        { label: 'Rescheduled', count: counts?.rescheduled || 0 },
+    ];
 
-export default function BookingsHeader({ activeTab, onTabChange }) {
     return (
         <header className="bookings-header">
             <div className="bookings-header__inner">

@@ -75,6 +75,93 @@
   font-size: 56px !important;
 }
 
+.awp-detail-modal {
+  position: fixed;
+  inset: 0;
+  z-index: var(--z-modal);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  background: rgba(0, 0, 0, 0.42);
+}
+
+.awp-detail-modal__card {
+  width: min(680px, 100%);
+  position: relative;
+  background: var(--color-surface-container-lowest);
+  border-radius: 20px;
+  padding: 28px;
+  box-shadow: var(--shadow-2xl);
+}
+
+.awp-detail-modal__close {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  border: none;
+  background: transparent;
+  color: var(--color-on-surface-variant);
+  cursor: pointer;
+}
+
+.awp-detail-modal__head {
+  display: flex;
+  gap: 14px;
+  align-items: center;
+  margin-bottom: 18px;
+}
+
+.awp-detail-modal__icon {
+  width: 52px;
+  height: 52px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: rgba(0, 77, 153, 0.1);
+  color: var(--color-primary);
+  font-size: 28px !important;
+}
+
+.awp-detail-modal__category {
+  color: var(--color-primary);
+  font-family: var(--font-body);
+  font-size: 12px;
+  font-weight: var(--fw-bold);
+  letter-spacing: var(--ls-label);
+  text-transform: uppercase;
+}
+
+.awp-detail-modal__title {
+  font-family: var(--font-headline);
+  font-size: var(--text-headline-sm);
+  color: var(--color-on-background);
+}
+
+.awp-detail-modal__description {
+  margin-bottom: 20px;
+  color: var(--color-on-surface-variant);
+  font-family: var(--font-body);
+  line-height: 1.6;
+}
+
+.awp-detail-modal__grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+  color: var(--color-on-surface-variant);
+  font-family: var(--font-body);
+  font-size: var(--text-body-sm);
+}
+
+.awp-detail-modal__loading {
+  padding: 40px;
+  text-align: center;
+  color: var(--color-on-surface-variant);
+  font-family: var(--font-body);
+}
+
 /* ---- RESPONSIVE ---- */
 @media (max-width: 768px) {
   .awp-page {
@@ -107,5 +194,9 @@
   .awp-page__header {
     flex-direction: column;
     align-items: flex-start;
+  }
+
+  .awp-detail-modal__grid {
+    grid-template-columns: 1fr;
   }
 }

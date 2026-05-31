@@ -75,6 +75,7 @@ export default function Addresses({
     selectedAddressId = null,
     onSelect = null,
     isBookingMode = false,
+    allowManageInBooking = false,
 }) {
     const dispatch = useDispatch();
     const localAddresses = useSelector((state) => state.address.addresses);
@@ -352,12 +353,15 @@ export default function Addresses({
                                 </div>
                             </div>
 
-                            {!isBookingMode && (
+                            {(!isBookingMode || allowManageInBooking) && (
                                 <div className="addr__card-actions">
                                     <button
                                         className="addr__action-btn addr__action-btn--edit"
                                         type="button"
-                                        onClick={() => openEditForm(address)}
+                                        onClick={(event) => {
+                                            event.stopPropagation();
+                                            openEditForm(address);
+                                        }}
                                         aria-label="Edit address"
                                     >
                                         <MdEdit />
@@ -365,7 +369,10 @@ export default function Addresses({
                                     <button
                                         className="addr__action-btn addr__action-btn--delete"
                                         type="button"
-                                        onClick={() => setDeleteId(id)}
+                                        onClick={(event) => {
+                                            event.stopPropagation();
+                                            setDeleteId(id);
+                                        }}
                                         aria-label="Delete address"
                                     >
                                         <MdDelete />

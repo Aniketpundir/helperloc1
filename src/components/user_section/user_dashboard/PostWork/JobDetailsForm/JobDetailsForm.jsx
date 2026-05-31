@@ -1,4 +1,7 @@
 import { useState, useRef, useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { toast } from 'react-toastify';
+import { clearPostedWork, createWorkPost } from '../../../../../Redux/Slice/postWorkSlice';
 import './JobDetailsForm.css';
 
 const workerTypes = [
@@ -77,9 +80,13 @@ const emptyForm = {
     budget: 1500,
     description: '',
     datetime: '',
+    photos: [],
 };
 
 export default function JobDetailsForm() {
+    const dispatch = useDispatch();
+    const fileInputRef = useRef(null);
+    const { loading } = useSelector((state) => state.postWork);
     const [form, setForm] = useState(emptyForm);
     const [errors, setErrors] = useState({});
     const [posted, setPosted] = useState(false);
@@ -101,11 +108,41 @@ export default function JobDetailsForm() {
         return e;
     };
 
-    const handleSubmit = (e) => {
+    const handleFileChange = (event) => {
+        const files = Array.from(event.target.files || []);
+        const validFiles = files.filter((file) => file.size <= 5 * 1024 * 1024);
+
+        if (validFiles.length !== files.length) {
+            toast.error('Each image must be 5MB or less.');
+        }
+
+        handleChange('photos', validFiles.slice(0, 5));
+    };
+
+    const handleSubmit = async (e) => {
         e.preventDefault();
         const errs = validate();
         if (Object.keys(errs).length > 0) { setErrors(errs); return; }
-        setPosted(true);
+
+        try {
+            await dispatch(createWorkPost({
+                workerType: form.workerType,
+                title: form.title.trim(),
+                address: form.address.trim(),
+                urgency: form.urgency,
+                workersNeeded: form.workers,
+                budgetMin: Math.round(form.budget * 0.4),
+                budgetMax: Number(form.budget),
+                description: form.description.trim(),
+                preferredDateTime: form.datetime,
+                photos: form.photos,
+            })).unwrap();
+
+            toast.success('Job posted successfully.');
+            setPosted(true);
+        } catch (message) {
+            toast.error(message || 'Failed to post job.');
+        }
     };
 
     if (posted) {
@@ -114,7 +151,14 @@ export default function JobDetailsForm() {
                 <span className="material-symbols-outlined jdf-success__icon">check_circle</span>
                 <h2 className="jdf-success__heading">Job Posted Successfully!</h2>
                 <p className="jdf-success__sub">Workers will start applying shortly. Check your bookings for updates.</p>
-                <button className="jdf-success__btn" onClick={() => { setForm(emptyForm); setPosted(false); }}>
+                <button
+                    className="jdf-success__btn"
+                    onClick={() => {
+                        dispatch(clearPostedWork());
+                        setForm(emptyForm);
+                        setPosted(false);
+                    }}
+                >
                     Post Another Job
                 </button>
             </div>
@@ -282,9 +326,21 @@ export default function JobDetailsForm() {
                     <span className="material-symbols-outlined jdf-label__icon">photo_camera</span>
                     UPLOAD PHOTOS (OPTIONAL)
                 </label>
-                <div className="jdf-upload">
+                <input
+                    ref={fileInputRef}
+                    type="file"
+                    accept="image/*"
+                    multiple
+                    hidden
+                    onChange={handleFileChange}
+                />
+                <div className="jdf-upload" onClick={() => fileInputRef.current?.click()}>
                     <span className="material-symbols-outlined jdf-upload__icon">cloud_upload</span>
-                    <p>Click to upload or drag &amp; drop images (max 5MB each)</p>
+                    <p>
+                        {form.photos.length > 0
+                            ? `${form.photos.length} image${form.photos.length > 1 ? 's' : ''} selected`
+                            : 'Click to upload or drag & drop images (max 5MB each)'}
+                    </p>
                 </div>
             </div>
 
@@ -297,9 +353,9 @@ export default function JobDetailsForm() {
             </div>
 
             {/* Submit button */}
-            <button type="submit" className="jdf-submit-btn">
+            <button type="submit" className="jdf-submit-btn" disabled={loading}>
                 <span className="material-symbols-outlined">send</span>
-                Post Job
+                {loading ? 'Posting...' : 'Post Job'}
             </button>
 
         </form>

@@ -1,100 +1,137 @@
-import React, { useState } from 'react';
-import { useSelector } from 'react-redux';
+import React, { useMemo, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
+import { createBooking } from '../../../../Redux/Slice/bookingCreateSlice';
 import Addresses from '../../user_dashboard/UserProfile/Addresses/Addresses';
 import './WorkerDetail_BookingForm.css';
 
-const dateSlots = [
-    { label: 'Today', date: '24 Oct' },
-    { label: 'Tomorrow', date: '25 Oct' },
-    { label: 'Day After', date: '26 Oct' },
-];
+const makeDateSlots = () => {
+    const labels = ['Today', 'Tomorrow', 'Day After'];
+
+    return labels.map((label, index) => {
+        const date = new Date();
+        date.setDate(date.getDate() + index);
+
+        return {
+            label,
+            value: date.toISOString(),
+            date: date.toLocaleDateString('en-IN', {
+                day: '2-digit',
+                month: 'short',
+            }),
+        };
+    });
+};
 
 const timeSlots = [
-    { emoji: '🌅', time: '7:00 AM' },
-    { emoji: '🌅', time: '10:00 AM' },
-    { emoji: '🏙️', time: '1:00 PM' },
-    { emoji: '🌆', time: '4:00 PM' },
+    { label: 'Morning', time: '7:00 AM' },
+    { label: 'Morning', time: '10:00 AM' },
+    { label: 'Afternoon', time: '1:00 PM' },
+    { label: 'Evening', time: '4:00 PM' },
 ];
 
-const WorkerDetail_BookingForm = ({ worker }) => {
+const getAddressId = (address) => address._id || address.id;
+
+const WorkerDetail_BookingForm = ({
+    worker,
+    addresses = [],
+    onAddAddress,
+    onUpdateAddress,
+    onDeleteAddress,
+}) => {
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
+    const { loading } = useSelector((state) => state.bookingCreate);
+    const dateSlots = useMemo(() => makeDateSlots(), []);
     const [selectedDate, setSelectedDate] = useState(0);
     const [selectedTime, setSelectedTime] = useState(1);
     const [workerCount, setWorkerCount] = useState(1);
+    const [estimatedHours] = useState(2);
     const [selectedAddressId, setSelectedAddressId] = useState(null);
+    const [workDescription, setWorkDescription] = useState('');
+    const [specialInstructions, setSpecialInstructions] = useState('');
 
-    // Redux se addresses lo
-    const addresses = useSelector(state => state.address.addresses);
+    const selectedAddress = addresses.find((address) => getAddressId(address) === selectedAddressId);
+    const estimatedAmount = (worker.hourlyRate || 0) * workerCount * estimatedHours;
 
-    const updateCounter = (val) => setWorkerCount(prev => Math.max(1, prev + val));
-
- const handleSubmit = (e) => {
-    e.preventDefault();
-    if (!selectedAddressId) {
-        alert('Please select a service address!');
-        return;
-    }
-
-    // Selected address ka pura data Redux se nikalo
-    const selectedAddress = addresses.find(a => a.id === selectedAddressId);
-
-    const bookingData = {
-        category: worker.category,
-        date: dateSlots[selectedDate],
-        time: timeSlots[selectedTime].time,
-        workerCount,
-        address: {
-            id: selectedAddress.id,
-            label: selectedAddress.label,
-            addressType: selectedAddress.addressType,
-            street: selectedAddress.street,
-            area: selectedAddress.area,
-            city: selectedAddress.city,
-            state: selectedAddress.state,
-            pincode: selectedAddress.pincode,
-        },
+    const updateCounter = (value) => {
+        setWorkerCount((prev) => Math.max(1, prev + value));
     };
 
-    console.log('✅ Booking Data:', bookingData);
-    alert(`Booking Confirmed!\n📍 Address: ${selectedAddress.label} — ${selectedAddress.city}`);
-};
+    const handleSubmit = async (event) => {
+        event?.preventDefault();
 
-    const selectedAddress = addresses.find(a => a.id === selectedAddressId);
+        if (!selectedAddress) {
+            toast.error('Please select a service address.');
+            return;
+        }
+
+        const payload = {
+            workerId: worker.id,
+            serviceName: worker.category,
+            workDescription,
+            specialInstructions,
+            scheduledDate: dateSlots[selectedDate].value,
+            timeSlot: timeSlots[selectedTime].time,
+            workerCount,
+            estimatedHours,
+            address: {
+                label: selectedAddress.label,
+                address: selectedAddress.address,
+                city: selectedAddress.city || null,
+                state: selectedAddress.state || null,
+                pincode: selectedAddress.pincode || null,
+            },
+        };
+
+        try {
+            const booking = await dispatch(createBooking(payload)).unwrap();
+            toast.success(`Booking confirmed with ${worker.name}.`);
+            navigate(`/booking-confirmed?bookingId=${booking._id}`);
+        } catch (message) {
+            toast.error(message || 'Failed to confirm booking.');
+        }
+    };
 
     return (
         <div className="worker-detail__booking-card">
             <h2 className="worker-detail__booking-title">Book {worker.name}</h2>
 
-            <form className="worker-detail__booking-form" onSubmit={handleSubmit}>
-
-                {/* ── Addresses Component ── */}
+            <div className="worker-detail__booking-form">
                 <div className="worker-detail__booking-field">
                     <Addresses
+                        addresses={addresses}
+                        onAddAddress={onAddAddress}
+                        onUpdateAddress={onUpdateAddress}
+                        onDeleteAddress={onDeleteAddress}
                         selectedAddressId={selectedAddressId}
                         onSelect={setSelectedAddressId}
                         isBookingMode={true}
+                        allowManageInBooking={true}
                     />
                 </div>
 
-                {/* ── Work Description ── */}
                 <div className="worker-detail__booking-field">
                     <label className="worker-detail__booking-label">Work Needed</label>
                     <textarea
                         className="worker-detail__booking-textarea"
-                        placeholder="Describe the electrical issue or task..."
+                        placeholder="Describe the issue or task..."
                         rows={3}
+                        value={workDescription}
+                        onChange={(event) => setWorkDescription(event.target.value)}
                     />
                 </div>
 
-                {/* ── Date Selection ── */}
                 <div className="worker-detail__booking-field">
                     <label className="worker-detail__booking-label">Select Date</label>
                     <div className="worker-detail__booking-date-row">
-                        {dateSlots.map((slot, i) => (
+                        {dateSlots.map((slot, index) => (
                             <button
-                                key={i}
+                                key={slot.label}
                                 type="button"
-                                className={`worker-detail__booking-date-pill${selectedDate === i ? ' worker-detail__booking-date-pill--active' : ''}`}
-                                onClick={() => setSelectedDate(i)}
+                                className={`worker-detail__booking-date-pill${selectedDate === index ? ' worker-detail__booking-date-pill--active' : ''}`}
+                                onClick={() => setSelectedDate(index)}
                             >
                                 <span className="worker-detail__booking-date-day">{slot.label}</span>
                                 <span className="worker-detail__booking-date-num">{slot.date}</span>
@@ -103,24 +140,22 @@ const WorkerDetail_BookingForm = ({ worker }) => {
                     </div>
                 </div>
 
-                {/* ── Time Slots ── */}
                 <div className="worker-detail__booking-field">
                     <label className="worker-detail__booking-label">Select Time Slot</label>
                     <div className="worker-detail__booking-time-grid">
-                        {timeSlots.map((slot, i) => (
+                        {timeSlots.map((slot, index) => (
                             <button
-                                key={i}
+                                key={slot.time}
                                 type="button"
-                                className={`worker-detail__booking-time-pill${selectedTime === i ? ' worker-detail__booking-time-pill--active' : ''}`}
-                                onClick={() => setSelectedTime(i)}
+                                className={`worker-detail__booking-time-pill${selectedTime === index ? ' worker-detail__booking-time-pill--active' : ''}`}
+                                onClick={() => setSelectedTime(index)}
                             >
-                                {slot.emoji} {slot.time}
+                                {slot.label} {slot.time}
                             </button>
                         ))}
                     </div>
                 </div>
 
-                {/* ── Worker Counter & Instructions ── */}
                 <div className="worker-detail__booking-row">
                     <div className="worker-detail__booking-field">
                         <label className="worker-detail__booking-label">Number of Workers</label>
@@ -140,11 +175,12 @@ const WorkerDetail_BookingForm = ({ worker }) => {
                             className="worker-detail__booking-input"
                             type="text"
                             placeholder="E.g. Call before arrival"
+                            value={specialInstructions}
+                            onChange={(event) => setSpecialInstructions(event.target.value)}
                         />
                     </div>
                 </div>
 
-                {/* ── Booking Summary ── */}
                 <div className="worker-detail__booking-summary">
                     <h3 className="worker-detail__booking-summary-title">Booking Summary</h3>
                     <div className="worker-detail__booking-summary-rows">
@@ -164,14 +200,14 @@ const WorkerDetail_BookingForm = ({ worker }) => {
                             <div className="worker-detail__booking-summary-row">
                                 <span className="worker-detail__booking-summary-key">Address</span>
                                 <span className="worker-detail__booking-summary-val">
-                                    {selectedAddress.label} — {selectedAddress.city}
+                                    {selectedAddress.label} - {selectedAddress.address}
                                 </span>
                             </div>
                         )}
                     </div>
                     <div className="worker-detail__booking-summary-total">
                         <span className="worker-detail__booking-summary-total-label">Est. Budget</span>
-                        <span className="worker-detail__booking-summary-total-val">₹600 – ₹800</span>
+                        <span className="worker-detail__booking-summary-total-val">Rs.{estimatedAmount}</span>
                     </div>
                     <div className="worker-detail__booking-summary-note">
                         <span className="material-symbols-outlined">info</span>
@@ -179,12 +215,11 @@ const WorkerDetail_BookingForm = ({ worker }) => {
                     </div>
                 </div>
 
-                {/* ── Submit ── */}
-                <button className="worker-detail__booking-submit" type="submit">
+                <button className="worker-detail__booking-submit" type="button" onClick={handleSubmit} disabled={loading}>
                     <span className="material-symbols-outlined">calendar_today</span>
-                    Confirm Booking
+                    {loading ? 'Confirming...' : 'Confirm Booking'}
                 </button>
-            </form>
+            </div>
         </div>
     );
 };
