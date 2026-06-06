@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import './WorkerJobCard.css';
 
 const PRIORITY_CONFIG = {
@@ -15,8 +14,10 @@ export default function WorkerJobCard({
     location,
     priceRange,
     priority = 'soon',
+    hasApplied = false,
+    actionLoading = false,
+    onApply,
 }) {
-    const [interested, setInterested] = useState(false);
     const priorityCfg = PRIORITY_CONFIG[priority] || PRIORITY_CONFIG.soon;
 
     return (
@@ -48,14 +49,17 @@ export default function WorkerJobCard({
 
             {/* CTA Button */}
             <button
-                className={`worker-job-card__btn ${interested ? 'worker-job-card__btn--applied' : ''}`}
-                onClick={() => setInterested((p) => !p)}
+                className={`worker-job-card__btn ${hasApplied ? 'worker-job-card__btn--applied' : ''}`}
+                onClick={onApply}
+                disabled={hasApplied || actionLoading}
             >
-                {interested ? (
+                {hasApplied ? (
                     <>
                         <span className="material-symbols-outlined">check_circle</span>
                         Applied!
                     </>
+                ) : actionLoading ? (
+                    'Applying...'
                 ) : (
                     "I'm Interested"
                 )}

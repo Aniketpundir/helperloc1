@@ -7,10 +7,10 @@ const STATS = [
     // { icon: 'payments', label: 'Total Earned', value: '₹18,500', color: 'blue' },
 ];
 
-export default function WorkerStatsRow() {
+export default function WorkerStatsRow({ stats = STATS }) {
     return (
         <div className="worker-stats">
-            {STATS.map((stat) => (
+            {stats.map((stat) => (
                 <div key={stat.label} className={`worker-stats__card worker-stats__card--${stat.color}`}>
                     <div className={`worker-stats__icon-wrap worker-stats__icon-wrap--${stat.color}`}>
                         <span className="material-symbols-outlined worker-stats__icon">{stat.icon}</span>

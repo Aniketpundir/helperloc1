@@ -1,13 +1,9 @@
-import { useState } from 'react';
 import './FilterChips.css';
 
 const FILTERS = ['All Services', 'Completed', 'Cancelled', 'Rescheduled'];
 
-export default function FilterChips({ onFilterChange }) {
-    const [active, setActive] = useState('All Services');
-
+export default function FilterChips({ activeFilter = 'All Services', onFilterChange }) {
     const handleClick = (filter) => {
-        setActive(filter);
         if (onFilterChange) onFilterChange(filter);
     };
 
@@ -16,7 +12,7 @@ export default function FilterChips({ onFilterChange }) {
             {FILTERS.map((filter) => (
                 <button
                     key={filter}
-                    className={`past-filters__chip ${active === filter ? 'past-filters__chip--active' : ''}`}
+                    className={`past-filters__chip ${activeFilter === filter ? 'past-filters__chip--active' : ''}`}
                     onClick={() => handleClick(filter)}
                 >
                     {filter}

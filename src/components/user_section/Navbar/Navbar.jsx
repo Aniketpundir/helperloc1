@@ -55,6 +55,8 @@ const Navbar = () => {
         navigate('/login', { replace: true });
     };
 
+    const canUseUserChats = isAuthenticated && ['user', 'both'].includes(user?.role);
+
     // ── User Dropdown ──
     const UserDropdown = () => (
         <div className="navbar__profile-wrap" ref={dropRef}>
@@ -104,6 +106,10 @@ const Navbar = () => {
                     <Link to="/user-dashboard/my-posted-jobs" className="navbar__dropdown-item" onClick={() => setProfileOpen(false)}>
                         <span className="material-symbols-outlined">list_alt</span>
                         <span>My Posted Jobs</span>
+                    </Link>
+                    <Link to="/user-dashboard/recent-chats" className="navbar__dropdown-item" onClick={() => setProfileOpen(false)}>
+                        <span className="material-symbols-outlined">forum</span>
+                        <span>Recent Chats</span>
                     </Link>
                     <Link to="/help-and-support" className="navbar__dropdown-item" onClick={() => setProfileOpen(false)}>
                         <span className="material-symbols-outlined">help_center</span>
@@ -175,6 +181,10 @@ const Navbar = () => {
                         <span className="material-symbols-outlined">assignment_turned_in</span>
                         <span>Applied Work</span>
                     </Link>
+                    <Link to="/worker/recent-chats" className="navbar__dropdown-item" onClick={() => setProfileOpen(false)}>
+                        <span className="material-symbols-outlined">forum</span>
+                        <span>Recent Chats</span>
+                    </Link>
                     <Link to="/worker/client-review" className="navbar__dropdown-item" onClick={() => setProfileOpen(false)}>
                         <span className="material-symbols-outlined">star_rate</span>
                         <span>Client Reviews</span>
@@ -210,6 +220,14 @@ const Navbar = () => {
                     <Link to="/how-it-works" className={`navbar__link ${isActive('/how-it-works') ? 'navbar__link--active' : ''}`}>How it Works</Link>
                     <Link to="/about-us" className={`navbar__link ${isActive('/about-us') ? 'navbar__link--active' : ''}`}>About</Link>
                     <Link to="/contact-us" className={`navbar__link ${isActive('/contact-us') ? 'navbar__link--active' : ''}`}>Contact</Link>
+                    {canUseUserChats && (
+                        <Link
+                            to="/user-dashboard/recent-chats"
+                            className={`navbar__link ${isActive('/user-dashboard/recent-chats') ? 'navbar__link--active' : ''}`}
+                        >
+                            Chats
+                        </Link>
+                    )}
                 </div>
 
                 <div className="navbar__search">

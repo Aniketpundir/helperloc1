@@ -76,6 +76,9 @@
 }
 
 .worker-dashboard__view-all {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
   font-family: var(--font-body);
   font-size: var(--text-body-sm);
   font-weight: var(--fw-bold);
@@ -88,6 +91,10 @@
 .worker-dashboard__view-all:hover {
   text-decoration: underline;
   opacity: 0.8;
+}
+
+.worker-dashboard__view-all .material-symbols-outlined {
+  font-size: 16px !important;
 }
 
 .worker-dashboard__jobs-section {
@@ -110,4 +117,27 @@
 .worker-dashboard__jobs-scroll::-webkit-scrollbar-thumb {
   background: #c2c6d4;
   border-radius: 10px;
+}
+
+.worker-dashboard__state,
+.worker-dashboard__empty {
+  min-height: 160px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  border: 1.5px dashed var(--color-surface-variant);
+  border-radius: 18px;
+  background: white;
+  color: var(--color-outline);
+  font-family: var(--font-body);
+  font-weight: var(--fw-semibold);
+}
+
+.worker-dashboard__state .material-symbols-outlined {
+  font-size: 28px !important;
+}
+
+.worker-dashboard__jobs-scroll .worker-dashboard__empty {
+  min-width: 100%;
 }

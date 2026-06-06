@@ -1,123 +1,133 @@
+import { useEffect } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { toast } from 'react-toastify';
 import './WorkerDashboard.css';
 import WorkerTopBar from './WorkerTopBar/WorkerTopBar';
 import WorkerStatsRow from './WorkerStatsRow/WorkerStatsRow';
 import WorkerBookingCard from './WorkerBookingCard/WorkerBookingCard';
-import WorkerEarningsChart from './WorkerEarningsChart/WorkerEarningsChart';
 import WorkerJobCard from './WorkerJobCard/WorkerJobCard';
-
-const BOOKINGS = [
-    {
-        id: 1,
-        icon: 'plumbing',
-        title: 'Emergency Pipe Leakage',
-        customerName: 'Anita Singh',
-        location: 'Sector 45, Gurgaon',
-        dateTime: 'Today, 02:30 PM',
-        status: 'pending',
-        priority: 'urgent',
-    },
-    {
-        id: 2,
-        icon: 'electrical_services',
-        title: 'Kitchen Rewiring',
-        customerName: 'Rahul Verma',
-        location: 'DLF Phase 3',
-        dateTime: 'Tomorrow, 10:00 AM',
-        status: 'confirmed',
-        priority: 'soon',
-    },
-    {
-        id: 3,
-        icon: 'cleaning_services',
-        title: 'Full Home Deep Clean',
-        customerName: 'Megha Kapoor',
-        location: 'Golf Estate',
-        dateTime: 'Sun, 24 May',
-        status: 'cancelled',
-        priority: 'flexible',
-    },
-];
-
-const JOBS = [
-    {
-        id: 1,
-        icon: 'bolt',
-        iconColor: 'blue',
-        category: 'Electrician',
-        title: 'Main Switchboard Replacement',
-        location: 'Cyber City, Phase II',
-        priceRange: '₹1,200 – ₹2,500',
-        priority: 'urgent',
-    },
-    {
-        id: 2,
-        icon: 'handyman',
-        iconColor: 'green',
-        category: 'Plumber',
-        title: 'New Bathroom Fitting',
-        location: 'MG Road, Heritage City',
-        priceRange: '₹8,000 – ₹12,000',
-        priority: 'soon',
-    },
-    {
-        id: 3,
-        icon: 'home',
-        iconColor: 'orange',
-        category: 'Cleaning',
-        title: 'Office Carpet Deep Clean',
-        location: 'Palam Vihar, Ext.',
-        priceRange: '₹3,500 – ₹5,000',
-        priority: 'flexible',
-    },
-];
+import {
+    applyFromWorkerDashboard,
+    fetchWorkerDashboard,
+    requestBookingCompletionOtp,
+    verifyBookingCompletionOtp,
+} from '../../../Redux/Slice/workerDashboardSlice';
 
 export default function WorkerDashboard() {
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
+    const {
+        worker,
+        stats,
+        recentBookings,
+        availableJobs,
+        loading,
+        actionLoadingId,
+        completionLoadingId,
+        error,
+    } = useSelector((state) => state.workerDashboard);
+
+    useEffect(() => {
+        dispatch(fetchWorkerDashboard());
+    }, [dispatch]);
+
+    useEffect(() => {
+        if (error) toast.error(error);
+    }, [error]);
+
+    const handleApply = async (job) => {
+        const result = await dispatch(applyFromWorkerDashboard(job.id));
+        if (applyFromWorkerDashboard.fulfilled.match(result)) {
+            toast.success('Application sent successfully.');
+        }
+    };
+
+    const handleRequestBookingOtp = async (booking) => {
+        const sent = await dispatch(requestBookingCompletionOtp(booking.id));
+        if (!requestBookingCompletionOtp.fulfilled.match(sent)) return false;
+
+        toast.success(sent.payload || 'Completion OTP sent to client email.');
+        return true;
+    };
+
+    const handleVerifyBookingOtp = async (booking, otp) => {
+        const verified = await dispatch(verifyBookingCompletionOtp({ bookingId: booking.id, otp }));
+        if (verifyBookingCompletionOtp.fulfilled.match(verified)) {
+            toast.success('Booking marked as completed.');
+            return true;
+        }
+
+        return false;
+    };
+
     return (
         <div className="worker-dashboard">
-            {/* Sticky top bar */}
-            <WorkerTopBar workerName="Ramesh" />
+            <WorkerTopBar workerName={worker?.name?.split(' ')[0] || 'Worker'} />
 
             <div className="worker-dashboard__content">
-                {/* Stats */}
-                <WorkerStatsRow />
+                {loading ? (
+                    <div className="worker-dashboard__state">
+                        <span className="material-symbols-outlined">hourglass_empty</span>
+                        Loading dashboard...
+                    </div>
+                ) : (
+                    <>
+                        <WorkerStatsRow stats={stats} />
 
-                {/* Middle: bookings + chart */}
-                <div className="worker-dashboard__middle">
-                    {/* Recent Bookings */}
-                    <div className="worker-dashboard__bookings">
-                        <div className="worker-dashboard__section-header">
-                            <h2 className="worker-dashboard__section-title">Recent Booking Requests</h2>
-                            <a href="#" className="worker-dashboard__view-all">View All →</a>
+                        <div className="worker-dashboard__middle">
+                            <div className="worker-dashboard__bookings">
+                                <div className="worker-dashboard__section-header">
+                                    <h2 className="worker-dashboard__section-title">Recent Booking Requests</h2>
+                                    <Link to="/worker/booking-request" className="worker-dashboard__view-all">
+                                        View All
+                                        <span className="material-symbols-outlined">arrow_forward</span>
+                                    </Link>
+                                </div>
+                                <div className="worker-dashboard__bookings-list">
+                                    {recentBookings.length ? recentBookings.map((booking) => (
+                                        <WorkerBookingCard
+                                            key={booking.id}
+                                            {...booking}
+                                            completionLoading={completionLoadingId === booking.id}
+                                            onViewDetails={() => navigate('/worker/booking-request')}
+                                            onRequestCompletion={() => handleRequestBookingOtp(booking)}
+                                            onVerifyCompletion={(otp) => handleVerifyBookingOtp(booking, otp)}
+                                        />
+                                    )) : (
+                                        <div className="worker-dashboard__empty">
+                                            No booking requests yet.
+                                        </div>
+                                    )}
+                                </div>
+                            </div>
                         </div>
-                        <div className="worker-dashboard__bookings-list">
-                            {BOOKINGS.map((b) => (
-                                <WorkerBookingCard
-                                    key={b.id}
-                                    {...b}
-                                    onViewDetails={() => console.log('View:', b.id)}
-                                />
-                            ))}
+
+                        <div className="worker-dashboard__jobs-section">
+                            <div className="worker-dashboard__section-header">
+                                <h2 className="worker-dashboard__section-title">Available Work Near You</h2>
+                                <Link to="/worker/available-work" className="worker-dashboard__view-all">
+                                    View All
+                                    <span className="material-symbols-outlined">arrow_forward</span>
+                                </Link>
+                            </div>
+                            <div className="worker-dashboard__jobs-scroll">
+                                {availableJobs.length ? availableJobs.map((job) => (
+                                    <WorkerJobCard
+                                        key={job.id}
+                                        {...job}
+                                        actionLoading={actionLoadingId === job.id}
+                                        onApply={() => handleApply(job)}
+                                    />
+                                )) : (
+                                    <div className="worker-dashboard__empty">
+                                        No available work posts found for your services.
+                                    </div>
+                                )}
+                            </div>
                         </div>
-                    </div>
-
-                    {/* Earnings Chart */}
-                    {/* <div className="worker-dashboard__chart-wrap">
-                        <WorkerEarningsChart />
-                    </div> */}
-                </div>
-
-                {/* Available Jobs */}
-                <div className="worker-dashboard__jobs-section">
-                    <div className="worker-dashboard__section-header">
-                        <h2 className="worker-dashboard__section-title">Available Work Near You</h2>
-                        <a href="#" className="worker-dashboard__view-all">View All →</a>
-                    </div>
-                    <div className="worker-dashboard__jobs-scroll">
-                        {JOBS.map((job) => (
-                            <WorkerJobCard key={job.id} {...job} />
-                        ))}
-                    </div>
-                </div>
+                    </>
+                )}
             </div>
         </div>
     );

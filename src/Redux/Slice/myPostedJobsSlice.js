@@ -44,15 +44,22 @@ const formatPostedAt = (date) => {
     });
 };
 
-const normalizeStatus = (status) => (['open', 'assigned'].includes(status) ? 'active' : 'closed');
+const normalizeStatus = (status) => {
+    if (['open', 'assigned'].includes(status)) return 'active';
+    if (status === 'completed') return 'completed';
+    return 'closed';
+};
 
 const mapApplicant = (applicant) => ({
     id: applicant.id,
+    workerUserId: applicant.workerUserId,
     name: applicant.name || 'Worker',
     rating: applicant.rating || 0,
     reviews: applicant.reviews || 0,
     experience: `${applicant.experience || 0} years`,
     image: applicant.image || avatarFor(applicant.name),
+    email: applicant.email,
+    phone: applicant.phone,
     skills: applicant.skills?.length ? applicant.skills : ['General Service'],
     available: applicant.available || 'Availability not shared',
     verified: !!applicant.verified,
@@ -87,9 +94,27 @@ export const fetchMyPostedJobs = createAsyncThunk(
                 params: { limit: 50 },
             });
 
-            return data.posts.map(mapJob);
+            return {
+                jobs: data.posts.map(mapJob),
+                counts: data.counts,
+            };
         } catch (error) {
             return rejectWithValue(error.response?.data?.message || 'Failed to fetch posted jobs.');
+        }
+    }
+);
+
+export const acceptPostedJobApplicant = createAsyncThunk(
+    'myPostedJobs/acceptPostedJobApplicant',
+    async ({ jobId, applicationId }, { rejectWithValue }) => {
+        try {
+            const { data } = await axios.patch(`${WORK_POSTS_URL}/${jobId}/applications/accept`, {
+                applicationId,
+            });
+
+            return mapJob(data.post);
+        } catch (error) {
+            return rejectWithValue(error.response?.data?.message || 'Failed to accept worker.');
         }
     }
 );
@@ -99,7 +124,14 @@ const myPostedJobsSlice = createSlice({
     initialState: {
         jobs: [],
         activeFilter: 'All',
+        counts: {
+            total: 0,
+            active: 0,
+            completed: 0,
+            closed: 0,
+        },
         loading: false,
+        actionLoadingId: null,
         error: null,
     },
     reducers: {
@@ -115,10 +147,30 @@ const myPostedJobsSlice = createSlice({
             })
             .addCase(fetchMyPostedJobs.fulfilled, (state, action) => {
                 state.loading = false;
-                state.jobs = action.payload;
+                state.jobs = action.payload.jobs;
+                state.counts = action.payload.counts || {
+                    total: action.payload.jobs.length,
+                    active: action.payload.jobs.filter((job) => job.status === 'active').length,
+                    completed: action.payload.jobs.filter((job) => job.status === 'completed').length,
+                    closed: action.payload.jobs.filter((job) => job.status === 'closed').length,
+                };
             })
             .addCase(fetchMyPostedJobs.rejected, (state, action) => {
                 state.loading = false;
+                state.error = action.payload;
+            })
+            .addCase(acceptPostedJobApplicant.pending, (state, action) => {
+                state.actionLoadingId = action.meta.arg.applicationId;
+                state.error = null;
+            })
+            .addCase(acceptPostedJobApplicant.fulfilled, (state, action) => {
+                state.actionLoadingId = null;
+                state.jobs = state.jobs.map((job) =>
+                    job.id === action.payload.id ? action.payload : job
+                );
+            })
+            .addCase(acceptPostedJobApplicant.rejected, (state, action) => {
+                state.actionLoadingId = null;
                 state.error = action.payload;
             });
     },

@@ -1,9 +1,11 @@
+import { useState } from 'react';
 import './BookingCard.css';
 
 const BookingCard = ({
     title,
     priority,
     status,
+    completed = false,
     icon,
     iconVariant,
     client,
@@ -16,7 +18,12 @@ const BookingCard = ({
     onDecline,
     onMessage,
     onReschedule,
+    completionLoading = false,
+    onRequestCompletion,
+    onVerifyCompletion,
 }) => {
+    const [showOtpBox, setShowOtpBox] = useState(false);
+    const [otp, setOtp] = useState('');
     const isCancelled = status === 'cancelled';
     const isPending = status === 'pending';
     const isConfirmed = status === 'confirmed';
@@ -29,9 +36,24 @@ const BookingCard = ({
 
     const statusLabel = {
         pending: 'Pending',
-        confirmed: 'Confirmed',
+        confirmed: completed ? 'Completed' : 'Confirmed',
         cancelled: 'Cancelled',
     }[status];
+
+    const handleRequestOtp = async () => {
+        const sent = await onRequestCompletion?.();
+        if (sent) setShowOtpBox(true);
+    };
+
+    const handleVerifyOtp = async () => {
+        if (!otp.trim()) return;
+
+        const verified = await onVerifyCompletion?.(otp.trim());
+        if (verified) {
+            setOtp('');
+            setShowOtpBox(false);
+        }
+    };
 
     return (
         <div className={`request-bookingcard${isCancelled ? ' request-bookingcard--cancelled' : ''}`}>
@@ -118,9 +140,55 @@ const BookingCard = ({
                             <span className="material-symbols-outlined" style={{ fontSize: 14 }}>chat</span>
                             Message
                         </button>
-                        <button className="request-bookingcard__btn request-bookingcard__btn--outline" onClick={onReschedule}>
+                        {!completed && (
+                            <button className="request-bookingcard__btn request-bookingcard__btn--accept" onClick={handleRequestOtp} disabled={completionLoading}>
+                                {completionLoading ? 'Sending OTP...' : 'Mark Complete'}
+                            </button>
+                        )}
+                        {!completed && (
+                            <button className="request-bookingcard__btn request-bookingcard__btn--outline" onClick={onReschedule}>
                             Reschedule
-                        </button>
+                            </button>
+                        )}
+                        {completed && (
+                            <span className="request-bookingcard__complete-note">
+                                Work completed
+                            </span>
+                        )}
+                        {showOtpBox && !completed && (
+                            <div className="request-bookingcard__otp-box">
+                                <p className="request-bookingcard__otp-title">Enter client OTP</p>
+                                <p className="request-bookingcard__otp-help">
+                                    OTP was sent to the user email. Ask user and verify here.
+                                </p>
+                                <input
+                                    className="request-bookingcard__otp-input"
+                                    type="text"
+                                    inputMode="numeric"
+                                    maxLength={6}
+                                    placeholder="6-digit OTP"
+                                    value={otp}
+                                    onChange={(event) => setOtp(event.target.value.replace(/\D/g, ''))}
+                                />
+                                <button
+                                    className="request-bookingcard__btn request-bookingcard__btn--accept"
+                                    onClick={handleVerifyOtp}
+                                    disabled={completionLoading || otp.trim().length < 4}
+                                >
+                                    {completionLoading ? 'Verifying...' : 'Verify OTP'}
+                                </button>
+                                <button
+                                    className="request-bookingcard__btn request-bookingcard__btn--outline"
+                                    onClick={() => {
+                                        setOtp('');
+                                        setShowOtpBox(false);
+                                    }}
+                                    disabled={completionLoading}
+                                >
+                                    Cancel
+                                </button>
+                            </div>
+                        )}
                     </div>
                 )}
 

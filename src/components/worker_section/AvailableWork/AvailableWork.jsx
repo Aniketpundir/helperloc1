@@ -1,6 +1,8 @@
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
+import WorkPostChatModal from "../../common/WorkPostChatModal/WorkPostChatModal";
+import { openWorkPostChat } from "../../../Redux/Slice/workPostChatSlice";
 import {
     applyToAvailableWork,
     clearAvailableWorkDetails,
@@ -67,6 +69,13 @@ export default function AvailableWork() {
         dispatch(fetchAvailableWorkDetails(card.id));
     };
 
+    const handleChat = (card) => {
+        dispatch(openWorkPostChat({
+            workPostId: card.id,
+            participantUserId: card.clientUserId,
+        }));
+    };
+
     return (
         <div className="awp-page">
             <div className="awp-page__header">
@@ -108,6 +117,7 @@ export default function AvailableWork() {
                             onWantJob={handleWantJob}
                             onWithdrawJob={handleWithdrawJob}
                             onViewDetails={handleViewDetails}
+                            onChat={handleChat}
                         />
                     ))
                 )}
@@ -161,6 +171,8 @@ export default function AvailableWork() {
                     </div>
                 </div>
             )}
+
+            <WorkPostChatModal />
         </div>
     );
 }

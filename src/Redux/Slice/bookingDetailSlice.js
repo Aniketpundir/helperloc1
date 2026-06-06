@@ -101,7 +101,8 @@ export const fetchBookingDetails = createAsyncThunk(
     'bookingDetail/fetchBookingDetails',
     async (bookingId, { rejectWithValue }) => {
         try {
-            const { data } = await axios.get(`${BOOKINGS_URL}/${bookingId}`);
+            const cleanBookingId = String(bookingId || '').trim().replace(/^#/, '');
+            const { data } = await axios.get(`${BOOKINGS_URL}/${encodeURIComponent(cleanBookingId)}`);
             return mapBookingDetails(data.booking);
         } catch (error) {
             return rejectWithValue(error.response?.data?.message || 'Failed to fetch booking details.');

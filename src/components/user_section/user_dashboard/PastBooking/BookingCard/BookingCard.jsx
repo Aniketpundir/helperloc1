@@ -6,7 +6,11 @@ const STATUS_CONFIG = {
         className: 'past-card__badge--completed',
     },
     pending: {
-        label: 'Completed',
+        label: 'Pending',
+        className: 'past-card__badge--completed',
+    },
+    rescheduled: {
+        label: 'Rescheduled',
         className: 'past-card__badge--completed',
     },
     cancelled: {
@@ -30,6 +34,7 @@ export default function BookingCard({
     image,
     imageAlt,
     title,
+    workerName,
     date,
     price,
     paymentNote,
@@ -48,7 +53,7 @@ export default function BookingCard({
 
             {/* Image */}
             <div className="past-card__img-wrap">
-                <img src={image} alt={imageAlt} className="past-card__img" />
+                <img src={image} alt={imageAlt || title} className="past-card__img" />
             </div>
 
             {/* Content */}
@@ -61,18 +66,19 @@ export default function BookingCard({
                             {badgeCfg.label}
                         </span>
                         <h3 className="past-card__title">{title}</h3>
+                        {workerName && <p className="past-card__worker">Worker: {workerName}</p>}
                         <p className="past-card__date">
                             <span className="material-symbols-outlined past-card__date-icon">calendar_today</span>
                             {date}
                         </p>
                     </div>
                     <div className="past-card__price-wrap">
-                        {/* <p className={`past-card__price ${isCancelled ? 'past-card__price--cancelled' : ''}`}>
+                        <p className={`past-card__price ${isCancelled ? 'past-card__price--cancelled' : ''}`}>
                             {price}
-                        </p> */}
-                        {/* {paymentNote && (
+                        </p>
+                        {paymentNote && (
                             <p className="past-card__payment-note">{paymentNote}</p>
-                        )} */}
+                        )}
                     </div>
                 </div>
 

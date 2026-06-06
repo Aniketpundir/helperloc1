@@ -3,17 +3,38 @@ import "./APProjectCard.css";
 
 export default function APProjectCard({
   card,
+  actionLoadingId,
+  completionLoadingId,
   onViewBooking,
   onMessageClient,
+  onRequestCompletion,
+  onVerifyCompletion,
   onWithdraw,
   onFindSimilar,
 }) {
-  const [withdrawn, setWithdrawn] = useState(false);
+  const [showOtpBox, setShowOtpBox] = useState(false);
+  const [otp, setOtp] = useState("");
+  const isWithdrawing = actionLoadingId === card.id;
+  const isCompleting = completionLoadingId === card.id;
 
   const handleWithdraw = () => {
     if (window.confirm("Are you sure you want to withdraw this application?")) {
-      setWithdrawn(true);
       onWithdraw && onWithdraw(card);
+    }
+  };
+
+  const handleRequestOtp = async () => {
+    const sent = await onRequestCompletion?.(card);
+    if (sent) setShowOtpBox(true);
+  };
+
+  const handleVerifyOtp = async () => {
+    if (!otp.trim()) return;
+
+    const verified = await onVerifyCompletion?.(card, otp.trim());
+    if (verified) {
+      setOtp("");
+      setShowOtpBox(false);
     }
   };
 
@@ -26,6 +47,14 @@ export default function APProjectCard({
       footerClass: "ap-project-card__footer--accepted",
       footerIcon: "verified",
       footerText: "SUCCESS: PROJECT MILA CONFIRMED!",
+    },
+    completed: {
+      borderClass: "ap-project-card--accepted",
+      badgeClass: "ap-badge--accepted",
+      badgeIcon: "verified",
+      badgeLabel: "Completed",
+      footerClass: "ap-project-card__footer--accepted",
+      footerText: "PROJECT COMPLETED!",
     },
     pending: {
       borderClass: "ap-project-card--pending",
@@ -48,7 +77,7 @@ export default function APProjectCard({
     <div
       className={`ap-project-card ${cfg.borderClass} ${
         cfg.muted ? "ap-project-card--muted" : ""
-      } ${withdrawn ? "ap-project-card--withdrawn" : ""}`}
+      }`}
     >
       {/* Muted overlay for rejected */}
       {cfg.muted && <div className="ap-project-card__overlay" />}
@@ -121,7 +150,7 @@ export default function APProjectCard({
                   className="ap-btn ap-btn--outline"
                   onClick={() => onViewBooking && onViewBooking(card)}
                 >
-                  View Booking Details
+                  View Full Details
                 </button>
                 <button
                   className="ap-btn ap-btn--primary"
@@ -130,27 +159,86 @@ export default function APProjectCard({
                   <span className="material-symbols-outlined">chat</span>
                   Message Client
                 </button>
+                <button
+                  className="ap-btn ap-btn--primary"
+                  onClick={handleRequestOtp}
+                  disabled={isCompleting}
+                >
+                  <span className="material-symbols-outlined">task_alt</span>
+                  {isCompleting ? "Sending OTP..." : "Mark Complete"}
+                </button>
+                {showOtpBox && (
+                  <div className="ap-otp-box">
+                    <div className="ap-otp-box__copy">
+                      <p className="ap-otp-box__title">Enter client OTP</p>
+                      <p className="ap-otp-box__help">
+                        OTP was sent to the client email for this work post.
+                      </p>
+                    </div>
+                    <div className="ap-otp-box__actions">
+                      <input
+                        className="ap-otp-box__input"
+                        type="text"
+                        inputMode="numeric"
+                        maxLength={6}
+                        placeholder="6-digit OTP"
+                        value={otp}
+                        onChange={(event) => setOtp(event.target.value.replace(/\D/g, ""))}
+                      />
+                      <button
+                        className="ap-btn ap-btn--primary"
+                        onClick={handleVerifyOtp}
+                        disabled={isCompleting || otp.trim().length < 4}
+                      >
+                        {isCompleting ? "Verifying..." : "Verify OTP"}
+                      </button>
+                      <button
+                        className="ap-btn ap-btn--outline"
+                        onClick={() => {
+                          setOtp("");
+                          setShowOtpBox(false);
+                        }}
+                        disabled={isCompleting}
+                      >
+                        Cancel
+                      </button>
+                    </div>
+                  </div>
+                )}
+              </div>
+            )}
+
+            {card.status === "completed" && (
+              <div className="ap-actions-row">
+                <button
+                  className="ap-btn ap-btn--outline"
+                  onClick={() => onViewBooking && onViewBooking(card)}
+                >
+                  View Full Details
+                </button>
+                <span className="ap-awaiting-chip ap-awaiting-chip--withdrawn">
+                  Completed
+                </span>
               </div>
             )}
 
             {/* PENDING actions */}
-            {card.status === "pending" && !withdrawn && (
+            {card.status === "pending" && (
               <div className="ap-actions-row ap-actions-row--pending">
+                <button
+                  className="ap-btn ap-btn--outline"
+                  onClick={() => onViewBooking && onViewBooking(card)}
+                >
+                  View Full Details
+                </button>
                 <button
                   className="ap-btn ap-btn--withdraw"
                   onClick={handleWithdraw}
+                  disabled={isWithdrawing}
                 >
-                  Withdraw Application
+                  {isWithdrawing ? "Withdrawing..." : "Withdraw Application"}
                 </button>
                 <span className="ap-awaiting-chip">Awaiting Client</span>
-              </div>
-            )}
-
-            {withdrawn && (
-              <div className="ap-actions-row">
-                <span className="ap-awaiting-chip ap-awaiting-chip--withdrawn">
-                  Application Withdrawn
-                </span>
               </div>
             )}
 
@@ -161,6 +249,12 @@ export default function APProjectCard({
                   <span className="material-symbols-outlined">sentiment_dissatisfied</span>
                   Not Selected
                 </span>
+                <button
+                  className="ap-btn ap-btn--outline"
+                  onClick={() => onViewBooking && onViewBooking(card)}
+                >
+                  View Full Details
+                </button>
                 <button
                   className="ap-btn ap-btn--find-similar"
                   onClick={() => onFindSimilar && onFindSimilar(card)}
@@ -174,10 +268,10 @@ export default function APProjectCard({
       </div>
 
       {/* Footer banner — accepted only */}
-      {card.status === "accepted" && (
+      {(card.status === "accepted" || card.status === "completed") && (
         <div className={`ap-project-card__footer ${cfg.footerClass}`}>
           <span className="material-symbols-outlined ap-footer__icon">verified</span>
-          SUCCESS: PROJECT MILA CONFIRMED!
+          {cfg.footerText || "SUCCESS: PROJECT MILA CONFIRMED!"}
         </div>
       )}
     </div>

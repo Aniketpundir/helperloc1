@@ -2,6 +2,7 @@ import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import axios from 'axios';
 
 const API = import.meta.env.VITE_API_URL.replace(/\/$/, '');
+const BOOKINGS_URL = `${API}/bookings`;
 const REQUESTS_URL = `${API}/bookings/worker/requests`;
 
 const filterToApi = {
@@ -59,6 +60,8 @@ const mapRequestToCard = (request) => {
         title: request.serviceName,
         priority: priorityFromDate(request.scheduledDate),
         status,
+        rawStatus: request.status,
+        completed: request.status === 'completed',
         icon: iconFromService(request.serviceName),
         iconVariant: status === 'cancelled' ? 'cancelled' : status === 'confirmed' ? 'secondary' : 'primary',
         client: request.client?.name || 'Client',
@@ -135,6 +138,33 @@ export const rescheduleWorkerBookingRequest = createAsyncThunk(
     }
 );
 
+export const requestWorkerBookingCompletionOtp = createAsyncThunk(
+    'workerBookingRequests/requestWorkerBookingCompletionOtp',
+    async (requestId, { rejectWithValue }) => {
+        try {
+            const { data } = await axios.post(`${BOOKINGS_URL}/${requestId}/complete/request-otp`);
+            return {
+                requestId,
+                message: data.message || 'Completion OTP sent to client email.',
+            };
+        } catch (error) {
+            return rejectWithValue(error.response?.data?.message || 'Failed to send completion OTP.');
+        }
+    }
+);
+
+export const verifyWorkerBookingCompletionOtp = createAsyncThunk(
+    'workerBookingRequests/verifyWorkerBookingCompletionOtp',
+    async ({ requestId, otp }, { rejectWithValue }) => {
+        try {
+            const { data } = await axios.patch(`${BOOKINGS_URL}/${requestId}/complete/verify`, { otp });
+            return mapRequestToCard(data.request);
+        } catch (error) {
+            return rejectWithValue(error.response?.data?.message || 'Failed to verify completion OTP.');
+        }
+    }
+);
+
 const workerBookingRequestsSlice = createSlice({
     name: 'workerBookingRequests',
     initialState: {
@@ -157,6 +187,7 @@ const workerBookingRequestsSlice = createSlice({
         },
         loading: false,
         actionLoading: false,
+        completionLoadingId: null,
         error: null,
     },
     reducers: {
@@ -202,6 +233,33 @@ const workerBookingRequestsSlice = createSlice({
                     state.error = action.payload;
                 });
         });
+
+        builder
+            .addCase(requestWorkerBookingCompletionOtp.pending, (state, action) => {
+                state.completionLoadingId = action.meta.arg;
+                state.error = null;
+            })
+            .addCase(requestWorkerBookingCompletionOtp.fulfilled, (state) => {
+                state.completionLoadingId = null;
+            })
+            .addCase(requestWorkerBookingCompletionOtp.rejected, (state, action) => {
+                state.completionLoadingId = null;
+                state.error = action.payload;
+            })
+            .addCase(verifyWorkerBookingCompletionOtp.pending, (state, action) => {
+                state.completionLoadingId = action.meta.arg.requestId;
+                state.error = null;
+            })
+            .addCase(verifyWorkerBookingCompletionOtp.fulfilled, (state, action) => {
+                state.completionLoadingId = null;
+                state.requests = state.requests.map((request) =>
+                    request.id === action.payload.id ? action.payload : request
+                );
+            })
+            .addCase(verifyWorkerBookingCompletionOtp.rejected, (state, action) => {
+                state.completionLoadingId = null;
+                state.error = action.payload;
+            });
     },
 });
 

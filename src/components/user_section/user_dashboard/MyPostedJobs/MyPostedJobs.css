@@ -121,6 +121,11 @@
   color: var(--color-outline);
 }
 
+.mpj-card__status[data-status="completed"] {
+  background: #d4f5dc;
+  color: #1a6830;
+}
+
 .mpj-card__meta {
   display: flex;
   align-items: center;
@@ -310,6 +315,26 @@
   padding: 2px 8px;
 }
 
+.mpj-applicant__status {
+  display: inline-flex;
+  align-items: center;
+  border-radius: var(--radius-full);
+  padding: 2px 8px;
+  font-family: var(--font-body);
+  font-size: 11px;
+  font-weight: var(--fw-bold);
+}
+
+.mpj-applicant__status--accepted {
+  background: #d4f5dc;
+  color: #1a6830;
+}
+
+.mpj-applicant__status--rejected {
+  background: var(--color-surface-container-highest);
+  color: var(--color-outline);
+}
+
 .mpj-applicant__meta {
   display: flex;
   align-items: center;
@@ -385,6 +410,13 @@
   gap: 12px;
 }
 
+.mpj-applicant__actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
 .mpj-applicant__avail {
   display: flex;
   align-items: center;
@@ -419,6 +451,39 @@
 }
 
 .mpj-chat-btn .material-symbols-outlined { font-size: 17px !important; }
+
+.mpj-accept-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 9px 16px;
+  background: #1a6830;
+  color: white;
+  border: none;
+  border-radius: var(--radius-lg);
+  font-family: var(--font-body);
+  font-size: var(--text-body-sm);
+  font-weight: var(--fw-bold);
+  cursor: pointer;
+  transition: box-shadow var(--transition-fast), transform var(--transition-fast);
+}
+
+.mpj-accept-btn:hover:not(:disabled) {
+  box-shadow: var(--shadow-md);
+  transform: translateY(-1px);
+}
+
+.mpj-accept-btn:disabled {
+  cursor: not-allowed;
+  opacity: 0.75;
+}
+
+.mpj-accept-btn--done {
+  background: #d4f5dc;
+  color: #1a6830;
+}
+
+.mpj-accept-btn .material-symbols-outlined { font-size: 17px !important; }
 
 .mpj-modal-overlay {
   position: fixed;
@@ -596,6 +661,8 @@
   .mpj-modal-overlay { padding: 0; align-items: flex-end; }
   .mpj-modal { max-width: 100%; border-radius: var(--radius-xl) var(--radius-xl) 0 0; }
   .mpj-applicant__bottom { flex-direction: column; align-items: flex-start; }
+  .mpj-applicant__actions { width: 100%; }
+  .mpj-accept-btn { flex: 1; justify-content: center; }
   .mpj-chat-btn { width: 100%; justify-content: center; }
 }
 

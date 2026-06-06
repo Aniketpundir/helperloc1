@@ -158,3 +158,103 @@
 }
 
 .worker-booking-card__view-btn:hover { color: #00B0FF; }
+
+.worker-booking-card__view-btn:disabled {
+  cursor: not-allowed;
+  opacity: 0.65;
+}
+
+.worker-booking-card__otp-box {
+  margin-top: var(--spacing-sm);
+  padding: 14px;
+  border: 1px solid rgba(21,101,192,0.18);
+  border-radius: 16px;
+  background: rgba(227,242,253,0.55);
+  display: flex;
+  justify-content: space-between;
+  gap: 14px;
+  align-items: center;
+}
+
+.worker-booking-card__otp-title {
+  margin: 0 0 3px;
+  font-family: var(--font-body);
+  font-weight: var(--fw-bold);
+  color: #0D47A1;
+}
+
+.worker-booking-card__otp-help {
+  margin: 0;
+  font-family: var(--font-body);
+  font-size: var(--text-body-sm);
+  color: var(--color-on-surface-variant);
+}
+
+.worker-booking-card__otp-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+}
+
+.worker-booking-card__otp-input {
+  width: 120px;
+  padding: 10px 12px;
+  border: 1px solid rgba(21,101,192,0.3);
+  border-radius: 10px;
+  font-family: var(--font-body);
+  font-weight: var(--fw-semibold);
+  letter-spacing: 0.08em;
+  outline: none;
+}
+
+.worker-booking-card__otp-input:focus {
+  border-color: #1565C0;
+  box-shadow: 0 0 0 3px rgba(21,101,192,0.12);
+}
+
+.worker-booking-card__otp-btn,
+.worker-booking-card__otp-cancel {
+  border: none;
+  border-radius: 10px;
+  padding: 10px 14px;
+  font-family: var(--font-body);
+  font-weight: var(--fw-bold);
+  cursor: pointer;
+}
+
+.worker-booking-card__otp-btn {
+  background: #1565C0;
+  color: #ffffff;
+}
+
+.worker-booking-card__otp-cancel {
+  background: transparent;
+  color: var(--color-on-surface-variant);
+}
+
+.worker-booking-card__otp-btn:disabled,
+.worker-booking-card__otp-cancel:disabled {
+  cursor: not-allowed;
+  opacity: 0.65;
+}
+
+@media (max-width: 640px) {
+  .worker-booking-card__actions {
+    align-items: flex-start;
+    flex-wrap: wrap;
+  }
+
+  .worker-booking-card__otp-box {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .worker-booking-card__otp-actions,
+  .worker-booking-card__otp-input,
+  .worker-booking-card__otp-btn,
+  .worker-booking-card__otp-cancel {
+    width: 100%;
+  }
+}

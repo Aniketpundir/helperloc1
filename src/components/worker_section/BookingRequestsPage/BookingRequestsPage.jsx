@@ -8,9 +8,11 @@ import {
     acceptWorkerBookingRequest,
     declineWorkerBookingRequest,
     fetchWorkerBookingRequests,
+    requestWorkerBookingCompletionOtp,
     rescheduleWorkerBookingRequest,
     setWorkerBookingFilter,
     setWorkerBookingPage,
+    verifyWorkerBookingCompletionOtp,
 } from '../../../Redux/Slice/workerBookingRequestsSlice';
 import './BookingRequestsPage.css';
 
@@ -26,6 +28,7 @@ const BookingRequestsPage = () => {
         pagination,
         loading,
         actionLoading,
+        completionLoadingId,
         error,
     } = useSelector((state) => state.workerBookingRequests);
     const [searchValue, setSearchValue] = useState('');
@@ -104,6 +107,28 @@ const BookingRequestsPage = () => {
         }
     };
 
+    const handleRequestCompletionOtp = async (booking) => {
+        try {
+            const result = await dispatch(requestWorkerBookingCompletionOtp(booking.id)).unwrap();
+            toast.success(result.message || 'Completion OTP sent to client email.');
+            return true;
+        } catch (message) {
+            toast.error(message || 'Failed to send completion OTP.');
+            return false;
+        }
+    };
+
+    const handleVerifyCompletionOtp = async (booking, otp) => {
+        try {
+            await dispatch(verifyWorkerBookingCompletionOtp({ requestId: booking.id, otp })).unwrap();
+            toast.success('Booking marked as completed.');
+            return true;
+        } catch (message) {
+            toast.error(message || 'Failed to verify completion OTP.');
+            return false;
+        }
+    };
+
     return (
         <div className="request-page">
             <div className="request-page__canvas">
@@ -174,6 +199,9 @@ const BookingRequestsPage = () => {
                                 onDecline={() => !actionLoading && handleDecline(booking.id)}
                                 onMessage={() => toast.info(`Message feature for ${booking.client} will be added soon.`)}
                                 onReschedule={() => !actionLoading && handleReschedule(booking)}
+                                completionLoading={completionLoadingId === booking.id}
+                                onRequestCompletion={() => handleRequestCompletionOtp(booking)}
+                                onVerifyCompletion={(otp) => handleVerifyCompletionOtp(booking, otp)}
                             />
                         ))
                     )}

@@ -220,6 +220,11 @@
 
 .request-bookingcard__btn:active { transform: scale(0.95); }
 
+.request-bookingcard__btn:disabled {
+  cursor: not-allowed;
+  opacity: 0.65;
+}
+
 .request-bookingcard__btn--accept {
   background-color: #2E7D32;
   color: #ffffff;
@@ -248,6 +253,60 @@
   border: 1px solid #727783;
 }
 .request-bookingcard__btn--outline:hover { background-color: #d7e4ec; }
+
+.request-bookingcard__complete-note {
+  color: #2E7D32;
+  font-family: 'Work Sans', sans-serif;
+  font-size: 11px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  text-align: center;
+}
+
+.request-bookingcard__otp-box {
+  width: 100%;
+  padding: 12px;
+  border-radius: 14px;
+  border: 1px solid rgba(21, 101, 192, 0.16);
+  background: rgba(233, 246, 253, 0.78);
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.request-bookingcard__otp-title {
+  margin: 0;
+  color: #0D47A1;
+  font-family: 'Work Sans', sans-serif;
+  font-size: 12px;
+  font-weight: 800;
+}
+
+.request-bookingcard__otp-help {
+  margin: 0;
+  color: #727783;
+  font-family: 'Work Sans', sans-serif;
+  font-size: 11px;
+  line-height: 1.35;
+}
+
+.request-bookingcard__otp-input {
+  width: 100%;
+  padding: 10px 12px;
+  border-radius: 10px;
+  border: 1px solid rgba(21, 101, 192, 0.28);
+  outline: none;
+  font-family: 'Work Sans', sans-serif;
+  font-weight: 700;
+  letter-spacing: 2px;
+  color: #111d23;
+}
+
+.request-bookingcard__otp-input:focus {
+  border-color: #1565C0;
+  box-shadow: 0 0 0 3px rgba(21, 101, 192, 0.12);
+}
 
 /* Cancelled note */
 .request-bookingcard__cancel-note {

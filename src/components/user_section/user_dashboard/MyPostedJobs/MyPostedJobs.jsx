@@ -1,7 +1,10 @@
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
+import WorkPostChatModal from '../../../common/WorkPostChatModal/WorkPostChatModal';
+import { openWorkPostChat } from '../../../../Redux/Slice/workPostChatSlice';
 import {
+    acceptPostedJobApplicant,
     fetchMyPostedJobs,
     setMyPostedJobsFilter,
 } from '../../../../Redux/Slice/myPostedJobsSlice';
@@ -13,7 +16,13 @@ const urgencyConfig = {
     flexible: { label: 'Flexible', color: '#1a6830', bg: '#d4f5dc' },
 };
 
-const FILTERS = ['All', 'Active', 'Closed'];
+const FILTERS = ['All', 'Active', 'Completed', 'Closed'];
+
+const statusLabel = {
+    active: 'Active',
+    completed: 'Completed',
+    closed: 'Closed',
+};
 
 function Stars({ rating }) {
     return (
@@ -24,7 +33,12 @@ function Stars({ rating }) {
     );
 }
 
-function ApplicantCard({ applicant, onChat }) {
+function ApplicantCard({ applicant, job, actionLoadingId, onAccept, onChat }) {
+    const isAccepted = applicant.status === 'accepted';
+    const isRejected = applicant.status === 'rejected';
+    const canAccept = job.rawStatus === 'open' && !isAccepted && !isRejected;
+    const isBusy = actionLoadingId === applicant.id;
+
     return (
         <div className="mpj-applicant">
             <div className="mpj-applicant__top">
@@ -38,6 +52,8 @@ function ApplicantCard({ applicant, onChat }) {
                                 Verified
                             </span>
                         )}
+                        {isAccepted && <span className="mpj-applicant__status mpj-applicant__status--accepted">Accepted</span>}
+                        {isRejected && <span className="mpj-applicant__status mpj-applicant__status--rejected">Rejected</span>}
                     </div>
                     <div className="mpj-applicant__meta">
                         <Stars rating={applicant.rating} />
@@ -59,16 +75,34 @@ function ApplicantCard({ applicant, onChat }) {
                     <span className="material-symbols-outlined" style={{ fontSize: '15px' }}>schedule</span>
                     {applicant.available}
                 </span>
-                <button className="mpj-chat-btn" onClick={() => onChat(applicant)}>
-                    <span className="material-symbols-outlined">chat</span>
-                    Chat
-                </button>
+                <div className="mpj-applicant__actions">
+                    {canAccept && (
+                        <button
+                            className="mpj-accept-btn"
+                            onClick={() => onAccept(job, applicant)}
+                            disabled={isBusy}
+                        >
+                            <span className="material-symbols-outlined">task_alt</span>
+                            {isBusy ? 'Giving Work...' : 'Give Work'}
+                        </button>
+                    )}
+                    {isAccepted && (
+                        <button className="mpj-accept-btn mpj-accept-btn--done" disabled>
+                            <span className="material-symbols-outlined">check_circle</span>
+                            Work Given
+                        </button>
+                    )}
+                    <button className="mpj-chat-btn" onClick={() => onChat(job, applicant)}>
+                        <span className="material-symbols-outlined">chat</span>
+                        Chat
+                    </button>
+                </div>
             </div>
         </div>
     );
 }
 
-function JobCard({ job, onChat }) {
+function JobCard({ job, actionLoadingId, onAccept, onChat }) {
     const [open, setOpen] = useState(false);
     const urg = urgencyConfig[job.urgency] || urgencyConfig.flexible;
     const applicantCount = job.applicantsCount ?? job.applicants.length;
@@ -83,7 +117,7 @@ function JobCard({ job, onChat }) {
                     <div className="mpj-card__title-row">
                         <h3 className="mpj-card__title">{job.title}</h3>
                         <span className="mpj-card__status" data-status={job.status}>
-                            {job.status === 'active' ? 'Active' : 'Closed'}
+                            {statusLabel[job.status] || 'Closed'}
                         </span>
                     </div>
                     <div className="mpj-card__meta">
@@ -127,7 +161,14 @@ function JobCard({ job, onChat }) {
             {open && (
                 <div className="mpj-applicants-panel">
                     {job.applicants.length > 0 ? job.applicants.map((applicant) => (
-                        <ApplicantCard key={applicant.id} applicant={applicant} onChat={onChat} />
+                        <ApplicantCard
+                            key={applicant.id}
+                            applicant={applicant}
+                            job={job}
+                            actionLoadingId={actionLoadingId}
+                            onAccept={onAccept}
+                            onChat={onChat}
+                        />
                     )) : (
                         <div className="mpj-no-applicants">
                             Applicant details are not available yet.
@@ -141,8 +182,7 @@ function JobCard({ job, onChat }) {
 
 export default function MyPostedJobs() {
     const dispatch = useDispatch();
-    const [chatWorker, setChatWorker] = useState(null);
-    const { jobs, activeFilter, loading, error } = useSelector((state) => state.myPostedJobs);
+    const { jobs, counts, activeFilter, loading, actionLoadingId, error } = useSelector((state) => state.myPostedJobs);
 
     useEffect(() => {
         dispatch(fetchMyPostedJobs());
@@ -157,13 +197,29 @@ export default function MyPostedJobs() {
         return job.status === activeFilter.toLowerCase();
     });
 
-    const activeCount = jobs.filter((job) => job.status === 'active').length;
-    const closedCount = jobs.filter((job) => job.status === 'closed').length;
-
     const countFor = (filter) => {
-        if (filter === 'All') return jobs.length;
-        if (filter === 'Active') return activeCount;
-        return closedCount;
+        if (filter === 'All') return counts.total ?? jobs.length;
+        if (filter === 'Active') return counts.active ?? jobs.filter((job) => job.status === 'active').length;
+        if (filter === 'Completed') return counts.completed ?? jobs.filter((job) => job.status === 'completed').length;
+        return counts.closed ?? jobs.filter((job) => job.status === 'closed').length;
+    };
+
+    const handleAcceptApplicant = async (job, applicant) => {
+        const result = await dispatch(acceptPostedJobApplicant({
+            jobId: job.id,
+            applicationId: applicant.id,
+        }));
+
+        if (acceptPostedJobApplicant.fulfilled.match(result)) {
+            toast.success(`${applicant.name} accepted for this work.`);
+        }
+    };
+
+    const openChat = (job, applicant) => {
+        dispatch(openWorkPostChat({
+            workPostId: job.id,
+            participantUserId: applicant.workerUserId,
+        }));
     };
 
     return (
@@ -172,7 +228,7 @@ export default function MyPostedJobs() {
                 <div>
                     <h1 className="mpj-page__heading">My Posted Jobs</h1>
                     <p className="mpj-page__sub">
-                        {jobs.length} jobs posted - {activeCount} active
+                        {countFor('All')} jobs posted - {countFor('Active')} active - {countFor('Completed')} completed
                     </p>
                 </div>
             </div>
@@ -206,7 +262,13 @@ export default function MyPostedJobs() {
             ) : (
                 <div className="mpj-list">
                     {filteredJobs.length > 0 ? filteredJobs.map((job) => (
-                        <JobCard key={job.id} job={job} onChat={setChatWorker} />
+                        <JobCard
+                            key={job.id}
+                            job={job}
+                            actionLoadingId={actionLoadingId}
+                            onAccept={handleAcceptApplicant}
+                            onChat={openChat}
+                        />
                     )) : (
                         <div className="mpj-empty">
                             <span className="material-symbols-outlined mpj-empty__icon">inbox</span>
@@ -216,36 +278,7 @@ export default function MyPostedJobs() {
                 </div>
             )}
 
-            {chatWorker && (
-                <div className="mpj-modal-overlay" onClick={() => setChatWorker(null)}>
-                    <div className="mpj-modal" onClick={(event) => event.stopPropagation()}>
-                        <div className="mpj-modal__header">
-                            <img src={chatWorker.image} alt={chatWorker.name} className="mpj-modal__avatar" />
-                            <div>
-                                <p className="mpj-modal__name">{chatWorker.name}</p>
-                                <p className="mpj-modal__role">
-                                    <span className="mpj-online-dot" />
-                                    Worker applicant
-                                </p>
-                            </div>
-                            <button className="mpj-modal__close" onClick={() => setChatWorker(null)}>
-                                <span className="material-symbols-outlined">close</span>
-                            </button>
-                        </div>
-                        <div className="mpj-chat-area">
-                            <div className="mpj-chat-bubble mpj-chat-bubble--worker">
-                                {chatWorker.available}
-                            </div>
-                        </div>
-                        <div className="mpj-chat-input-row">
-                            <input className="mpj-chat-input" type="text" placeholder="Type a message..." />
-                            <button className="mpj-chat-send">
-                                <span className="material-symbols-outlined">send</span>
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            )}
+            <WorkPostChatModal />
         </div>
     );
 }

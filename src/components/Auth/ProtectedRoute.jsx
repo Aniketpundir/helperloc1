@@ -23,7 +23,12 @@ const ProtectedRoute = ({ children, allowedRoles }) => {
   }
 
   // Role check (optional)
-  if (allowedRoles && !allowedRoles.includes(user?.role)) {
+  const hasRoleAccess =
+    !allowedRoles ||
+    allowedRoles.includes(user?.role) ||
+    (user?.role === 'both' && allowedRoles.some((role) => ['user', 'worker'].includes(role)));
+
+  if (!hasRoleAccess) {
     // Wrong role — apne dashboard par bhejo
     if (user?.role === 'worker') {
       return <Navigate to="/worker/dashboard" replace />;

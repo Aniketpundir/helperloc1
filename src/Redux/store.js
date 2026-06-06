@@ -11,6 +11,10 @@ import workerBookingRequestsReducer from './Slice/workerBookingRequestsSlice';
 import postWorkReducer from './Slice/postWorkSlice';
 import myPostedJobsReducer from './Slice/myPostedJobsSlice';
 import availableWorkReducer from './Slice/availableWorkSlice';
+import workPostChatReducer from './Slice/workPostChatSlice';
+import appliedWorkReducer from './Slice/appliedWorkSlice';
+import workerDashboardReducer from './Slice/workerDashboardSlice';
+import pastBookingReducer from './Slice/pastBookingSlice';
 
 const store = configureStore({
   reducer: {
@@ -26,6 +30,10 @@ const store = configureStore({
     postWork: postWorkReducer,
     myPostedJobs: myPostedJobsReducer,
     availableWork: availableWorkReducer,
+    workPostChat: workPostChatReducer,
+    appliedWork: appliedWorkReducer,
+    workerDashboard: workerDashboardReducer,
+    pastBookings: pastBookingReducer,
   },
 });
 

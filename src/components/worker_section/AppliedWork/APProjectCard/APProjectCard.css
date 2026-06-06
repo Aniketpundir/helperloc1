@@ -238,6 +238,11 @@
   transform: scale(0.97);
 }
 
+.ap-btn:disabled {
+  cursor: not-allowed;
+  opacity: 0.65;
+}
+
 .ap-btn--outline {
   background: transparent;
   border: 1.5px solid var(--color-primary);
@@ -286,6 +291,58 @@
 
 .ap-btn--find-similar:hover {
   filter: brightness(1.1);
+}
+
+.ap-otp-box {
+  width: min(100%, 460px);
+  padding: 14px;
+  border-radius: 16px;
+  border: 1px solid rgba(21, 101, 192, 0.18);
+  background: rgba(227, 242, 253, 0.58);
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.ap-otp-box__copy {
+  text-align: left;
+}
+
+.ap-otp-box__title {
+  margin: 0 0 3px;
+  font-family: var(--font-body);
+  font-weight: var(--fw-bold);
+  color: var(--color-primary);
+}
+
+.ap-otp-box__help {
+  margin: 0;
+  font-family: var(--font-body);
+  font-size: var(--text-body-sm);
+  color: var(--color-on-surface-variant);
+}
+
+.ap-otp-box__actions {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.ap-otp-box__input {
+  width: 130px;
+  padding: 10px 12px;
+  border: 1px solid rgba(21, 101, 192, 0.3);
+  border-radius: 10px;
+  font-family: var(--font-body);
+  font-weight: var(--fw-semibold);
+  letter-spacing: 0.08em;
+  outline: none;
+}
+
+.ap-otp-box__input:focus {
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 3px rgba(21, 101, 192, 0.12);
 }
 
 /* Chips */
@@ -403,6 +460,15 @@
   .ap-btn {
     width: 100%;
     justify-content: center;
+  }
+
+  .ap-otp-box {
+    width: 100%;
+  }
+
+  .ap-otp-box__actions,
+  .ap-otp-box__input {
+    width: 100%;
   }
 
   .ap-awaiting-chip {

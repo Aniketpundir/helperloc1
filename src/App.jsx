@@ -16,6 +16,7 @@ import Worker_Category from "./components/user_section/Worker_Category/Worker_Ca
 import Listed_Worker from "./components/user_section/Listed_Worker/Listed_Worker"
 import Worker_Detail from "./components/user_section/Worker_Detail/Worker_Detail"
 import Booking_Confirmed from "./components/user_section/Booking_Confirmed/Booking_Confirmed"
+import RecentChats from "./components/common/RecentChats/RecentChats";
 
 // user profile
 import UserProfile from "./components/user_section/user_dashboard/UserProfile/UserProfile";
@@ -94,6 +95,13 @@ const router = createBrowserRouter(
             </ProtectedRoute>
           }
         />
+        <Route path="/user-dashboard/recent-chats"
+          element={
+            <ProtectedRoute allowedRoles={['user']}>
+              <RecentChats role="user" />
+            </ProtectedRoute>
+          }
+        />
         <Route path="/booking-confirmed"
           element={
             <ProtectedRoute allowedRoles={['user']}>
@@ -169,6 +177,14 @@ const router = createBrowserRouter(
           element={
             <ProtectedRoute allowedRoles={['worker']}>
               <AvailableWork />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route path="/worker/recent-chats"
+          element={
+            <ProtectedRoute allowedRoles={['worker']}>
+              <RecentChats role="worker" />
             </ProtectedRoute>
           }
         />

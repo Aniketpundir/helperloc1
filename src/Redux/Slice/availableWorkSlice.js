@@ -54,6 +54,8 @@ const mapWorkPost = (post) => ({
     workerType: post.workerType,
     hasApplied: !!post.hasApplied,
     applicationStatus: post.myApplication?.status || null,
+    clientUserId: post.user?.id || post.user?._id || post.user,
+    clientName: post.user?.fullName || 'Client',
     raw: post,
 });
 

@@ -1,6 +1,6 @@
 import "./AWPWorkCard.css";
 
-export default function AWPWorkCard({ card, actionLoading, onWantJob, onWithdrawJob, onViewDetails }) {
+export default function AWPWorkCard({ card, actionLoading, onWantJob, onWithdrawJob, onViewDetails, onChat }) {
     const urgencyConfig = {
         urgent: {
             className: "awp-work-card__urgency-badge--urgent",
@@ -119,6 +119,16 @@ export default function AWPWorkCard({ card, actionLoading, onWantJob, onWithdraw
                     <span className="material-symbols-outlined">visibility</span>
                     View Full Details
                 </button>
+
+                {isApplied && (
+                    <button
+                        className="awp-work-card__btn awp-work-card__btn--outline"
+                        onClick={() => onChat && onChat(card)}
+                    >
+                        <span className="material-symbols-outlined">chat</span>
+                        Chat Client
+                    </button>
+                )}
             </div>
         </div>
     );

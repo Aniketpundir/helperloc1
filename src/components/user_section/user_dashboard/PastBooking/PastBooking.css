@@ -9,3 +9,21 @@
   flex-direction: column;
   gap: var(--spacing-md);
 }
+
+.past-booking__state {
+  min-height: 180px;
+  border: 1px dashed var(--color-outline-variant);
+  border-radius: var(--radius-xl);
+  background: #ffffff;
+  color: var(--color-on-surface-variant);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--spacing-sm);
+  font-family: var(--font-body);
+  font-weight: var(--fw-semibold);
+}
+
+.past-booking__state .material-symbols-outlined {
+  color: var(--color-primary);
+}
