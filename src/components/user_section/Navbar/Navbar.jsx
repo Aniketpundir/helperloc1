@@ -212,7 +212,7 @@ const Navbar = () => {
 
                 <div className="navbar__logo">
                     <Link to="/" className="navbar__logo-icon">H</Link>
-                    <Link to="/" className="navbar__logo-text">HelperLoc</Link>
+                    <Link to="/" className="navbar__logo-text">Helper Loc</Link>
                 </div>
 
                 <div className="navbar__links">
