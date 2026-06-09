@@ -167,6 +167,37 @@
   font-family: var(--font-body);
   font-size: 10px;
   color: var(--color-outline);
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.wpc-ticks {
+  font-size: 14px !important;
+  color: var(--color-outline);
+}
+
+.wpc-double-tick {
+  position: relative;
+  width: 17px;
+  height: 14px;
+  color: var(--color-outline);
+  display: inline-block;
+}
+
+.wpc-double-tick .material-symbols-outlined {
+  position: absolute;
+  top: 0;
+  left: 0;
+  font-size: 14px !important;
+}
+
+.wpc-double-tick__second {
+  left: 5px !important;
+}
+
+.wpc-double-tick--seen {
+  color: #0ea5e9;
 }
 
 .wpc-modal__input-row {

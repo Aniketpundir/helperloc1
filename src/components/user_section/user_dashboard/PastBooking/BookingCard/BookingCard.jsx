@@ -39,6 +39,8 @@ export default function BookingCard({
     price,
     paymentNote,
     review,
+    rating = 0,
+    isRated = false,
     cancelReason,
     refundStatus,
     onHire,
@@ -83,11 +85,13 @@ export default function BookingCard({
                 </div>
 
                 {/* Review box */}
-                {review && (
+                {isRated && (
                     <div className="past-card__review">
                         <div className="past-card__review-top">
-                            <Stars />
-                            <span className="past-card__review-text">"{review}"</span>
+                            <Stars count={rating || 5} />
+                            <span className="past-card__review-text">
+                                {review ? `"${review}"` : 'Rated successfully'}
+                            </span>
                         </div>
                     </div>
                 )}
@@ -114,10 +118,15 @@ export default function BookingCard({
                         <span className="material-symbols-outlined">replay</span>
                         Hire Again
                     </button>
-                    <button className="past-card__btn past-card__btn--rate" onClick={onRate}>
-                        <span className="material-symbols-outlined">rate_review</span>
-                        Rate Now
-                    </button>
+                    {status === 'completed' && (
+                        <button
+                            className="past-card__btn past-card__btn--rate"
+                            onClick={onRate}
+                        >
+                            <span className="material-symbols-outlined">rate_review</span>
+                            {isRated ? 'Edit Review' : 'Rate Now'}
+                        </button>
+                    )}
                     <button className="past-card__btn past-card__btn--share" onClick={onShare}>
                         <span className="material-symbols-outlined">share</span>
                         Share

@@ -75,6 +75,11 @@
   box-shadow: var(--shadow-md);
 }
 
+.rc-card--unread {
+  border-color: rgba(21, 101, 192, 0.45);
+  background: linear-gradient(90deg, rgba(227, 242, 253, 0.62), #ffffff 42%);
+}
+
 .rc-card__avatar {
   width: 56px;
   height: 56px;
@@ -120,14 +125,61 @@
   text-overflow: ellipsis;
 }
 
-.rc-card__message {
+.rc-card__message-row {
   margin-top: 5px;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  min-width: 0;
+}
+
+.rc-card__message {
   color: var(--color-on-surface-variant);
   font-family: var(--font-body);
   font-size: var(--text-body-sm);
+  margin: 0;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+}
+
+.rc-ticks {
+  flex-shrink: 0;
+  font-size: 16px !important;
+  color: var(--color-outline);
+}
+
+.rc-double-tick {
+  position: relative;
+  width: 19px;
+  height: 16px;
+  flex-shrink: 0;
+  color: var(--color-outline);
+  display: inline-block;
+}
+
+.rc-double-tick .material-symbols-outlined {
+  position: absolute;
+  top: 0;
+  left: 0;
+  font-size: 16px !important;
+}
+
+.rc-double-tick__second {
+  left: 6px !important;
+}
+
+.rc-double-tick--seen {
+  color: #0ea5e9;
+}
+
+.rc-card__unread-dot {
+  width: 11px;
+  height: 11px;
+  border-radius: 50%;
+  background: #0ea5e9;
+  box-shadow: 0 0 0 4px rgba(14, 165, 233, 0.16);
+  flex-shrink: 0;
 }
 
 .rc-card__chevron {

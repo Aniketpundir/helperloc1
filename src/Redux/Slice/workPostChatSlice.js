@@ -16,6 +16,18 @@ export const fetchRecentWorkPostChats = createAsyncThunk(
     }
 );
 
+export const refreshRecentWorkPostChats = createAsyncThunk(
+    'workPostChat/refreshRecentWorkPostChats',
+    async (_, { rejectWithValue }) => {
+        try {
+            const { data } = await axios.get(CHATS_URL);
+            return data.chats;
+        } catch (error) {
+            return rejectWithValue(error.response?.data?.message || 'Failed to refresh recent chats.');
+        }
+    }
+);
+
 export const openExistingWorkPostChat = createAsyncThunk(
     'workPostChat/openExistingWorkPostChat',
     async (chatId, { rejectWithValue }) => {
@@ -24,6 +36,18 @@ export const openExistingWorkPostChat = createAsyncThunk(
             return data.chat;
         } catch (error) {
             return rejectWithValue(error.response?.data?.message || 'Failed to open chat.');
+        }
+    }
+);
+
+export const refreshOpenWorkPostChat = createAsyncThunk(
+    'workPostChat/refreshOpenWorkPostChat',
+    async (chatId, { rejectWithValue }) => {
+        try {
+            const { data } = await axios.get(`${CHATS_URL}/${chatId}`);
+            return data.chat;
+        } catch (error) {
+            return rejectWithValue(error.response?.data?.message || 'Failed to refresh chat.');
         }
     }
 );
@@ -68,6 +92,22 @@ const workPostChatSlice = createSlice({
         isOpen: false,
     },
     reducers: {
+        applySocketChatUpdate(state, action) {
+            const incomingChat = action.payload;
+            const existingIndex = state.recentChats.findIndex((chat) => chat.id === incomingChat.id);
+
+            if (existingIndex >= 0) {
+                state.recentChats[existingIndex] = incomingChat;
+            } else {
+                state.recentChats.unshift(incomingChat);
+            }
+
+            state.recentChats.sort((a, b) => new Date(b.lastMessageAt || 0) - new Date(a.lastMessageAt || 0));
+
+            if (state.chat?.id === incomingChat.id) {
+                state.chat = incomingChat;
+            }
+        },
         closeWorkPostChat(state) {
             state.chat = null;
             state.draft = '';
@@ -88,6 +128,9 @@ const workPostChatSlice = createSlice({
             .addCase(openWorkPostChat.fulfilled, (state, action) => {
                 state.loading = false;
                 state.chat = action.payload;
+                state.recentChats = state.recentChats.map((chat) =>
+                    chat.id === action.payload.id ? action.payload : chat
+                );
             })
             .addCase(openWorkPostChat.rejected, (state, action) => {
                 state.loading = false;
@@ -101,6 +144,9 @@ const workPostChatSlice = createSlice({
             .addCase(openExistingWorkPostChat.fulfilled, (state, action) => {
                 state.loading = false;
                 state.chat = action.payload;
+                state.recentChats = state.recentChats.map((chat) =>
+                    chat.id === action.payload.id ? action.payload : chat
+                );
             })
             .addCase(openExistingWorkPostChat.rejected, (state, action) => {
                 state.loading = false;
@@ -116,6 +162,21 @@ const workPostChatSlice = createSlice({
             })
             .addCase(fetchRecentWorkPostChats.rejected, (state, action) => {
                 state.recentLoading = false;
+                state.error = action.payload;
+            })
+            .addCase(refreshRecentWorkPostChats.fulfilled, (state, action) => {
+                state.recentChats = action.payload;
+            })
+            .addCase(refreshRecentWorkPostChats.rejected, (state, action) => {
+                state.error = action.payload;
+            })
+            .addCase(refreshOpenWorkPostChat.fulfilled, (state, action) => {
+                state.chat = action.payload;
+                state.recentChats = state.recentChats.map((chat) =>
+                    chat.id === action.payload.id ? action.payload : chat
+                );
+            })
+            .addCase(refreshOpenWorkPostChat.rejected, (state, action) => {
                 state.error = action.payload;
             })
             .addCase(sendWorkPostChatMessage.pending, (state) => {
@@ -137,5 +198,5 @@ const workPostChatSlice = createSlice({
     },
 });
 
-export const { closeWorkPostChat, setWorkPostChatDraft } = workPostChatSlice.actions;
+export const { applySocketChatUpdate, closeWorkPostChat, setWorkPostChatDraft } = workPostChatSlice.actions;
 export default workPostChatSlice.reducer;

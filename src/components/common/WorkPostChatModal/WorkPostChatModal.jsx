@@ -10,6 +10,21 @@ import './WorkPostChatModal.css';
 const avatarFor = (name = 'User') =>
     `https://ui-avatars.com/api/?name=${encodeURIComponent(name)}&background=1565c0&color=fff&size=96&bold=true`;
 
+function DeliveryTicks({ status }) {
+    if (!status) return null;
+
+    if (status === 'sent') {
+        return <span className="material-symbols-outlined wpc-ticks wpc-ticks--sent">check</span>;
+    }
+
+    return (
+        <span className={`wpc-double-tick${status === 'seen' ? ' wpc-double-tick--seen' : ''}`} aria-label={status}>
+            <span className="material-symbols-outlined">check</span>
+            <span className="material-symbols-outlined wpc-double-tick__second">check</span>
+        </span>
+    );
+}
+
 export default function WorkPostChatModal() {
     const dispatch = useDispatch();
     const bottomRef = useRef(null);
@@ -104,6 +119,7 @@ export default function WorkPostChatModal() {
                                         hour: '2-digit',
                                         minute: '2-digit',
                                     })}
+                                    {message.isMine && <DeliveryTicks status={message.deliveryStatus} />}
                                 </span>
                             </div>
                         ))

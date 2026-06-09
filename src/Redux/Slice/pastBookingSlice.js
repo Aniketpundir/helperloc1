@@ -8,8 +8,14 @@ import CarpentryImage from '../../assets/Carpentry.png';
 
 const API = import.meta.env.VITE_API_URL.replace(/\/$/, '');
 const BOOKINGS_URL = `${API}/bookings`;
+const REVIEWS_URL = `${API}/reviews`;
 
-const HISTORY_STATUSES = ['completed', 'cancelled', 'rejected', 'rescheduled'];
+const filterToApiStatus = {
+  'All Services': 'all',
+  Completed: 'completed',
+  Cancelled: 'cancelled',
+  Rescheduled: 'rescheduled',
+};
 
 const formatDate = (date, timeSlot) => {
   if (!date) return timeSlot || 'Schedule not available';
@@ -20,7 +26,7 @@ const formatDate = (date, timeSlot) => {
     year: 'numeric',
   });
 
-  return [formattedDate, timeSlot].filter(Boolean).join(' • ');
+  return [formattedDate, timeSlot].filter(Boolean).join(' - ');
 };
 
 const formatMoney = (amount = 0) =>
@@ -60,7 +66,9 @@ const mapBooking = (booking) => {
     date: formatDate(booking.scheduledDate, booking.timeSlot),
     price: formatMoney(booking.estimatedAmount),
     paymentNote: booking.paymentStatus ? `Payment: ${booking.paymentStatus}` : '',
-    review: booking.status === 'completed' ? booking.workDescription : '',
+    review: booking.review?.comment || '',
+    rating: booking.review?.rating || 0,
+    isRated: !!booking.review,
     cancelReason: booking.cancellationReason || `Booking ${booking.status}`,
     refundStatus: booking.paymentStatus === 'refunded' ? 'Processed to original payment method.' : '',
     serviceName: booking.serviceName,
@@ -68,39 +76,70 @@ const mapBooking = (booking) => {
   };
 };
 
-const calculateStats = (bookings) => {
-  const completed = bookings.filter((booking) => booking.status === 'completed');
-  const uniqueWorkers = new Set(bookings.map((booking) => booking.workerName).filter(Boolean));
-
-  return {
-    completed: completed.length,
-    totalSpent: completed.reduce((sum, booking) => {
-      const amount = Number(String(booking.price).replace(/[^\d.]/g, '')) || 0;
-      return sum + amount;
-    }, 0),
-    averageRating: 0,
-    uniqueWorkers: uniqueWorkers.size,
-  };
+const fallbackStats = {
+  completed: 0,
+  totalSpent: 0,
+  averageRating: 0,
+  uniqueWorkers: 0,
 };
 
 export const fetchPastBookings = createAsyncThunk(
   'pastBookings/fetchPastBookings',
-  async (_, { rejectWithValue }) => {
+  async (_, { getState, rejectWithValue }) => {
     try {
-      const { data } = await axios.get(`${BOOKINGS_URL}/my`, {
-        params: { limit: 50 },
+      const { filter, search } = getState().pastBookings;
+      const { data } = await axios.get(`${BOOKINGS_URL}/history`, {
+        params: {
+          status: filterToApiStatus[filter] || 'all',
+          search,
+          limit: 50,
+        },
       });
 
-      const bookings = (data.bookings || [])
-        .filter((booking) => HISTORY_STATUSES.includes(booking.status))
-        .map(mapBooking);
-
       return {
-        bookings,
-        stats: calculateStats(bookings),
+        bookings: (data.bookings || []).map(mapBooking),
+        stats: data.stats || fallbackStats,
       };
     } catch (error) {
       return rejectWithValue(error.response?.data?.message || 'Failed to fetch booking history.');
+    }
+  }
+);
+
+export const submitBookingReview = createAsyncThunk(
+  'pastBookings/submitBookingReview',
+  async ({ bookingId, rating, comment }, { rejectWithValue }) => {
+    try {
+      const { data } = await axios.post(`${REVIEWS_URL}/bookings/${bookingId}`, {
+        rating,
+        comment,
+      });
+
+      return {
+        bookingId,
+        review: data.review,
+      };
+    } catch (error) {
+      return rejectWithValue(error.response?.data?.message || 'Failed to submit review.');
+    }
+  }
+);
+
+export const updateBookingReview = createAsyncThunk(
+  'pastBookings/updateBookingReview',
+  async ({ bookingId, rating, comment }, { rejectWithValue }) => {
+    try {
+      const { data } = await axios.patch(`${REVIEWS_URL}/bookings/${bookingId}`, {
+        rating,
+        comment,
+      });
+
+      return {
+        bookingId,
+        review: data.review,
+      };
+    } catch (error) {
+      return rejectWithValue(error.response?.data?.message || 'Failed to update review.');
     }
   }
 );
@@ -109,19 +148,19 @@ const pastBookingSlice = createSlice({
   name: 'pastBookings',
   initialState: {
     bookings: [],
-    stats: {
-      completed: 0,
-      totalSpent: 0,
-      averageRating: 0,
-      uniqueWorkers: 0,
-    },
+    stats: fallbackStats,
     loading: false,
+    reviewLoading: false,
     error: null,
     filter: 'All Services',
+    search: '',
   },
   reducers: {
     setPastBookingFilter: (state, action) => {
       state.filter = action.payload;
+    },
+    setPastBookingSearch: (state, action) => {
+      state.search = action.payload;
     },
   },
   extraReducers: (builder) => {
@@ -138,9 +177,51 @@ const pastBookingSlice = createSlice({
       .addCase(fetchPastBookings.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
+      })
+      .addCase(submitBookingReview.pending, (state) => {
+        state.reviewLoading = true;
+        state.error = null;
+      })
+      .addCase(submitBookingReview.fulfilled, (state, action) => {
+        state.reviewLoading = false;
+        state.bookings = state.bookings.map((booking) =>
+          booking.id === action.payload.bookingId
+            ? {
+                ...booking,
+                isRated: true,
+                rating: action.payload.review.rating,
+                review: action.payload.review.comment,
+              }
+            : booking
+        );
+      })
+      .addCase(submitBookingReview.rejected, (state, action) => {
+        state.reviewLoading = false;
+        state.error = action.payload;
+      })
+      .addCase(updateBookingReview.pending, (state) => {
+        state.reviewLoading = true;
+        state.error = null;
+      })
+      .addCase(updateBookingReview.fulfilled, (state, action) => {
+        state.reviewLoading = false;
+        state.bookings = state.bookings.map((booking) =>
+          booking.id === action.payload.bookingId
+            ? {
+                ...booking,
+                isRated: true,
+                rating: action.payload.review.rating,
+                review: action.payload.review.comment,
+              }
+            : booking
+        );
+      })
+      .addCase(updateBookingReview.rejected, (state, action) => {
+        state.reviewLoading = false;
+        state.error = action.payload;
       });
   },
 });
 
-export const { setPastBookingFilter } = pastBookingSlice.actions;
+export const { setPastBookingFilter, setPastBookingSearch } = pastBookingSlice.actions;
 export default pastBookingSlice.reducer;

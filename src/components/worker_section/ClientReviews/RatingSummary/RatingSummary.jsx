@@ -1,49 +1,53 @@
 import { useEffect, useRef, useState } from "react";
 import "./RatingSummary.css";
 
-const BARS = [
-    { label: "5 Star", count: 7, percent: 77.7 },
-    { label: "4 Star", count: 1, percent: 11.1 },
-    { label: "3 Star", count: 1, percent: 11.1 },
-    { label: "2 Star", count: 0, percent: 0 },
-    { label: "1 Star", count: 0, percent: 0 },
-];
+const fallbackSummary = {
+    averageRating: 0,
+    totalReviews: 0,
+    ratingCounts: [5, 4, 3, 2, 1].map((rating) => ({ rating, count: 0, percent: 0 })),
+};
 
-// Stars config: filled, filled, filled, filled, partial
-const STARS = ["filled", "filled", "filled", "filled", "partial"];
+const getStarType = (index, averageRating) => {
+    if (averageRating >= index) return "filled";
+    if (averageRating > index - 1) return "partial";
+    return "empty";
+};
 
-export default function RatingSummary() {
+export default function RatingSummary({ summary = fallbackSummary }) {
     const [animated, setAnimated] = useState(false);
     const ref = useRef(null);
+    const averageRating = Number(summary.averageRating || 0);
+    const bars = summary.ratingCounts?.length ? summary.ratingCounts : fallbackSummary.ratingCounts;
 
     useEffect(() => {
+        setAnimated(false);
         const timer = setTimeout(() => setAnimated(true), 200);
         return () => clearTimeout(timer);
-    }, []);
+    }, [summary]);
 
     return (
         <section className="rating-summary" ref={ref}>
             {/* Overall Score */}
             <div className="rating-summary__score-block">
-                <span className="rating-summary__big-number">4.8</span>
+                <span className="rating-summary__big-number">{averageRating.toFixed(1)}</span>
                 <div className="rating-summary__stars">
-                    {STARS.map((type, i) => (
+                    {[1, 2, 3, 4, 5].map((star) => (
                         <span
-                            key={i}
-                            className={`material-symbols-outlined rating-summary__star rating-summary__star--${type}`}
+                            key={star}
+                            className={`material-symbols-outlined rating-summary__star rating-summary__star--${getStarType(star, averageRating)}`}
                         >
                             star
                         </span>
                     ))}
                 </div>
-                <span className="rating-summary__count">Based on 9 reviews</span>
+                <span className="rating-summary__count">Based on {summary.totalReviews || 0} reviews</span>
             </div>
 
             {/* Rating Bars */}
             <div className="rating-summary__bars">
-                {BARS.map((bar) => (
-                    <div className="rating-summary__bar-row" key={bar.label}>
-                        <span className="rating-summary__bar-label">{bar.label}</span>
+                {bars.map((bar) => (
+                    <div className="rating-summary__bar-row" key={bar.rating}>
+                        <span className="rating-summary__bar-label">{bar.rating} Star</span>
                         <div className="rating-summary__bar-track">
                             <div
                                 className="rating-summary__bar-fill"

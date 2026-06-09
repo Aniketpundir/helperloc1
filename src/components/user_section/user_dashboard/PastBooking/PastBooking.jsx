@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
@@ -7,33 +7,24 @@ import PageHeader from './PageHeader/Pageheader';
 import StatsBanner from './StatsBanner/StatsBanner';
 import FilterChips from './FilterChips/FilterChips';
 import BookingCard from './BookingCard/BookingCard';
+import RateBookingModal from './RateBookingModal/RateBookingModal';
 import {
   fetchPastBookings,
   setPastBookingFilter,
+  setPastBookingSearch,
+  submitBookingReview,
+  updateBookingReview,
 } from '../../../../Redux/Slice/pastBookingSlice';
-
-const filterByChip = (bookings, filter) => {
-  const statusMap = {
-    Completed: 'completed',
-    Cancelled: 'cancelled',
-    Rescheduled: 'rescheduled',
-  };
-
-  const status = statusMap[filter];
-  if (!status) return bookings;
-
-  return bookings.filter((booking) => booking.status === status);
-};
 
 export default function PastBooking() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { bookings, stats, loading, error, filter } = useSelector((state) => state.pastBookings);
-  const visibleBookings = filterByChip(bookings, filter);
+  const { bookings, stats, loading, reviewLoading, error, filter, search } = useSelector((state) => state.pastBookings);
+  const [ratingBooking, setRatingBooking] = useState(null);
 
   useEffect(() => {
     dispatch(fetchPastBookings());
-  }, [dispatch]);
+  }, [dispatch, filter, search]);
 
   useEffect(() => {
     if (error) toast.error(error);
@@ -43,8 +34,26 @@ export default function PastBooking() {
     navigate(`/worker-category/listed-worker/${encodeURIComponent(booking.serviceName || 'All Services')}`);
   };
 
-  const handleRate = () => {
-    toast.info('Rating API is not added yet. We can build that next.');
+  const handleRate = (booking) => {
+    setRatingBooking(booking);
+  };
+
+  const handleSubmitRating = async ({ rating, comment }) => {
+    if (!ratingBooking) return;
+
+    try {
+      const reviewAction = ratingBooking.isRated ? updateBookingReview : submitBookingReview;
+
+      await dispatch(reviewAction({
+        bookingId: ratingBooking.id,
+        rating,
+        comment,
+      })).unwrap();
+      toast.success(ratingBooking.isRated ? 'Review updated successfully.' : 'Review submitted successfully.');
+      setRatingBooking(null);
+    } catch (message) {
+      toast.error(message || 'Failed to save review.');
+    }
   };
 
   const handleShare = async (booking) => {
@@ -67,9 +76,41 @@ export default function PastBooking() {
     dispatch(setPastBookingFilter(nextFilter));
   };
 
+  const handleExport = () => {
+    if (!bookings.length) {
+      toast.info('No booking history to export.');
+      return;
+    }
+
+    const rows = [
+      ['Service', 'Worker', 'Date', 'Status', 'Amount', 'Payment'],
+      ...bookings.map((booking) => [
+        booking.title,
+        booking.workerName,
+        booking.date,
+        booking.rawStatus,
+        booking.price,
+        booking.paymentNote,
+      ]),
+    ];
+    const csv = rows
+      .map((row) => row.map((cell) => `"${String(cell || '').replace(/"/g, '""')}"`).join(','))
+      .join('\n');
+    const url = URL.createObjectURL(new Blob([csv], { type: 'text/csv;charset=utf-8;' }));
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = 'helperloc-booking-history.csv';
+    link.click();
+    URL.revokeObjectURL(url);
+  };
+
   return (
     <div className="past-booking">
-      <PageHeader />
+      <PageHeader
+        searchValue={search}
+        onSearchChange={(value) => dispatch(setPastBookingSearch(value))}
+        onExport={handleExport}
+      />
       <StatsBanner stats={stats} />
       <FilterChips activeFilter={filter} onFilterChange={handleFilter} />
 
@@ -79,13 +120,13 @@ export default function PastBooking() {
             <span className="material-symbols-outlined">hourglass_empty</span>
             Loading booking history...
           </div>
-        ) : visibleBookings.length === 0 ? (
+        ) : bookings.length === 0 ? (
           <div className="past-booking__state">
             <span className="material-symbols-outlined">history</span>
             No past bookings found for this filter.
           </div>
         ) : (
-          visibleBookings.map((booking) => (
+          bookings.map((booking) => (
             <BookingCard
               key={booking.id}
               {...booking}
@@ -96,6 +137,13 @@ export default function PastBooking() {
           ))
         )}
       </div>
+
+      <RateBookingModal
+        booking={ratingBooking}
+        loading={reviewLoading}
+        onClose={() => setRatingBooking(null)}
+        onSubmit={handleSubmitRating}
+      />
     </div>
   );
 }

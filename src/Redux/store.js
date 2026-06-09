@@ -15,6 +15,7 @@ import workPostChatReducer from './Slice/workPostChatSlice';
 import appliedWorkReducer from './Slice/appliedWorkSlice';
 import workerDashboardReducer from './Slice/workerDashboardSlice';
 import pastBookingReducer from './Slice/pastBookingSlice';
+import clientReviewsReducer from './Slice/clientReviewsSlice';
 
 const store = configureStore({
   reducer: {
@@ -34,6 +35,7 @@ const store = configureStore({
     appliedWork: appliedWorkReducer,
     workerDashboard: workerDashboardReducer,
     pastBookings: pastBookingReducer,
+    clientReviews: clientReviewsReducer,
   },
 });
 

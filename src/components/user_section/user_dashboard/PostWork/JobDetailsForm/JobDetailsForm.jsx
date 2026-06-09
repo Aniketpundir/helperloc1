@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
 import { clearPostedWork, createWorkPost } from '../../../../../Redux/Slice/postWorkSlice';
@@ -15,13 +15,29 @@ const workerTypes = [
     { value: 'appliance', label: 'Appliance Repair', icon: 'home_repair_service' },
 ];
 
+const emptyForm = {
+    workerType: '',
+    title: '',
+    address: '',
+    urgency: 'soon',
+    workers: 1,
+    budgetMin: 600,
+    budgetMax: 1500,
+    description: '',
+    datetime: '',
+    photos: [],
+};
+
 function WorkerTypeDropdown({ value, onChange }) {
     const [open, setOpen] = useState(false);
     const ref = useRef(null);
-    const selected = workerTypes.find((w) => w.value === value) || null;
+    const selected = workerTypes.find((worker) => worker.value === value) || null;
 
     useEffect(() => {
-        const handler = (e) => { if (ref.current && !ref.current.contains(e.target)) setOpen(false); };
+        const handler = (event) => {
+            if (ref.current && !ref.current.contains(event.target)) setOpen(false);
+        };
+
         document.addEventListener('mousedown', handler);
         return () => document.removeEventListener('mousedown', handler);
     }, []);
@@ -31,7 +47,7 @@ function WorkerTypeDropdown({ value, onChange }) {
             <button
                 type="button"
                 className={`wt-dropdown__trigger${open ? ' wt-dropdown__trigger--open' : ''}`}
-                onClick={() => setOpen((p) => !p)}
+                onClick={() => setOpen((prev) => !prev)}
                 aria-haspopup="listbox"
                 aria-expanded={open}
             >
@@ -41,7 +57,7 @@ function WorkerTypeDropdown({ value, onChange }) {
                         <span className="wt-dropdown__selected-label">{selected.label}</span>
                     </span>
                 ) : (
-                    <span className="wt-dropdown__placeholder">Select worker type…</span>
+                    <span className="wt-dropdown__placeholder">Select worker type...</span>
                 )}
                 <span className={`material-symbols-outlined wt-dropdown__chevron${open ? ' wt-dropdown__chevron--open' : ''}`}>
                     expand_more
@@ -50,17 +66,20 @@ function WorkerTypeDropdown({ value, onChange }) {
 
             {open && (
                 <ul className="wt-dropdown__list" role="listbox">
-                    {workerTypes.map((w) => (
+                    {workerTypes.map((worker) => (
                         <li
-                            key={w.value}
+                            key={worker.value}
                             role="option"
-                            aria-selected={value === w.value}
-                            className={`wt-dropdown__option${value === w.value ? ' wt-dropdown__option--selected' : ''}`}
-                            onClick={() => { onChange(w.value); setOpen(false); }}
+                            aria-selected={value === worker.value}
+                            className={`wt-dropdown__option${value === worker.value ? ' wt-dropdown__option--selected' : ''}`}
+                            onClick={() => {
+                                onChange(worker.value);
+                                setOpen(false);
+                            }}
                         >
-                            <span className="material-symbols-outlined wt-dropdown__option-icon">{w.icon}</span>
-                            <span className="wt-dropdown__option-label">{w.label}</span>
-                            {value === w.value && (
+                            <span className="material-symbols-outlined wt-dropdown__option-icon">{worker.icon}</span>
+                            <span className="wt-dropdown__option-label">{worker.label}</span>
+                            {value === worker.value && (
                                 <span className="material-symbols-outlined wt-dropdown__option-check">check</span>
                             )}
                         </li>
@@ -71,18 +90,6 @@ function WorkerTypeDropdown({ value, onChange }) {
     );
 }
 
-const emptyForm = {
-    workerType: '',
-    title: '',
-    address: '',
-    urgency: 'soon',
-    workers: 1,
-    budget: 1500,
-    description: '',
-    datetime: '',
-    photos: [],
-};
-
 export default function JobDetailsForm() {
     const dispatch = useDispatch();
     const fileInputRef = useRef(null);
@@ -91,21 +98,28 @@ export default function JobDetailsForm() {
     const [errors, setErrors] = useState({});
     const [posted, setPosted] = useState(false);
 
-    const handleChange = (key, val) => {
-        setForm((prev) => ({ ...prev, [key]: val }));
+    const handleChange = (key, value) => {
+        setForm((prev) => ({ ...prev, [key]: value }));
         setErrors((prev) => ({ ...prev, [key]: '' }));
     };
 
     const validate = () => {
-        const e = {};
-        if (!form.workerType) e.workerType = 'Please select a worker type.';
-        if (!form.title.trim()) e.title = 'Job title is required.';
-        else if (form.title.trim().length < 5) e.title = 'Title must be at least 5 characters.';
-        if (!form.address.trim()) e.address = 'Address is required.';
-        if (!form.description.trim()) e.description = 'Please describe the job.';
-        else if (form.description.trim().length < 20) e.description = 'Description must be at least 20 characters.';
-        if (!form.datetime) e.datetime = 'Please select a preferred date & time.';
-        return e;
+        const nextErrors = {};
+
+        if (!form.workerType) nextErrors.workerType = 'Please select a worker type.';
+        if (!form.title.trim()) nextErrors.title = 'Job title is required.';
+        else if (form.title.trim().length < 5) nextErrors.title = 'Title must be at least 5 characters.';
+        if (!form.address.trim()) nextErrors.address = 'Address is required.';
+        if (!form.description.trim()) nextErrors.description = 'Please describe the job.';
+        else if (form.description.trim().length < 20) nextErrors.description = 'Description must be at least 20 characters.';
+        if (!form.datetime) nextErrors.datetime = 'Please select a preferred date & time.';
+        if (Number(form.budgetMin) < 0) nextErrors.budgetMin = 'Minimum budget cannot be negative.';
+        if (Number(form.budgetMax) < 0) nextErrors.budgetMax = 'Maximum budget cannot be negative.';
+        if (Number(form.budgetMax) < Number(form.budgetMin)) {
+            nextErrors.budgetMax = 'Maximum budget must be greater than minimum budget.';
+        }
+
+        return nextErrors;
     };
 
     const handleFileChange = (event) => {
@@ -119,10 +133,14 @@ export default function JobDetailsForm() {
         handleChange('photos', validFiles.slice(0, 5));
     };
 
-    const handleSubmit = async (e) => {
-        e.preventDefault();
-        const errs = validate();
-        if (Object.keys(errs).length > 0) { setErrors(errs); return; }
+    const handleSubmit = async (event) => {
+        event.preventDefault();
+        const nextErrors = validate();
+
+        if (Object.keys(nextErrors).length > 0) {
+            setErrors(nextErrors);
+            return;
+        }
 
         try {
             await dispatch(createWorkPost({
@@ -131,8 +149,8 @@ export default function JobDetailsForm() {
                 address: form.address.trim(),
                 urgency: form.urgency,
                 workersNeeded: form.workers,
-                budgetMin: Math.round(form.budget * 0.4),
-                budgetMax: Number(form.budget),
+                budgetMin: Number(form.budgetMin),
+                budgetMax: Number(form.budgetMax),
                 description: form.description.trim(),
                 preferredDateTime: form.datetime,
                 photos: form.photos,
@@ -167,18 +185,15 @@ export default function JobDetailsForm() {
 
     return (
         <form className="jdf-card" onSubmit={handleSubmit} noValidate>
-
-            {/* Worker type */}
             <div className="jdf-field">
                 <label className="jdf-label">
                     <span className="material-symbols-outlined jdf-label__icon">engineering</span>
                     WHAT TYPE OF WORKER DO YOU NEED?
                 </label>
-                <WorkerTypeDropdown value={form.workerType} onChange={(v) => handleChange('workerType', v)} />
+                <WorkerTypeDropdown value={form.workerType} onChange={(value) => handleChange('workerType', value)} />
                 {errors.workerType && <span className="jdf-error">{errors.workerType}</span>}
             </div>
 
-            {/* Job title */}
             <div className="jdf-field">
                 <div className="jdf-label-row">
                     <label className="jdf-label">
@@ -193,12 +208,11 @@ export default function JobDetailsForm() {
                     maxLength={80}
                     placeholder="e.g., Fix leaking tap in kitchen"
                     value={form.title}
-                    onChange={(e) => handleChange('title', e.target.value)}
+                    onChange={(event) => handleChange('title', event.target.value)}
                 />
                 {errors.title && <span className="jdf-error">{errors.title}</span>}
             </div>
 
-            {/* Address */}
             <div className="jdf-field">
                 <label className="jdf-label">
                     <span className="material-symbols-outlined jdf-label__icon">location_on</span>
@@ -211,14 +225,13 @@ export default function JobDetailsForm() {
                         type="text"
                         placeholder="Enter your full address or landmarks"
                         value={form.address}
-                        onChange={(e) => handleChange('address', e.target.value)}
+                        onChange={(event) => handleChange('address', event.target.value)}
                     />
                 </div>
                 {errors.address && <span className="jdf-error">{errors.address}</span>}
             </div>
 
             <div className="jdf-two-col">
-                {/* Urgency */}
                 <div className="jdf-field">
                     <label className="jdf-label">
                         <span className="material-symbols-outlined jdf-label__icon">schedule</span>
@@ -228,22 +241,21 @@ export default function JobDetailsForm() {
                         { value: 'urgent', label: 'Urgent (Within 24 hours)' },
                         { value: 'soon', label: 'Soon (Next 2-3 days)' },
                         { value: 'flexible', label: 'Flexible' },
-                    ].map((opt) => (
-                        <label key={opt.value} className={`jdf-radio-row${form.urgency === opt.value ? ' jdf-radio-row--active' : ''}`}>
+                    ].map((option) => (
+                        <label key={option.value} className={`jdf-radio-row${form.urgency === option.value ? ' jdf-radio-row--active' : ''}`}>
                             <input
                                 type="radio"
                                 name="urgency"
-                                value={opt.value}
-                                checked={form.urgency === opt.value}
-                                onChange={() => handleChange('urgency', opt.value)}
+                                value={option.value}
+                                checked={form.urgency === option.value}
+                                onChange={() => handleChange('urgency', option.value)}
                                 className="jdf-radio"
                             />
-                            <span className="jdf-radio-label">{opt.label}</span>
+                            <span className="jdf-radio-label">{option.label}</span>
                         </label>
                     ))}
                 </div>
 
-                {/* Workers count */}
                 <div className="jdf-field">
                     <label className="jdf-label">
                         <span className="material-symbols-outlined jdf-label__icon">group</span>
@@ -261,7 +273,6 @@ export default function JobDetailsForm() {
                 </div>
             </div>
 
-            {/* Budget */}
             <div className="jdf-field">
                 <div className="jdf-label-row">
                     <label className="jdf-label">
@@ -269,27 +280,76 @@ export default function JobDetailsForm() {
                         ESTIMATED BUDGET
                     </label>
                     <span className="jdf-budget-badge">
-                        ₹{Math.round(form.budget * 0.4).toLocaleString()} – ₹{Number(form.budget).toLocaleString()}
+                        ₹{Number(form.budgetMin).toLocaleString()} - ₹{Number(form.budgetMax).toLocaleString()}
                     </span>
                 </div>
-                {/* <div className="jdf-slider-wrap">
-                    <input
-                        className="jdf-slider"
-                        type="range"
-                        min={200}
-                        max={50000}
-                        step={100}
-                        value={form.budget}
-                        onChange={(e) => handleChange('budget', Number(e.target.value))}
-                    />
+
+                <div className="jdf-budget-grid">
+                    <label className="jdf-budget-input-wrap">
+                        <span className="jdf-budget-input-label">Minimum</span>
+                        <span className="jdf-budget-input-prefix">₹</span>
+                        <input
+                            className={`jdf-input jdf-budget-input${errors.budgetMin ? ' jdf-input--error' : ''}`}
+                            type="number"
+                            min={0}
+                            step={100}
+                            value={form.budgetMin}
+                            onChange={(event) => handleChange('budgetMin', Math.max(0, Number(event.target.value)))}
+                        />
+                    </label>
+                    <label className="jdf-budget-input-wrap">
+                        <span className="jdf-budget-input-label">Maximum</span>
+                        <span className="jdf-budget-input-prefix">₹</span>
+                        <input
+                            className={`jdf-input jdf-budget-input${errors.budgetMax ? ' jdf-input--error' : ''}`}
+                            type="number"
+                            min={0}
+                            step={100}
+                            value={form.budgetMax}
+                            onChange={(event) => handleChange('budgetMax', Math.max(0, Number(event.target.value)))}
+                        />
+                    </label>
+                </div>
+
+                <div className="jdf-slider-wrap">
+                    <label className="jdf-slider-field">
+                        <span className="jdf-slider-title">Adjust minimum budget</span>
+                        <input
+                            className="jdf-slider"
+                            type="range"
+                            min={0}
+                            max={100000}
+                            step={100}
+                            value={form.budgetMin}
+                            onChange={(event) => {
+                                const nextMin = Number(event.target.value);
+                                handleChange('budgetMin', nextMin);
+                                if (nextMin > Number(form.budgetMax)) handleChange('budgetMax', nextMin);
+                            }}
+                        />
+                    </label>
+                    <label className="jdf-slider-field">
+                        <span className="jdf-slider-title">Adjust maximum budget</span>
+                        <input
+                            className="jdf-slider"
+                            type="range"
+                            min={0}
+                            max={100000}
+                            step={100}
+                            value={form.budgetMax}
+                            onChange={(event) => handleChange('budgetMax', Number(event.target.value))}
+                        />
+                    </label>
                     <div className="jdf-slider-labels">
-                        <span>₹200</span>
-                        <span>₹50,000</span>
+                        <span>₹0</span>
+                        <span>₹1,00,000</span>
                     </div>
-                </div> */}
+                </div>
+                {(errors.budgetMin || errors.budgetMax) && (
+                    <span className="jdf-error">{errors.budgetMin || errors.budgetMax}</span>
+                )}
             </div>
 
-            {/* Description */}
             <div className="jdf-field">
                 <label className="jdf-label">
                     <span className="material-symbols-outlined jdf-label__icon">description</span>
@@ -300,12 +360,11 @@ export default function JobDetailsForm() {
                     rows={5}
                     placeholder="Explain what needs to be done, any special requirements, access details, etc."
                     value={form.description}
-                    onChange={(e) => handleChange('description', e.target.value)}
+                    onChange={(event) => handleChange('description', event.target.value)}
                 />
                 {errors.description && <span className="jdf-error">{errors.description}</span>}
             </div>
 
-            {/* Date & Time */}
             <div className="jdf-field">
                 <label className="jdf-label">
                     <span className="material-symbols-outlined jdf-label__icon">calendar_today</span>
@@ -315,12 +374,11 @@ export default function JobDetailsForm() {
                     className={`jdf-input${errors.datetime ? ' jdf-input--error' : ''}`}
                     type="datetime-local"
                     value={form.datetime}
-                    onChange={(e) => handleChange('datetime', e.target.value)}
+                    onChange={(event) => handleChange('datetime', event.target.value)}
                 />
                 {errors.datetime && <span className="jdf-error">{errors.datetime}</span>}
             </div>
 
-            {/* Upload */}
             <div className="jdf-field">
                 <label className="jdf-label">
                     <span className="material-symbols-outlined jdf-label__icon">photo_camera</span>
@@ -344,7 +402,6 @@ export default function JobDetailsForm() {
                 </div>
             </div>
 
-            {/* Terms note */}
             <div className="jdf-review__note">
                 <span className="material-symbols-outlined">info</span>
                 By posting this job you agree to HelperLoc's{' '}
@@ -352,12 +409,10 @@ export default function JobDetailsForm() {
                 <a className="jdf-link" href="#">Privacy Policy</a>.
             </div>
 
-            {/* Submit button */}
             <button type="submit" className="jdf-submit-btn" disabled={loading}>
                 <span className="material-symbols-outlined">send</span>
                 {loading ? 'Posting...' : 'Post Job'}
             </button>
-
         </form>
     );
 }

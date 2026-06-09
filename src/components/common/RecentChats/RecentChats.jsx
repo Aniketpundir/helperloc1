@@ -12,10 +12,25 @@ const avatarFor = (name = 'User') =>
     `https://ui-avatars.com/api/?name=${encodeURIComponent(name)}&background=1565c0&color=fff&size=96&bold=true`;
 
 const lastMessageText = (chat) => {
-    const last = chat.messages?.at(-1);
+    const last = chat.lastMessage || chat.messages?.at(-1);
     if (!last) return 'No messages yet';
     return `${last.isMine ? 'You: ' : ''}${last.text}`;
 };
+
+function DeliveryTicks({ status }) {
+    if (!status) return null;
+
+    if (status === 'sent') {
+        return <span className="material-symbols-outlined rc-ticks rc-ticks--sent">check</span>;
+    }
+
+    return (
+        <span className={`rc-double-tick${status === 'seen' ? ' rc-double-tick--seen' : ''}`} aria-label={status}>
+            <span className="material-symbols-outlined">check</span>
+            <span className="material-symbols-outlined rc-double-tick__second">check</span>
+        </span>
+    );
+}
 
 const formatTime = (date) => {
     if (!date) return '';
@@ -61,10 +76,14 @@ export default function RecentChats({ role = 'user' }) {
                         Loading recent chats...
                     </div>
                 ) : recentChats.length ? (
-                    recentChats.map((chat) => (
+                    recentChats.map((chat) => {
+                        const last = chat.lastMessage || chat.messages?.at(-1);
+                        const hasUnread = Number(chat.unreadCount || 0) > 0;
+
+                        return (
                         <button
                             key={chat.id}
-                            className="rc-card"
+                            className={`rc-card${hasUnread ? ' rc-card--unread' : ''}`}
                             onClick={() => dispatch(openExistingWorkPostChat(chat.id))}
                         >
                             <img
@@ -78,11 +97,16 @@ export default function RecentChats({ role = 'user' }) {
                                     <span className="rc-card__time">{formatTime(chat.lastMessageAt)}</span>
                                 </div>
                                 <p className="rc-card__job">{chat.workPost?.title || 'Work post chat'}</p>
-                                <p className="rc-card__message">{lastMessageText(chat)}</p>
+                                <div className="rc-card__message-row">
+                                    {last?.isMine && <DeliveryTicks status={last.deliveryStatus} />}
+                                    <p className="rc-card__message">{lastMessageText(chat)}</p>
+                                </div>
                             </div>
+                            {hasUnread && <span className="rc-card__unread-dot" aria-label="Unread messages" />}
                             <span className="material-symbols-outlined rc-card__chevron">chevron_right</span>
                         </button>
-                    ))
+                        );
+                    })
                 ) : (
                     <div className="rc-empty">
                         <span className="material-symbols-outlined">forum</span>

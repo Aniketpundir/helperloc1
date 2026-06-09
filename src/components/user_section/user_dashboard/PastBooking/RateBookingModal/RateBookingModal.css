@@ -1,0 +1,132 @@
+.rate-modal {
+  position: fixed;
+  inset: 0;
+  z-index: var(--z-modal);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  background: rgba(15, 23, 42, 0.48);
+}
+
+.rate-modal__card {
+  position: relative;
+  width: min(480px, 100%);
+  border-radius: 22px;
+  padding: 28px;
+  background: #ffffff;
+  box-shadow: var(--shadow-2xl);
+}
+
+.rate-modal__close {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  border: none;
+  background: transparent;
+  color: var(--color-on-surface-variant);
+  cursor: pointer;
+}
+
+.rate-modal__eyebrow {
+  color: var(--color-primary);
+  font-family: var(--font-body);
+  font-size: 12px;
+  font-weight: var(--fw-bold);
+  letter-spacing: var(--ls-label);
+  text-transform: uppercase;
+}
+
+.rate-modal__title {
+  margin-top: 6px;
+  font-family: var(--font-headline);
+  font-size: var(--text-headline-md);
+  color: var(--color-on-surface);
+}
+
+.rate-modal__worker {
+  margin-top: 4px;
+  color: var(--color-on-surface-variant);
+  font-family: var(--font-body);
+}
+
+.rate-modal__stars {
+  display: flex;
+  gap: 8px;
+  margin: 22px 0;
+}
+
+.rate-modal__star {
+  width: 44px;
+  height: 44px;
+  border: 1.5px solid var(--color-outline-variant);
+  border-radius: 12px;
+  background: var(--color-surface-container-lowest);
+  color: var(--color-outline);
+  cursor: pointer;
+}
+
+.rate-modal__star--active {
+  border-color: #f59e0b;
+  background: #fff7ed;
+  color: #f59e0b;
+}
+
+.rate-modal__star .material-symbols-outlined {
+  font-variation-settings: 'FILL' 1;
+}
+
+.rate-modal__textarea {
+  width: 100%;
+  resize: vertical;
+  border: 1.5px solid var(--color-outline-variant);
+  border-radius: 14px;
+  padding: 13px;
+  outline: none;
+  font-family: var(--font-body);
+}
+
+.rate-modal__textarea:focus {
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 3px rgba(21, 101, 192, 0.12);
+}
+
+.rate-modal__counter {
+  margin-top: 6px;
+  text-align: right;
+  color: var(--color-outline);
+  font-family: var(--font-body);
+  font-size: 12px;
+}
+
+.rate-modal__actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+.rate-modal__btn {
+  border: none;
+  border-radius: 12px;
+  padding: 12px 18px;
+  font-family: var(--font-body);
+  font-weight: var(--fw-bold);
+  cursor: pointer;
+}
+
+.rate-modal__btn:disabled {
+  cursor: not-allowed;
+  opacity: 0.65;
+}
+
+.rate-modal__btn--ghost {
+  background: transparent;
+  color: var(--color-on-surface-variant);
+  border: 1.5px solid var(--color-outline-variant);
+}
+
+.rate-modal__btn--primary {
+  background: var(--color-primary);
+  color: var(--color-on-primary);
+}

@@ -1,6 +1,6 @@
 import './PageHeader.css';
 
-export default function PageHeader() {
+export default function PageHeader({ searchValue = '', onSearchChange, onExport }) {
     return (
         <div className="past-page-header">
             <div className="past-page-header__left">
@@ -16,6 +16,8 @@ export default function PageHeader() {
                         className="past-page-header__search-input"
                         type="text"
                         placeholder="Search service or pro..."
+                        value={searchValue}
+                        onChange={(event) => onSearchChange?.(event.target.value)}
                     />
                 </div>
 
@@ -26,7 +28,7 @@ export default function PageHeader() {
                 </button>
 
                 {/* Export */}
-                <button className="past-page-header__ctrl-btn">
+                <button className="past-page-header__ctrl-btn" onClick={onExport}>
                     <span className="material-symbols-outlined">download</span>
                     <span className="past-page-header__ctrl-label">Export</span>
                 </button>
