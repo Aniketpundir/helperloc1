@@ -2,20 +2,12 @@
 import { useSelector } from 'react-redux';
 import { Navigate, useLocation } from 'react-router-dom';
 
-/**
- * ProtectedRoute
- * ─────────────────────────────────────────────
- * Sirf logged-in users ko andar jaane deta hai.
- * Agar login nahi hai toh /login par redirect karta hai
- * aur current location save karta hai taaki login ke
- * baad wapas wahi bhej sake.
- *
- * Optional: allowedRoles={['worker']} pass karo
- * role-based access ke liye.
- */
+
 const ProtectedRoute = ({ children, allowedRoles }) => {
   const { isAuthenticated, user } = useSelector((state) => state.auth);
   const location = useLocation();
+
+  console.log(user);
 
   if (!isAuthenticated) {
     // Login ke baad wapas isi page par lana hai
