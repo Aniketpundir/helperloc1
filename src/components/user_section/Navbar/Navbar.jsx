@@ -16,6 +16,8 @@ const Navbar = () => {
 
     const { isAuthenticated, user } = useSelector((state) => state.auth);
 
+    console.log(user);
+
     useEffect(() => {
         const handleScroll = () => setScrolled(window.scrollY > 10);
         window.addEventListener('scroll', handleScroll);
