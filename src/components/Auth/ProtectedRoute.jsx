@@ -18,7 +18,7 @@ const ProtectedRoute = ({ children, allowedRoles }) => {
   const hasRoleAccess =
     !allowedRoles ||
     allowedRoles.includes(user?.role) ||
-    (user?.role === 'both' && allowedRoles.some((role) => ['user', 'worker'].includes(role)));
+    (user?.role[0] === 'both' && allowedRoles.some((role) => ['user', 'worker'].includes(role)));
 
   if (!hasRoleAccess) {
     // Wrong role — apne dashboard par bhejo
