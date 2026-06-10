@@ -1,4 +1,3 @@
-// src/Redux/Slice/authSlice.js
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
 
@@ -33,7 +32,7 @@ const getStoredToken = () => {
     const expiry = localStorage.getItem('hl_expiry');
     if (!token || !expiry) return null;
     if (Date.now() > parseInt(expiry)) {
-        ['hl_token', 'hl_user', 'hl_expiry'].forEach(k => localStorage.removeItem(k));
+        ['hl_token', 'hl_user', 'hl_expiry', 'hl_mode'].forEach(k => localStorage.removeItem(k));
         return null;
     }
     return token;

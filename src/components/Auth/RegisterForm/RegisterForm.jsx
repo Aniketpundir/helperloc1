@@ -148,6 +148,15 @@ export default function RegisterForm() {
     const errs = validate();
     if (Object.keys(errs).length > 0) { setErrors(errs); return; }
 
+    console.log('Backend me ja raha data:', {
+      fullName: form.fullName.trim(),
+      email: form.email.trim().toLowerCase(),
+      phone: '+91' + form.phone.replace(/\s/g, ''),
+      password: form.password,
+      role,
+      otp: form.otp.trim(),
+    });
+
     const result = await dispatch(registerUser({
       fullName: form.fullName.trim(),
       email: form.email.trim().toLowerCase(),
