@@ -8,6 +8,12 @@ const BASE_URL = `${API}/auth/`;
 const REMEMBER_DAYS = 30;
 const DEFAULT_DAYS = 7;
 
+// ✅ roles array → single role normalize
+const normalizeUser = (user) => ({
+    ...user,
+    role: user?.roles?.[0] || user?.role || 'user'
+});
+
 // ✅ Token save with expiry
 const saveToStorage = (token, user, remember) => {
     const days = remember ? REMEMBER_DAYS : DEFAULT_DAYS;
@@ -81,10 +87,7 @@ export const loginUser = createAsyncThunk(
     'auth/loginUser',
     async ({ email, password, remember }, { rejectWithValue }) => {
         try {
-            const { data } = await axios.post(`${BASE_URL}login`, {
-                email,
-                password,
-            });
+            const { data } = await axios.post(`${BASE_URL}login`, { email, password });
             return { token: data.token, user: data.user, remember };
         } catch (err) {
             return rejectWithValue(
@@ -108,11 +111,12 @@ const authSlice = createSlice({
     reducers: {
         setCredentials(state, { payload }) {
             const { token, user, remember } = payload;
+            const normalizedUser = normalizeUser(user);
             state.token = token;
-            state.user = user;
+            state.user = normalizedUser;
             state.isAuthenticated = true;
             axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
-            saveToStorage(token, user, remember);
+            saveToStorage(token, normalizedUser, remember);
         },
         logout(state) {
             state.token = null;
@@ -136,16 +140,15 @@ const authSlice = createSlice({
                 state.error = null;
             })
             .addCase(registerUser.fulfilled, (state, action) => {
-                console.log('Login Response:', action.payload);
                 const { token, user } = action.payload;
+                const normalizedUser = normalizeUser(user); // ✅ normalize
                 state.loading = false;
                 state.token = token;
-                state.user = user;
+                state.user = normalizedUser;
                 state.isAuthenticated = true;
                 state.error = null;
                 axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
-                // ✅ Register pe default 7 din
-                saveToStorage(token, user, false);
+                saveToStorage(token, normalizedUser, false);
             })
             .addCase(registerUser.rejected, (state, action) => {
                 state.loading = false;
@@ -174,14 +177,14 @@ const authSlice = createSlice({
             })
             .addCase(loginUser.fulfilled, (state, action) => {
                 const { token, user, remember } = action.payload;
+                const normalizedUser = normalizeUser(user); // ✅ normalize
                 state.loading = false;
                 state.token = token;
-                state.user = user;
+                state.user = normalizedUser;
                 state.isAuthenticated = true;
                 state.error = null;
                 axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
-                // ✅ Remember me → 30 din, else → 7 din
-                saveToStorage(token, user, remember);
+                saveToStorage(token, normalizedUser, remember);
             })
             .addCase(loginUser.rejected, (state, action) => {
                 state.loading = false;
