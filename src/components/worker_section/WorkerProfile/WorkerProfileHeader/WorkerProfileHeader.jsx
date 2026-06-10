@@ -97,7 +97,9 @@ export default function WorkerProfileHeader() {
         profile?.primaryService ||
         profile?.services?.find((service) => service.isActive)?.name ||
         'Worker';
-    const location = [profile?.city, profile?.country].filter(Boolean).join(', ') || 'India';
+    const location = profile?.city
+        ? [profile.city, profile.country].filter(Boolean).join(', ')
+        : 'Location not added';
     const memberSince = formatMemberSince(profile?.user?.createdAt || user?.createdAt);
     const imageSrc = profile?.profileImage || avatarUrl(name);
 

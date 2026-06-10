@@ -13,11 +13,11 @@ const formatDate = (date) => {
 };
 
 const toDisplayGender = (gender) => {
-    if (!gender) return 'Male';
+    if (!gender) return '';
     return gender.charAt(0).toUpperCase() + gender.slice(1);
 };
 
-const toApiGender = (gender) => gender.toLowerCase();
+const toApiGender = (gender) => gender ? gender.toLowerCase() : null;
 
 function EditableField({ label, icon, value, type = 'text', onSave, disabled, rightSlot }) {
     const [editing, setEditing] = useState(false);
@@ -186,14 +186,14 @@ function TagField({ label, icon, tags: initTags, placeholder, onSave }) {
 export default function PersonalInfoTab() {
     const { user } = useSelector((state) => state.auth);
     const [data, setData] = useState({
-        fullName: 'Ramesh Kumar',
-        email: 'ramesh.kumar@example.com',
-        phone: '+91 9876543210',
-        dob: '1990-05-15',
-        gender: 'Male',
-        address: 'House No. 452, Sector 15, Dwarka, New Delhi - 110075',
-        cities: ['Delhi', 'Gurugram'],
-        languages: ['Hindi', 'English'],
+        fullName: user?.fullName || '',
+        email: user?.email || '',
+        phone: user?.phone || '',
+        dob: '',
+        gender: '',
+        address: '',
+        cities: [],
+        languages: [],
     });
     const [loadingProfile, setLoadingProfile] = useState(true);
     const [saving, setSaving] = useState(false);
@@ -247,7 +247,7 @@ export default function PersonalInfoTab() {
                 phone: data.phone,
                 dateOfBirth: data.dob || null,
                 gender: toApiGender(data.gender),
-                currentAddress: data.address,
+                currentAddress: data.address || null,
                 city: data.cities[0] || null,
                 languagesKnown: data.languages,
             });
@@ -269,7 +269,8 @@ export default function PersonalInfoTab() {
             toast.success('Personal info updated successfully.');
             setTimeout(() => setSaveMsg(''), 2500);
         } catch (error) {
-            toast.error(error.response?.data?.message || 'Failed to save changes.');
+            const message = error.response?.data?.error || error.response?.data?.message || 'Failed to save changes.';
+            toast.error(message);
         } finally {
             setSaving(false);
         }

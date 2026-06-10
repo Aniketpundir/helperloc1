@@ -14,7 +14,15 @@ const Navbar = () => {
     const dispatch = useDispatch();
     const dropRef = useRef(null);
 
-    const { isAuthenticated, user } = useSelector((state) => state.auth);
+    const { isAuthenticated, user, authMode } = useSelector((state) => state.auth);
+    const userRoles = Array.isArray(user?.roles) && user.roles.length
+        ? user.roles
+        : user?.role === 'both'
+            ? ['user', 'worker']
+            : user?.role
+                ? [user.role]
+                : [];
+    const isWorkerMode = authMode === 'worker' && userRoles.includes('worker');
 
     useEffect(() => {
         const handleScroll = () => setScrolled(window.scrollY > 10);
@@ -55,7 +63,7 @@ const Navbar = () => {
         navigate('/login', { replace: true });
     };
 
-    const canUseUserChats = isAuthenticated && ['user', 'both'].includes(user?.role);
+    const canUseUserChats = isAuthenticated && userRoles.includes('user');
 
     // ── User Dropdown ──
     const UserDropdown = () => (
@@ -238,7 +246,7 @@ const Navbar = () => {
                 {/* ── RIGHT SIDE: Role-based rendering ── */}
                 <div className="navbar__actions">
                     {isAuthenticated ? (
-                        user?.role === 'worker' ? <WorkerDropdown /> : <UserDropdown />
+                        isWorkerMode ? <WorkerDropdown /> : <UserDropdown />
                     ) : (
                         <>
                             <Link to="/login">

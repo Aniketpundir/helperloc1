@@ -16,6 +16,13 @@ import { Navigate, useLocation } from 'react-router-dom';
 const ProtectedRoute = ({ children, allowedRoles }) => {
   const { isAuthenticated, user } = useSelector((state) => state.auth);
   const location = useLocation();
+  const roles = Array.isArray(user?.roles) && user.roles.length
+    ? user.roles
+    : user?.role === 'both'
+      ? ['user', 'worker']
+      : user?.role
+        ? [user.role]
+        : [];
 
   if (!isAuthenticated) {
     // Login ke baad wapas isi page par lana hai
@@ -25,12 +32,11 @@ const ProtectedRoute = ({ children, allowedRoles }) => {
   // Role check (optional)
   const hasRoleAccess =
     !allowedRoles ||
-    allowedRoles.includes(user?.role) ||
-    (user?.role === 'both' && allowedRoles.some((role) => ['user', 'worker'].includes(role)));
+    allowedRoles.some((role) => roles.includes(role));
 
   if (!hasRoleAccess) {
     // Wrong role — apne dashboard par bhejo
-    if (user?.role === 'worker') {
+    if (roles.includes('worker')) {
       return <Navigate to="/worker/dashboard" replace />;
     }
     return <Navigate to="/" replace />;

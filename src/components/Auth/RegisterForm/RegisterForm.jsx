@@ -159,7 +159,7 @@ export default function RegisterForm() {
 
     if (registerUser.fulfilled.match(result)) {
       toast.success('Account created successfully! Welcome 🎉');
-      navigate('/', { replace: true });
+      navigate(role === 'worker' ? '/worker/profile' : '/', { replace: true });
     } else {
       toast.error(result.payload || 'Registration failed. Please try again.');
     }

@@ -6,8 +6,12 @@ const BOOKINGS_URL = `${API}/bookings`;
 
 export const createBooking = createAsyncThunk(
     'bookingCreate/createBooking',
-    async (payload, { rejectWithValue }) => {
+    async (payload, { getState, rejectWithValue }) => {
         try {
+            if (getState().auth?.authMode === 'worker') {
+                return rejectWithValue('Please login as user first to book a worker.');
+            }
+
             const { data } = await axios.post(BOOKINGS_URL, payload);
             return data.booking;
         } catch (error) {

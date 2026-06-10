@@ -43,6 +43,7 @@ const WorkerDetail_BookingForm = ({
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const { loading } = useSelector((state) => state.bookingCreate);
+    const { authMode } = useSelector((state) => state.auth);
     const dateSlots = useMemo(() => makeDateSlots(), []);
     const [selectedDate, setSelectedDate] = useState(0);
     const [selectedTime, setSelectedTime] = useState(1);
@@ -61,6 +62,11 @@ const WorkerDetail_BookingForm = ({
 
     const handleSubmit = async (event) => {
         event?.preventDefault();
+
+        if (authMode === 'worker') {
+            toast.info('Please login as user first to book a worker.');
+            return;
+        }
 
         if (!selectedAddress) {
             toast.error('Please select a service address.');

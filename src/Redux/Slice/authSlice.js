@@ -8,13 +8,23 @@ const BASE_URL = `${API}/auth/`;
 const REMEMBER_DAYS = 30;
 const DEFAULT_DAYS = 7;
 
+const getUserRoles = (user) => {
+    if (Array.isArray(user?.roles) && user.roles.length) return user.roles;
+    if (user?.role === 'both') return ['user', 'worker'];
+    if (user?.role) return [user.role];
+    return [];
+};
+
+const hasRole = (user, role) => getUserRoles(user).includes(role);
+
 // ✅ Token save with expiry
-const saveToStorage = (token, user, remember) => {
+const saveToStorage = (token, user, remember, authMode = 'user') => {
     const days = remember ? REMEMBER_DAYS : DEFAULT_DAYS;
     const expiry = Date.now() + days * 24 * 60 * 60 * 1000;
     localStorage.setItem('hl_token', token);
     localStorage.setItem('hl_user', JSON.stringify(user));
     localStorage.setItem('hl_expiry', expiry.toString());
+    localStorage.setItem('hl_mode', authMode);
 };
 
 // ✅ Token get with expiry check
@@ -37,8 +47,13 @@ const getStoredUser = () => {
     } catch { return null; }
 };
 
+const getStoredMode = () => {
+    if (!getStoredToken()) return 'user';
+    return localStorage.getItem('hl_mode') || 'user';
+};
+
 const clearStorage = () => {
-    ['hl_token', 'hl_user', 'hl_expiry'].forEach(k => localStorage.removeItem(k));
+    ['hl_token', 'hl_user', 'hl_expiry', 'hl_mode'].forEach(k => localStorage.removeItem(k));
 };
 
 const storedToken = getStoredToken();
@@ -52,7 +67,7 @@ export const registerUser = createAsyncThunk(
             const { data } = await axios.post(`${BASE_URL}register`, {
                 fullName, email, phone, password, role, otp,
             });
-            return { token: data.token, user: data.user };
+            return { token: data.token, user: data.user, authMode: role || 'user' };
         } catch (err) {
             return rejectWithValue(
                 err.response?.data?.message || 'Something went wrong. Please try again.'
@@ -79,13 +94,22 @@ export const sendOtp = createAsyncThunk(
 // ✅ loginUser thunk
 export const loginUser = createAsyncThunk(
     'auth/loginUser',
-    async ({ email, password, remember }, { rejectWithValue }) => {
+    async ({ email, password, remember, role = 'user' }, { rejectWithValue }) => {
         try {
             const { data } = await axios.post(`${BASE_URL}login`, {
                 email,
                 password,
             });
-            return { token: data.token, user: data.user, remember };
+
+            if (role === 'worker' && !hasRole(data.user, 'worker')) {
+                return rejectWithValue('This account is not registered as a worker. Please create a worker profile first.');
+            }
+
+            if (role === 'user' && !hasRole(data.user, 'user')) {
+                return rejectWithValue('This account does not have user access.');
+            }
+
+            return { token: data.token, user: data.user, remember, authMode: role };
         } catch (err) {
             return rejectWithValue(
                 err.response?.data?.message || 'Invalid credentials. Please try again.'
@@ -99,6 +123,7 @@ const authSlice = createSlice({
     initialState: {
         token: getStoredToken(),
         user: getStoredUser(),
+        authMode: getStoredMode(),
         isAuthenticated: !!getStoredToken(),
         loading: false,
         error: null,
@@ -107,16 +132,18 @@ const authSlice = createSlice({
     },
     reducers: {
         setCredentials(state, { payload }) {
-            const { token, user, remember } = payload;
+            const { token, user, remember, authMode = 'user' } = payload;
             state.token = token;
             state.user = user;
+            state.authMode = authMode;
             state.isAuthenticated = true;
             axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
-            saveToStorage(token, user, remember);
+            saveToStorage(token, user, remember, authMode);
         },
         logout(state) {
             state.token = null;
             state.user = null;
+            state.authMode = 'user';
             state.isAuthenticated = false;
             state.error = null;
             clearStorage();
@@ -136,15 +163,16 @@ const authSlice = createSlice({
                 state.error = null;
             })
             .addCase(registerUser.fulfilled, (state, action) => {
-                const { token, user } = action.payload;
+                const { token, user, authMode } = action.payload;
                 state.loading = false;
                 state.token = token;
                 state.user = user;
+                state.authMode = authMode;
                 state.isAuthenticated = true;
                 state.error = null;
                 axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
                 // ✅ Register pe default 7 din
-                saveToStorage(token, user, false);
+                saveToStorage(token, user, false, authMode);
             })
             .addCase(registerUser.rejected, (state, action) => {
                 state.loading = false;
@@ -172,15 +200,16 @@ const authSlice = createSlice({
                 state.error = null;
             })
             .addCase(loginUser.fulfilled, (state, action) => {
-                const { token, user, remember } = action.payload;
+                const { token, user, remember, authMode } = action.payload;
                 state.loading = false;
                 state.token = token;
                 state.user = user;
+                state.authMode = authMode;
                 state.isAuthenticated = true;
                 state.error = null;
                 axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
                 // ✅ Remember me → 30 din, else → 7 din
-                saveToStorage(token, user, remember);
+                saveToStorage(token, user, remember, authMode);
             })
             .addCase(loginUser.rejected, (state, action) => {
                 state.loading = false;

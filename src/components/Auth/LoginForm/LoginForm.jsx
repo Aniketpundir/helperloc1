@@ -57,11 +57,12 @@ export default function LoginForm() {
       email: form.email.trim().toLowerCase(),
       password: form.password,
       remember: form.remember, // ✅ 30 din ya 7 din expiry ke liye
+      role,
     }));
 
     if (loginUser.fulfilled.match(result)) {
       toast.success(`Welcome back! You're logged in successfully. 🎉`);
-      navigate(from, { replace: true });
+      navigate(role === 'worker' ? '/worker/dashboard' : from, { replace: true });
     } else {
       toast.error(result.payload || 'Login failed. Please try again.');
     }
