@@ -1,97 +1,221 @@
-import React from 'react';
+// src/components/user_section/Home_Section/Hero/Hero.jsx
+import React, { useCallback, useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { FaArrowRight, FaChevronLeft, FaChevronRight, FaSearch, FaTimes } from 'react-icons/fa';
 import './Hero.css';
-import HelperLoc_Hero_Image from "../../../../assets/HelperLoc_Hero_Image.png"
+import { homeCategories } from '../homeServices';
+
+const banners = [
+    {
+        id: 1,
+        tag: 'Limited Time Offer',
+        title: 'Top-Rated Plumbers',
+        subtitle: 'Available 24/7 - fixed pipes, zero stress!',
+        cta: 'Book Now',
+        category: 'Plumber',
+        bg: 'linear-gradient(120deg, #1565c0 0%, #42a5f5 100%)',
+        iconBg: 'rgba(255,255,255,0.12)',
+        Icon: homeCategories[0].Icon,
+    },
+    {
+        id: 2,
+        tag: 'Same Day Service',
+        title: 'Expert Electricians',
+        subtitle: 'Safe, certified, and always on time!',
+        cta: 'Book Now',
+        category: 'Electrician',
+        bg: 'linear-gradient(120deg, #f57f17 0%, #ffca28 100%)',
+        iconBg: 'rgba(255,255,255,0.15)',
+        Icon: homeCategories[1].Icon,
+    },
+    {
+        id: 3,
+        tag: 'Most Booked',
+        title: 'Deep House Cleaning',
+        subtitle: 'Spotless home, verified professionals!',
+        cta: 'Book Now',
+        category: 'Cleaning',
+        bg: 'linear-gradient(120deg, #2e7d32 0%, #66bb6a 100%)',
+        iconBg: 'rgba(255,255,255,0.12)',
+        Icon: homeCategories[2].Icon,
+    },
+    {
+        id: 4,
+        tag: 'Summer Special',
+        title: 'AC Service & Repair',
+        subtitle: 'Stay cool - quick AC servicing at your doorstep!',
+        cta: 'Book Now',
+        category: 'AC Repair',
+        bg: 'linear-gradient(120deg, #0277bd 0%, #4fc3f7 100%)',
+        iconBg: 'rgba(255,255,255,0.12)',
+        Icon: homeCategories[3].Icon,
+    },
+];
 
 const Hero = () => {
+    const [current, setCurrent] = useState(0);
+    const [animating, setAnimating] = useState(false);
+    const [query, setQuery] = useState('');
+    const [isSearchOpen, setIsSearchOpen] = useState(false);
+    const navigate = useNavigate();
+
+    const goTo = useCallback((index) => {
+        if (animating) return;
+        setAnimating(true);
+        setTimeout(() => {
+            setCurrent(index);
+            setAnimating(false);
+        }, 320);
+    }, [animating]);
+
+    const next = useCallback(() => {
+        goTo((current + 1) % banners.length);
+    }, [current, goTo]);
+
+    const prev = () => {
+        goTo((current - 1 + banners.length) % banners.length);
+    };
+
+    useEffect(() => {
+        const timer = setInterval(next, 4000);
+        return () => clearInterval(timer);
+    }, [next]);
+
+    const banner = banners[current];
+    const BannerIcon = banner.Icon;
+
+    const suggestions = homeCategories
+        .filter((service) => {
+            const term = query.trim().toLowerCase();
+            if (!term) return true;
+            return [service.label, ...service.aliases].some((item) => item.toLowerCase().includes(term));
+        })
+        .slice(0, 6);
+
+    const goToService = (service) => {
+        if (!service) return;
+        setQuery(service.label);
+        setIsSearchOpen(false);
+        navigate(`/worker-category/listed-worker/${service.label}`);
+    };
+
+    const handleSearchSubmit = (event) => {
+        event.preventDefault();
+        const term = query.trim().toLowerCase();
+        const match = homeCategories.find((service) => (
+            service.label.toLowerCase() === term ||
+            service.aliases.some((alias) => alias.toLowerCase() === term)
+        )) || suggestions[0];
+
+        if (match) goToService(match);
+    };
+
     return (
-        <header className="heroh">
-            <div className="heroh__inner container">
-                {/* Left Content */}
-                <div className="heroh__content">
-                    <div className="heroh__badge">
-                        <span className="material-symbols-outlined heroh__badge-icon" style={{ fontVariationSettings: "'FILL' 1" }}>stars</span>
-                        <span className="heroh__badge-text">Trusted by 10,000+ customers</span>
-                    </div>
+        <section className="hero-banner">
+            <div
+                className={`hero-banner__slide ${animating ? 'hero-banner__slide--exit' : 'hero-banner__slide--enter'}`}
+                style={{ background: banner.bg }}
+            >
+                <div className="hero-banner__content container">
+                    <div className="hero-banner__text">
+                        <span className="hero-banner__tag">{banner.tag}</span>
+                        <h1 className="hero-banner__title">{banner.title}</h1>
+                        <p className="hero-banner__subtitle">{banner.subtitle}</p>
 
-                    <h1 className="heroh__title">
-                        Book Trusted Home <br />
-                        <span className="heroh__title-accent">Services Near You</span>
-                    </h1>
+                        <form className="hero-search" onSubmit={handleSearchSubmit}>
+                            <FaSearch className="hero-search__icon" aria-hidden="true" />
+                            <input
+                                className="hero-search__input"
+                                type="search"
+                                value={query}
+                                onChange={(event) => {
+                                    setQuery(event.target.value);
+                                    setIsSearchOpen(true);
+                                }}
+                                onFocus={() => setIsSearchOpen(true)}
+                                onBlur={() => window.setTimeout(() => setIsSearchOpen(false), 120)}
+                                placeholder="Search services like plumber, cleaning, AC repair"
+                                aria-label="Search services"
+                            />
+                            {query && (
+                                <button
+                                    type="button"
+                                    className="hero-search__clear"
+                                    onClick={() => {
+                                        setQuery('');
+                                        setIsSearchOpen(true);
+                                    }}
+                                    aria-label="Clear search"
+                                >
+                                    <FaTimes aria-hidden="true" />
+                                </button>
+                            )}
+                            <button className="hero-search__submit" type="submit" aria-label="Search">
+                                <FaArrowRight aria-hidden="true" />
+                            </button>
 
-                    <p className="heroh__subtitle">
-                        Access verified professionals for plumbing, cleaning, and more.
-                        Affordable rates with same-day availability across your city.
-                    </p>
+                            {isSearchOpen && suggestions.length > 0 && (
+                                <div className="hero-search__suggestions">
+                                    {suggestions.map((service) => {
+                                        const ServiceIcon = service.Icon;
+                                        return (
+                                            <button
+                                                type="button"
+                                                className="hero-search__suggestion"
+                                                key={service.label}
+                                                onMouseDown={(event) => event.preventDefault()}
+                                                onClick={() => goToService(service)}
+                                            >
+                                                <span className="hero-search__suggestion-icon" style={{ '--service-color': service.color }}>
+                                                    <ServiceIcon aria-hidden="true" />
+                                                </span>
+                                                <span className="hero-search__suggestion-copy">
+                                                    <strong>{service.label}</strong>
+                                                    <small>{service.aliases.slice(0, 2).join(' | ')}</small>
+                                                </span>
+                                            </button>
+                                        );
+                                    })}
+                                </div>
+                            )}
+                        </form>
 
-                    {/* Search Bar */}
-                    <div className="heroh__search-bar">
-                        <div className="heroh__search-field">
-                            <span className="material-symbols-outlined heroh__search-field-icon">build</span>
-                            <input type="text" placeholder="What do you need help with?" />
-                        </div>
-                        <div className="heroh__search-field">
-                            <span className="material-symbols-outlined heroh__search-field-icon">location_on</span>
-                            <input type="text" placeholder="Enter your location" />
-                        </div>
-                        <button className="heroh__search-btn">
-                            Find Taskers
-                            <span className="material-symbols-outlined">arrow_forward</span>
+                        <button
+                            className="hero-banner__cta"
+                            onClick={() => navigate(`/worker-category/listed-worker/${banner.category}`)}
+                        >
+                            {banner.cta}
+                            <FaArrowRight aria-hidden="true" />
                         </button>
                     </div>
 
-                    {/* Trust Badges */}
-                    <div className="heroh__trust">
-                        <div className="heroh__trust-item">
-                            <span className="material-symbols-outlined heroh__trust-icon" style={{ fontVariationSettings: "'FILL' 1" }}>verified</span>
-                            Verified Workers
-                        </div>
-                        <div className="heroh__trust-item">
-                            <span className="material-symbols-outlined heroh__trust-icon" style={{ fontVariationSettings: "'FILL' 1" }}>today</span>
-                            Same-day Availability
-                        </div>
-                        <div className="heroh__trust-item">
-                            <span className="material-symbols-outlined heroh__trust-icon" style={{ fontVariationSettings: "'FILL' 1" }}>shield</span>
-                            Secure Payments
-                        </div>
+                    <div className="hero-banner__icon-wrap" style={{ background: banner.iconBg }}>
+                        <BannerIcon className="hero-banner__icon" aria-hidden="true" />
                     </div>
                 </div>
 
-                {/* Right Image */}
-                <div className="heroh__image-wrap">
-                    <div className="heroh__image-container">
-                        <img
-                            src={HelperLoc_Hero_Image}
-                            className="heroh__image"
-                        />
-                        <div className="heroh__image-overlay"></div>
-                    </div>
-
-                    {/* Floating Card 1 */}
-                    <div className="heroh__float-card heroh__float-card--bottom">
-                        <div className="heroh__float-card-icon">
-                            <span className="material-symbols-outlined" style={{ fontVariationSettings: "'FILL' 1", color: 'var(--color-primary)' }}>check_circle</span>
-                        </div>
-                        <div>
-                            <p className="heroh__float-card-title">Trusted Professionals</p>
-                            <p className="heroh__float-card-sub">100% Background Checked</p>
-                        </div>
-                    </div>
-
-                    {/* Floating Card 2 */}
-                    <div className="heroh__float-card heroh__float-card--top">
-                        <div className="heroh__float-card-stars">
-                            {[1, 2, 3, 4].map(i => (
-                                <span key={i} className="material-symbols-outlined heroh__star" style={{ fontVariationSettings: "'FILL' 1" }}>star</span>
-                            ))}
-                            <span className="material-symbols-outlined heroh__star" style={{ fontVariationSettings: "'FILL' 1" }}>star_half</span>
-                        </div>
-                        <p className="heroh__float-card-rating">
-                            4.8★ <span className="heroh__float-card-rating-label">Rating</span>
-                        </p>
-                    </div>
-                </div>
+                <div className="hero-banner__shape hero-banner__shape--1" />
+                <div className="hero-banner__shape hero-banner__shape--2" />
             </div>
-        </header>
+
+            <button className="hero-banner__arrow hero-banner__arrow--prev" onClick={prev} aria-label="Previous">
+                <FaChevronLeft aria-hidden="true" />
+            </button>
+            <button className="hero-banner__arrow hero-banner__arrow--next" onClick={next} aria-label="Next">
+                <FaChevronRight aria-hidden="true" />
+            </button>
+
+            <div className="hero-banner__dots">
+                {banners.map((_, i) => (
+                    <button
+                        key={i}
+                        className={`hero-banner__dot ${i === current ? 'hero-banner__dot--active' : ''}`}
+                        onClick={() => goTo(i)}
+                        aria-label={`Go to slide ${i + 1}`}
+                    />
+                ))}
+            </div>
+        </section>
     );
 };
 

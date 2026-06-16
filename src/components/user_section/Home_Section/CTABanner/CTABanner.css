@@ -14,29 +14,6 @@
   overflow: hidden;
 }
 
-/* --- Decorative Blobs --- */
-.cta__blob {
-  position: absolute;
-  width: 256px;
-  height: 256px;
-  border-radius: var(--radius-full);
-  filter: blur(60px);
-}
-
-.cta__blob--top-right {
-  top: 0;
-  right: 0;
-  background: rgba(255, 255, 255, 0.1);
-  transform: translate(40%, -40%);
-}
-
-.cta__blob--bottom-left {
-  bottom: 0;
-  left: 0;
-  background: rgba(0, 0, 0, 0.1);
-  transform: translate(-40%, 40%);
-}
-
 /* --- Text --- */
 .cta__title {
   font-family: var(--font-headline);
@@ -126,7 +103,7 @@
   background: rgba(255, 255, 255, 0.1);
 }
 
-.cta__btn .material-symbols-outlined {
+.cta__btn svg {
   font-size: 20px;
 }
 

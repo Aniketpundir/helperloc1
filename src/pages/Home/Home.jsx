@@ -6,10 +6,12 @@ import Testimonials from "../../components/user_section/Home_Section/Testimonial
 import WhyChooseUs from "../../components/user_section/Home_Section/WhyChooseUs/WhyChooseUs"
 import Safety from "../../components/user_section/Home_Section/Safety/Safety"
 import CTABanner from "../../components/user_section/Home_Section/CTABanner/CTABanner"
+import CategoryBar from "../../components/user_section/Home_Section/CategoryBar/CategoryBar"
 
 const Home = () => {
     return (
         <>
+            <CategoryBar />
             <Hero />
             <Services />
             <HowItWorks />

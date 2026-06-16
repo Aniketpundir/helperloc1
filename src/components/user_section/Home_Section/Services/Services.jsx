@@ -1,198 +1,98 @@
-import React, { useState, useEffect, useRef } from 'react';
+// src/components/user_section/Home_Section/Services/Services.jsx
+import React, { useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { FaArrowRight, FaChevronLeft, FaChevronRight } from 'react-icons/fa';
 import './Services.css';
-import ServiceCard from '../../ServiceCard/ServiceCard';
 import Plumber from "../../../../assets/Plumber.png";
 import Electrician from "../../../../assets/Electrician.png";
-import House_Cleaning from "../../../../assets/House_Cleaning.png";
-import AC_Repair from "../../../../assets/AC_Repair.png";
+import HouseCleaning from "../../../../assets/House_Cleaning.png";
+import AcRepair from "../../../../assets/AC_Repair.png";
 import Carpentry from "../../../../assets/Carpentry.png";
 import Painting from "../../../../assets/Painting.png";
-import { Link } from 'react-router-dom';
+import { StarIcon } from '../homeServices';
 
 const services = [
-    { id: 1, title: 'Plumber', description: 'Leaks, repairs & installations', image: Plumber },
-    { id: 2, title: 'Electrician', description: 'Wiring, fixtures & safety checks', image: Electrician },
-    { id: 3, title: 'House Cleaning', description: 'Deep cleaning & regular maintenance', image: House_Cleaning },
-    { id: 4, title: 'AC Repair', description: 'Cooling solutions & servicing', image: AC_Repair },
-    { id: 5, title: 'Carpentry', description: 'Furniture repair & woodwork', image: Carpentry },
-    { id: 6, title: 'Painting', description: 'Interior & exterior painting', image: Painting },
+    { id: 1, title: 'Plumber', image: Plumber, rating: 4.8, discount: '20% OFF', badge: 'Top Pick', category: 'Plumber' },
+    { id: 2, title: 'Electrician', image: Electrician, rating: 4.7, discount: '15% OFF', badge: 'Fast Service', category: 'Electrician' },
+    { id: 3, title: 'House Cleaning', image: HouseCleaning, rating: 4.9, discount: '25% OFF', badge: 'Best Rated', category: 'Cleaning' },
+    { id: 4, title: 'AC Repair', image: AcRepair, rating: 4.6, discount: '10% OFF', badge: 'Summer Deal', category: 'AC Repair' },
+    { id: 5, title: 'Carpentry', image: Carpentry, rating: 4.5, discount: '18% OFF', badge: 'Expert Pros', category: 'Carpentry' },
+    { id: 6, title: 'Painting', image: Painting, rating: 4.7, discount: '12% OFF', badge: 'Premium', category: 'Painting' },
 ];
 
-const infiniteServices = [...services, ...services, ...services];
+const StarRating = ({ rating }) => (
+    <div className="svc-card__stars">
+        <span className="svc-card__star-fill">{rating}</span>
+        <StarIcon className="svc-card__star-icon" aria-hidden="true" />
+        <span className="svc-card__reviews">({rating >= 4.8 ? '2.3k+' : rating >= 4.7 ? '1.8k+' : '1k+'})</span>
+    </div>
+);
 
 const Services = () => {
-    const [windowWidth, setWindowWidth] = useState(
-        typeof window !== 'undefined' ? window.innerWidth : 1024
-    );
-    const scrollRef = useRef(null);
-    const autoScrollRef = useRef(null);
-    const isManual = useRef(false);
-    const manualTimer = useRef(null);
+    const navigate = useNavigate();
+    const trackRef = useRef(null);
 
-    const getCardWidth = () => {
-        if (windowWidth >= 1440) return 350;
-        if (windowWidth > 480) return 280;
-        return 250;
-    };
-
-    const navigate = useNavigate()
-
-    const gap = 16;
-    const cardWidth = getCardWidth();
-    const cardWithGap = cardWidth + gap;
-    const setLength = services.length * cardWithGap; // width of ONE set
-
-    // Track resize
-    useEffect(() => {
-        const handleResize = () => setWindowWidth(window.innerWidth);
-        window.addEventListener('resize', handleResize);
-        return () => window.removeEventListener('resize', handleResize);
-    }, []);
-
-    // Jump to the MIDDLE set on mount (silently, no animation)
-    useEffect(() => {
-        const el = scrollRef.current;
-        if (!el) return;
-        el.style.transition = 'none';
-        el.style.transform = `translateX(-${setLength}px)`;
-    }, [setLength]);
-
-    // Auto-scroll: move 1px every 20ms
-    useEffect(() => {
-        const el = scrollRef.current;
-        if (!el) return;
-
-        let currentX = setLength; // start from middle set
-
-        const tick = () => {
-            if (isManual.current) return;
-
-            currentX += 1.5;
-
-            // When we've scrolled past the middle set into the 3rd set,
-            // silently jump back to the same position in the 1st set
-            if (currentX >= setLength * 2) {
-                currentX -= setLength;
-                el.style.transition = 'none';
-                el.style.transform = `translateX(-${currentX}px)`;
-                // Force reflow so next frame picks up no-transition
-                void el.offsetHeight;
-            } else {
-                el.style.transition = 'none';
-                el.style.transform = `translateX(-${currentX}px)`;
-            }
-
-            autoScrollRef.current = requestAnimationFrame(tick);
-        };
-
-        autoScrollRef.current = requestAnimationFrame(tick);
-
-        // Store currentX so manual buttons can read it
-        scrollRef._currentX = () => currentX;
-        scrollRef._setX = (v) => { currentX = v; };
-
-        return () => cancelAnimationFrame(autoScrollRef.current);
-    }, [setLength]);
-
-    const getX = () => {
-        const el = scrollRef.current;
-        if (!el) return setLength;
-        const match = el.style.transform.match(/translateX\(-?(\d+(?:\.\d+)?)px\)/);
-        return match ? parseFloat(match[1]) : setLength;
-    };
-
-    const scrollTo = (targetX) => {
-        const el = scrollRef.current;
-        if (!el) return;
-
-        // Clamp within safe range
-        let x = targetX;
-        if (x < 0) x += setLength;
-        if (x >= setLength * 2) x -= setLength;
-
-        el.style.transition = 'transform 0.4s ease-out';
-        el.style.transform = `translateX(-${x}px)`;
-
-        // Update internal tracker
-        if (scrollRef._setX) scrollRef._setX(x);
-    };
-
-    const handlePrev = (e) => {
-        e.preventDefault();
-        e.stopPropagation();
-        isManual.current = true;
-        clearTimeout(manualTimer.current);
-
-        const x = getX() - cardWithGap;
-        scrollTo(x);
-
-        manualTimer.current = setTimeout(() => {
-            isManual.current = false;
-        }, 3000);
-    };
-
-    const handleNext = (e) => {
-        e.preventDefault();
-        e.stopPropagation();
-        isManual.current = true;
-        clearTimeout(manualTimer.current);
-
-        const x = getX() + cardWithGap;
-        scrollTo(x);
-
-        manualTimer.current = setTimeout(() => {
-            isManual.current = false;
-        }, 3000);
+    const scroll = (dir) => {
+        if (trackRef.current) {
+            trackRef.current.scrollBy({ left: dir * 280, behavior: 'smooth' });
+        }
     };
 
     return (
-        <section className="services" id="services">
-            <div className="services__inner container">
-                {/* Header */}
-                <div className="services__header">
-                    <div>
-                        <h2 className="services__title">What do you need help with?</h2>
-                        <p className="services__subtitle">Explore our most popular home service categories</p>
+        <section className="svc">
+            <div className="svc__inner container">
+                <div className="svc__header">
+                    <div className="svc__header-left">
+                        <h2 className="svc__title">Best of HelperLoc Services</h2>
+                        <p className="svc__subtitle">Trusted professionals for every home need</p>
                     </div>
-                    <div className="services__nav-btns">
-                        <button
-                            className="services__nav-btn"
-                            onClick={handlePrev}
-                            aria-label="Previous services"
-                            type="button"
-                        >
-                            <span className="material-symbols-outlined">chevron_left</span>
+                    <div className="svc__header-right">
+                        <button className="svc__view-all" onClick={() => navigate('/worker-category')}>
+                            View All
+                            <FaArrowRight aria-hidden="true" />
                         </button>
-                        <button
-                            className="services__nav-btn"
-                            onClick={handleNext}
-                            aria-label="Next services"
-                            type="button"
-                        >
-                            <span className="material-symbols-outlined">chevron_right</span>
-                        </button>
+                        <div className="svc__arrows">
+                            <button className="svc__arrow" onClick={() => scroll(-1)} aria-label="Previous">
+                                <FaChevronLeft aria-hidden="true" />
+                            </button>
+                            <button className="svc__arrow" onClick={() => scroll(1)} aria-label="Next">
+                                <FaChevronRight aria-hidden="true" />
+                            </button>
+                        </div>
                     </div>
                 </div>
 
-                {/* Carousel */}
-                <div className="services__carousel-wrapper">
-                    <div
-                        ref={scrollRef}
-                        className="services__carousel"
-                    >
-                        {infiniteServices.map((service, index) => (
-                            <ServiceCard key={`${service.id}-${index}`} service={service} />
-                        ))}
-                    </div>
-                </div>
+                <div className="svc__track" ref={trackRef}>
+                    {services.map((service) => (
+                        <div
+                            key={service.id}
+                            className="svc-card"
+                            onClick={() => navigate(`/worker-category/listed-worker/${service.category}`)}
+                        >
+                            <span className="svc-card__badge">{service.badge}</span>
 
-                {/* Footer */}
-                <div className="services__footer">
-                    <Link to="/worker-category" className="services__more-link" onClick={(e) => {e.preventDefault(), navigate("/worker-category")}}>
-                        More Services
-                        <span className="material-symbols-outlined">trending_flat</span>
-                    </Link>
+                            <div className="svc-card__img-wrap">
+                                <img src={service.image} alt={service.title} className="svc-card__img" />
+                            </div>
+
+                            <div className="svc-card__info">
+                                <h3 className="svc-card__title">{service.title}</h3>
+                                <StarRating rating={service.rating} />
+                                <div className="svc-card__bottom">
+                                    <span className="svc-card__discount">{service.discount}</span>
+                                    <button
+                                        className="svc-card__btn"
+                                        onClick={(event) => {
+                                            event.stopPropagation();
+                                            navigate(`/worker-category/listed-worker/${service.category}`);
+                                        }}
+                                    >
+                                        Book Now
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    ))}
                 </div>
             </div>
         </section>

@@ -8,6 +8,8 @@ import { logout } from '../../../Redux/Slice/authSlice';
 const Navbar = () => {
     const [scrolled, setScrolled] = useState(false);
     const [profileOpen, setProfileOpen] = useState(false);
+    const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+    const [searchQuery, setSearchQuery] = useState('');
 
     const location = useLocation();
     const navigate = useNavigate();
@@ -24,8 +26,6 @@ const Navbar = () => {
                 : [];
     const isWorkerMode = authMode === 'worker' && userRoles.includes('worker');
 
-    console.log(user);
-
     useEffect(() => {
         const handleScroll = () => setScrolled(window.scrollY > 10);
         window.addEventListener('scroll', handleScroll);
@@ -34,6 +34,7 @@ const Navbar = () => {
 
     useEffect(() => {
         setProfileOpen(false);
+        setMobileMenuOpen(false);
     }, [location]);
 
     useEffect(() => {
@@ -45,6 +46,16 @@ const Navbar = () => {
         document.addEventListener('mousedown', handleClickOutside);
         return () => document.removeEventListener('mousedown', handleClickOutside);
     }, []);
+
+    // Close mobile menu on outside click
+    useEffect(() => {
+        if (mobileMenuOpen) {
+            document.body.style.overflow = 'hidden';
+        } else {
+            document.body.style.overflow = '';
+        }
+        return () => { document.body.style.overflow = ''; };
+    }, [mobileMenuOpen]);
 
     const isActive = (path) => {
         if (path === '/') return location.pathname === '/';
@@ -63,6 +74,20 @@ const Navbar = () => {
         dispatch(logout());
         setProfileOpen(false);
         navigate('/login', { replace: true });
+    };
+
+    const handleSearch = (e) => {
+        e.preventDefault();
+        if (searchQuery.trim()) {
+            const formatted = searchQuery.trim().charAt(0).toUpperCase() + searchQuery.trim().slice(1);
+            navigate(`/worker-category/listed-worker/${formatted}`);
+            setSearchQuery('');
+            setMobileMenuOpen(false);
+        }
+    };
+
+    const handleSearchKeyDown = (e) => {
+        if (e.key === 'Enter') handleSearch(e);
     };
 
     const canUseUserChats = isAuthenticated && userRoles.includes('user');
@@ -94,43 +119,31 @@ const Navbar = () => {
                             <p className="navbar__dropdown-email">{user?.email || ''}</p>
                         </div>
                     </div>
-
                     <div className="navbar__dropdown-divider" />
-
                     <Link to="/user-dashboard/user-profile" className="navbar__dropdown-item" onClick={() => setProfileOpen(false)}>
-                        <span className="material-symbols-outlined">account_circle</span>
-                        <span>My Profile</span>
+                        <span className="material-symbols-outlined">account_circle</span><span>My Profile</span>
                     </Link>
                     <Link to="/user-dashboard/current-booking" className="navbar__dropdown-item" onClick={() => setProfileOpen(false)}>
-                        <span className="material-symbols-outlined">pending_actions</span>
-                        <span>Current Booking</span>
+                        <span className="material-symbols-outlined">pending_actions</span><span>Current Booking</span>
                     </Link>
                     <Link to="/user-dashboard/past-booking" className="navbar__dropdown-item" onClick={() => setProfileOpen(false)}>
-                        <span className="material-symbols-outlined">history</span>
-                        <span>Past Bookings</span>
+                        <span className="material-symbols-outlined">history</span><span>Past Bookings</span>
                     </Link>
                     <Link to="/user-dashboard/post-work" className="navbar__dropdown-item" onClick={() => setProfileOpen(false)}>
-                        <span className="material-symbols-outlined">work</span>
-                        <span>Post Work</span>
+                        <span className="material-symbols-outlined">work</span><span>Post Work</span>
                     </Link>
                     <Link to="/user-dashboard/my-posted-jobs" className="navbar__dropdown-item" onClick={() => setProfileOpen(false)}>
-                        <span className="material-symbols-outlined">list_alt</span>
-                        <span>My Posted Jobs</span>
+                        <span className="material-symbols-outlined">list_alt</span><span>My Posted Jobs</span>
                     </Link>
                     <Link to="/user-dashboard/recent-chats" className="navbar__dropdown-item" onClick={() => setProfileOpen(false)}>
-                        <span className="material-symbols-outlined">forum</span>
-                        <span>Recent Chats</span>
+                        <span className="material-symbols-outlined">forum</span><span>Recent Chats</span>
                     </Link>
                     <Link to="/help-and-support" className="navbar__dropdown-item" onClick={() => setProfileOpen(false)}>
-                        <span className="material-symbols-outlined">help_center</span>
-                        <span>Help & Support</span>
+                        <span className="material-symbols-outlined">help_center</span><span>Help & Support</span>
                     </Link>
-
                     <div className="navbar__dropdown-divider" />
-
                     <button className="navbar__dropdown-item navbar__dropdown-item--logout" onClick={handleLogout}>
-                        <span className="material-symbols-outlined">logout</span>
-                        <span>Logout</span>
+                        <span className="material-symbols-outlined">logout</span><span>Logout</span>
                     </button>
                 </div>
             )}
@@ -164,52 +177,37 @@ const Navbar = () => {
                             <p className="navbar__dropdown-email">{user?.email || ''}</p>
                         </div>
                     </div>
-
                     <div className="navbar__dropdown-divider" />
-
                     <Link to="/worker/dashboard" className="navbar__dropdown-item" onClick={() => setProfileOpen(false)}>
-                        <span className="material-symbols-outlined">dashboard</span>
-                        <span>Worker Dashboard</span>
+                        <span className="material-symbols-outlined">dashboard</span><span>Worker Dashboard</span>
                     </Link>
                     <Link to="/worker/profile" className="navbar__dropdown-item" onClick={() => setProfileOpen(false)}>
-                        <span className="material-symbols-outlined">account_circle</span>
-                        <span>Worker Profile</span>
+                        <span className="material-symbols-outlined">account_circle</span><span>Worker Profile</span>
                     </Link>
                     <Link to="/worker/booking-request" className="navbar__dropdown-item" onClick={() => setProfileOpen(false)}>
-                        <span className="material-symbols-outlined">pending_actions</span>
-                        <span>Booking Requests</span>
+                        <span className="material-symbols-outlined">pending_actions</span><span>Booking Requests</span>
                     </Link>
                     <Link to="/worker/completed-work" className="navbar__dropdown-item" onClick={() => setProfileOpen(false)}>
-                        <span className="material-symbols-outlined">task_alt</span>
-                        <span>Completed Projects</span>
+                        <span className="material-symbols-outlined">task_alt</span><span>Completed Projects</span>
                     </Link>
                     <Link to="/worker/available-work" className="navbar__dropdown-item" onClick={() => setProfileOpen(false)}>
-                        <span className="material-symbols-outlined">work_outline</span>
-                        <span>Available Work</span>
+                        <span className="material-symbols-outlined">work_outline</span><span>Available Work</span>
                     </Link>
                     <Link to="/worker/applied-work" className="navbar__dropdown-item" onClick={() => setProfileOpen(false)}>
-                        <span className="material-symbols-outlined">assignment_turned_in</span>
-                        <span>Applied Work</span>
+                        <span className="material-symbols-outlined">assignment_turned_in</span><span>Applied Work</span>
                     </Link>
                     <Link to="/worker/recent-chats" className="navbar__dropdown-item" onClick={() => setProfileOpen(false)}>
-                        <span className="material-symbols-outlined">forum</span>
-                        <span>Recent Chats</span>
+                        <span className="material-symbols-outlined">forum</span><span>Recent Chats</span>
                     </Link>
                     <Link to="/worker/client-review" className="navbar__dropdown-item" onClick={() => setProfileOpen(false)}>
-                        <span className="material-symbols-outlined">star_rate</span>
-                        <span>Client Reviews</span>
+                        <span className="material-symbols-outlined">star_rate</span><span>Client Reviews</span>
                     </Link>
-
                     <Link to="/help-and-support" className="navbar__dropdown-item" onClick={() => setProfileOpen(false)}>
-                        <span className="material-symbols-outlined">help_center</span>
-                        <span>Help & Support</span>
+                        <span className="material-symbols-outlined">help_center</span><span>Help & Support</span>
                     </Link>
-
                     <div className="navbar__dropdown-divider" />
-
                     <button className="navbar__dropdown-item navbar__dropdown-item--logout" onClick={handleLogout}>
-                        <span className="material-symbols-outlined">logout</span>
-                        <span>Logout</span>
+                        <span className="material-symbols-outlined">logout</span><span>Logout</span>
                     </button>
                 </div>
             )}
@@ -217,52 +215,111 @@ const Navbar = () => {
     );
 
     return (
-        <nav className={`navbar ${scrolled ? 'navbar--scrolled' : ''}`}>
-            <div className="navbar__inner">
+        <>
+            <nav className={`navbar ${scrolled ? 'navbar--scrolled' : ''}`}>
+                <div className="navbar__inner">
 
-                <div className="navbar__logo">
-                    <Link to="/" className="navbar__logo-icon">H</Link>
-                    <Link to="/" className="navbar__logo-text">Helper Loc</Link>
-                </div>
+                    {/* Logo */}
+                    <div className="navbar__logo">
+                        <Link to="/" className="navbar__logo-icon">H</Link>
+                        <Link to="/" className="navbar__logo-text">HelperLoc</Link>
+                    </div>
 
-                <div className="navbar__links">
-                    <Link to="/" className={`navbar__link ${isActive('/') ? 'navbar__link--active' : ''}`}>Home</Link>
-                    <Link to="/how-it-works" className={`navbar__link ${isActive('/how-it-works') ? 'navbar__link--active' : ''}`}>How it Works</Link>
-                    <Link to="/about-us" className={`navbar__link ${isActive('/about-us') ? 'navbar__link--active' : ''}`}>About</Link>
-                    <Link to="/contact-us" className={`navbar__link ${isActive('/contact-us') ? 'navbar__link--active' : ''}`}>Contact</Link>
-                    {canUseUserChats && (
-                        <Link
-                            to="/user-dashboard/recent-chats"
-                            className={`navbar__link ${isActive('/user-dashboard/recent-chats') ? 'navbar__link--active' : ''}`}
+                    {/* Search Bar - center */}
+                    <div className="navbar__search-wrap">
+                        <input
+                            type="text"
+                            placeholder="Search for services like Plumber, Electrician..."
+                            className="navbar__search-input"
+                            value={searchQuery}
+                            onChange={(e) => setSearchQuery(e.target.value)}
+                            onKeyDown={handleSearchKeyDown}
+                        />
+                        <button className="navbar__search-btn" onClick={handleSearch} aria-label="Search">
+                            <span className="material-symbols-outlined">search</span>
+                        </button>
+                    </div>
+
+                    {/* Right Actions */}
+                    <div className="navbar__actions">
+                        {isAuthenticated ? (
+                            isWorkerMode ? <WorkerDropdown /> : <UserDropdown />
+                        ) : (
+                            <>
+                                <Link to="/login">
+                                    <button className="navbar__btn navbar__btn--outline">Login</button>
+                                </Link>
+                                <Link to="/registration" className="navbar__signup-hide">
+                                    <button className="navbar__btn navbar__btn--filled">Sign Up</button>
+                                </Link>
+                            </>
+                        )}
+
+                        {/* Hamburger */}
+                        <button
+                            className="navbar__hamburger"
+                            onClick={() => setMobileMenuOpen((p) => !p)}
+                            aria-label="Toggle menu"
                         >
-                            Chats
-                        </Link>
-                    )}
+                            <span className="material-symbols-outlined">
+                                {mobileMenuOpen ? 'close' : 'menu'}
+                            </span>
+                        </button>
+                    </div>
                 </div>
+            </nav>
 
-                <div className="navbar__search">
-                    <span className="material-symbols-outlined navbar__search-icon">search</span>
-                    <input type="text" placeholder="Search services..." className="navbar__search-input" />
-                </div>
+            {/* Mobile Menu Overlay */}
+            {mobileMenuOpen && (
+                <div className="navbar__mobile-overlay" onClick={() => setMobileMenuOpen(false)}>
+                    <div className="navbar__mobile-menu" onClick={(e) => e.stopPropagation()}>
 
-                {/* ── RIGHT SIDE: Role-based rendering ── */}
-                <div className="navbar__actions">
-                    {isAuthenticated ? (
-                        isWorkerMode ? <WorkerDropdown /> : <UserDropdown />
-                    ) : (
-                        <>
-                            <Link to="/login">
-                                <button className="navbar__btn navbar__btn--outline">Login</button>
+                        {/* Mobile Search */}
+                        <div className="navbar__mobile-search">
+                            <input
+                                type="text"
+                                placeholder="Search services..."
+                                value={searchQuery}
+                                onChange={(e) => setSearchQuery(e.target.value)}
+                                onKeyDown={handleSearchKeyDown}
+                            />
+                            <button onClick={handleSearch}>
+                                <span className="material-symbols-outlined">search</span>
+                            </button>
+                        </div>
+
+                        {/* Mobile Links */}
+                        <nav className="navbar__mobile-links">
+                            <Link to="/" className={`navbar__mobile-link ${isActive('/') ? 'navbar__mobile-link--active' : ''}`}>
+                                <span className="material-symbols-outlined">home</span> Home
                             </Link>
-                            <Link to="/registration">
-                                <button className="navbar__btn navbar__btn--filled">Sign Up</button>
+                            <Link to="/how-it-works" className={`navbar__mobile-link ${isActive('/how-it-works') ? 'navbar__mobile-link--active' : ''}`}>
+                                <span className="material-symbols-outlined">help_outline</span> How it Works
                             </Link>
-                        </>
-                    )}
-                </div>
+                            <Link to="/about-us" className={`navbar__mobile-link ${isActive('/about-us') ? 'navbar__mobile-link--active' : ''}`}>
+                                <span className="material-symbols-outlined">info</span> About
+                            </Link>
+                            <Link to="/contact-us" className={`navbar__mobile-link ${isActive('/contact-us') ? 'navbar__mobile-link--active' : ''}`}>
+                                <span className="material-symbols-outlined">call</span> Contact
+                            </Link>
+                            {canUseUserChats && (
+                                <Link to="/user-dashboard/recent-chats" className={`navbar__mobile-link ${isActive('/user-dashboard/recent-chats') ? 'navbar__mobile-link--active' : ''}`}>
+                                    <span className="material-symbols-outlined">forum</span> Chats
+                                </Link>
+                            )}
+                        </nav>
 
-            </div>
-        </nav>
+                        {/* Mobile Auth */}
+                        {!isAuthenticated && (
+                            <div className="navbar__mobile-auth">
+                                <Link to="/login" className="navbar__mobile-auth-btn navbar__mobile-auth-btn--outline">Login</Link>
+                                <Link to="/registration" className="navbar__mobile-auth-btn navbar__mobile-auth-btn--filled">Sign Up</Link>
+                            </div>
+                        )}
+                    </div>
+                </div>
+            )}
+        </>
     );
 };
 

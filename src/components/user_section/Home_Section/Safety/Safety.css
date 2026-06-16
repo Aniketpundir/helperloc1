@@ -63,10 +63,11 @@
 }
 
 .safety__card-icon {
-  font-size: 48px;
+  width: 48px;
+  height: 48px;
   color: #2E7D32;
   margin-bottom: var(--spacing-base);
-  display: block;
+  display: inline-block;
 }
 
 .safety__card-title {
