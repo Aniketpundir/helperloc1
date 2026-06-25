@@ -1,5 +1,3 @@
-/* src/components/user_section/Home_Section/CategoryBar/CategoryBar.css */
-
 .catbar {
   background: #fff;
   border-bottom: 1px solid #e0e0e0;
@@ -36,7 +34,6 @@
   display: none;
 }
 
-/* --- Single Category Item --- */
 .catbar__item {
   display: flex;
   flex-direction: column;
@@ -47,7 +44,12 @@
   cursor: pointer;
   padding: 6px 18px;
   border-radius: var(--radius-lg);
-  transition: background var(--transition-fast), transform var(--transition-fast);
+  transition:
+    background var(--transition-fast),
+    transform var(--transition-fast),
+    padding var(--transition-fast),
+    min-width var(--transition-fast),
+    border-radius var(--transition-fast);
   flex-shrink: 0;
   min-width: 80px;
   position: relative;
@@ -76,7 +78,6 @@
   transform: scaleX(1);
 }
 
-/* --- Icon Wrap --- */
 .catbar__icon-wrap {
   width: 44px;
   height: 44px;
@@ -85,7 +86,13 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: background var(--transition-fast), opacity var(--transition-fast), height var(--transition-fast), transform var(--transition-fast), margin var(--transition-fast);
+  transition:
+    width var(--transition-fast),
+    height var(--transition-fast),
+    background var(--transition-fast),
+    opacity var(--transition-fast),
+    transform var(--transition-fast),
+    margin var(--transition-fast);
   overflow: hidden;
 }
 
@@ -106,6 +113,7 @@
   color: #212121;
   letter-spacing: 0.01em;
   white-space: nowrap;
+  transition: font-size var(--transition-fast), font-weight var(--transition-fast);
 }
 
 .catbar--compact .catbar__track {
@@ -113,7 +121,6 @@
 }
 
 .catbar--compact .catbar__item {
-  flex-direction: row;
   min-width: auto;
   padding: 7px 15px;
   border-radius: 4px;

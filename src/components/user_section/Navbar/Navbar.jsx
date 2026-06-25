@@ -225,21 +225,6 @@ const Navbar = () => {
                         <Link to="/" className="navbar__logo-text">HelperLoc</Link>
                     </div>
 
-                    {/* Search Bar - center */}
-                    <div className="navbar__search-wrap">
-                        <input
-                            type="text"
-                            placeholder="Search for services like Plumber, Electrician..."
-                            className="navbar__search-input"
-                            value={searchQuery}
-                            onChange={(e) => setSearchQuery(e.target.value)}
-                            onKeyDown={handleSearchKeyDown}
-                        />
-                        <button className="navbar__search-btn" onClick={handleSearch} aria-label="Search">
-                            <span className="material-symbols-outlined">search</span>
-                        </button>
-                    </div>
-
                     {/* Right Actions */}
                     <div className="navbar__actions">
                         {isAuthenticated ? (
@@ -254,17 +239,6 @@ const Navbar = () => {
                                 </Link>
                             </>
                         )}
-
-                        {/* Hamburger */}
-                        <button
-                            className="navbar__hamburger"
-                            onClick={() => setMobileMenuOpen((p) => !p)}
-                            aria-label="Toggle menu"
-                        >
-                            <span className="material-symbols-outlined">
-                                {mobileMenuOpen ? 'close' : 'menu'}
-                            </span>
-                        </button>
                     </div>
                 </div>
             </nav>

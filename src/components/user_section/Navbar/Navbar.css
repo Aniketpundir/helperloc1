@@ -58,57 +58,6 @@
   white-space: nowrap;
 }
 
-/* --- Search Bar (Flipkart style) --- */
-.navbar__search-wrap {
-  flex: 1;
-  display: flex;
-  align-items: center;
-  background: #fff;
-  border-radius: 4px;
-  overflow: hidden;
-  max-width: 600px;
-  height: 40px;
-  box-shadow: 0 1px 4px rgba(0,0,0,0.12);
-}
-
-.navbar__search-input {
-  flex: 1;
-  border: none;
-  outline: none;
-  padding: 0 14px;
-  font-size: 14px;
-  color: #333;
-  background: transparent;
-  height: 100%;
-}
-
-.navbar__search-input::placeholder {
-  color: #aaa;
-  font-size: 13px;
-}
-
-.navbar__search-btn {
-  width: 48px;
-  height: 100%;
-  background: var(--color-primary);
-  border: none;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: background var(--transition-fast);
-  flex-shrink: 0;
-}
-
-.navbar__search-btn:hover {
-  background: #1565c0;
-}
-
-.navbar__search-btn .material-symbols-outlined {
-  color: #fff;
-  font-size: 22px;
-}
-
 /* --- Actions (right side) --- */
 .navbar__actions {
   display: flex;
@@ -341,29 +290,6 @@
   color: #c0392b;
 }
 
-/* --- Hamburger --- */
-.navbar__hamburger {
-  display: none;
-  background: transparent;
-  border: none;
-  cursor: pointer;
-  padding: 4px;
-  color: var(--color-on-primary);
-  align-items: center;
-  justify-content: center;
-  border-radius: var(--radius-lg);
-  transition: background var(--transition-fast);
-}
-
-.navbar__hamburger:hover {
-  background: rgba(255,255,255,0.15);
-}
-
-.navbar__hamburger .material-symbols-outlined {
-  font-size: 26px;
-  color: var(--color-on-primary);
-}
-
 /* ── Mobile Overlay ── */
 .navbar__mobile-overlay {
   position: fixed;
@@ -502,9 +428,6 @@
 }
 
 @media (max-width: 750px) {
-  .navbar__hamburger {
-    display: flex;
-  }
 
   .navbar__search-wrap {
     max-width: unset;
@@ -513,7 +436,7 @@
 
 @media (max-width: 500px) {
   .navbar__logo-text {
-    display: none;
+    display: block;
   }
 
   .navbar__inner {
