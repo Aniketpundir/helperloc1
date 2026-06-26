@@ -7,4 +7,4 @@ Disallow: /login
 Disallow: /registration
 Disallow: /worker-category
 
-Sitemap: https://helperloc.in/sitemap.xml
+Sitemap: https://helperloc.com/sitemap.xml
