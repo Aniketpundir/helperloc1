@@ -1,9 +1,9 @@
-export const SITE_URL = 'https://helperloc.in';
+export const SITE_URL = 'https://helperloc.com';
 export const BRAND_NAME = 'HelperLoc';
 export const DEFAULT_IMAGE = `${SITE_URL}/helperloc-og.svg`;
 
 export const contactPoint = {
-  email: 'hello@helperloc.in',
+  email: 'hello@helperloc.com',
   telephone: '+91-98765-43210',
   areaServed: 'IN',
 };
