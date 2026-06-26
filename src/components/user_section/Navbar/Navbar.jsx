@@ -224,7 +224,7 @@ const Navbar = () => {
                         <Link to="/" className="navbar__logo-icon" aria-label="HelperLoc home">
                             <img src="/logo.svg" alt="HelperLoc" width="36" height="36" />
                         </Link>
-                        <Link to="/" className="navbar__logo-text">Helper Loc1</Link>
+                        <Link to="/" className="navbar__logo-text">Helper Loc</Link>
                     </div>
 
                     {/* Right Actions */}
