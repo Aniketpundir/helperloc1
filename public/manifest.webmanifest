@@ -1,0 +1,19 @@
+{
+  "name": "HelperLoc",
+  "short_name": "HelperLoc",
+  "description": "Book verified local workers for home services including electrician, plumber, cleaning, AC repair, appliance repair and carpentry.",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#f4faff",
+  "theme_color": "#004d99",
+  "icons": [
+    {
+      "src": "/logo.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ],
+  "categories": ["business", "utilities", "productivity"]
+}

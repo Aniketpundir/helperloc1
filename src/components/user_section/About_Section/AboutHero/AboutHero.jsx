@@ -29,6 +29,9 @@ const AboutHero = ({
                     className="about-hero__img"
                     src={imgSrc}
                     alt="HelperLoc service professionals"
+                    loading="eager"
+                    decoding="async"
+                    fetchPriority="high"
                 />
             </div>
         </section>

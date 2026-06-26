@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" role="img" aria-label="HelperLoc local service booking">
+  <rect width="1200" height="630" fill="#f4faff"/>
+  <rect x="72" y="72" width="1056" height="486" rx="32" fill="#004d99"/>
+  <rect x="936" y="90" width="148" height="148" rx="14" fill="#fff"/>
+  <path d="M982 202V126h20v30h24v-30h20v76h-20v-30h-24v30h-20Z" fill="#004d99"/>
+  <text x="128" y="235" fill="#fff" font-family="Arial, sans-serif" font-size="82" font-weight="700">HelperLoc</text>
+  <text x="128" y="320" fill="#d6e3ff" font-family="Arial, sans-serif" font-size="42">Book verified local services near you</text>
+  <text x="128" y="405" fill="#fff" font-family="Arial, sans-serif" font-size="34">Electrician • Plumber • Cleaner • AC Repair • Carpenter</text>
+  <rect x="128" y="452" width="308" height="58" rx="12" fill="#fff"/>
+  <text x="154" y="491" fill="#004d99" font-family="Arial, sans-serif" font-size="26" font-weight="700">Trusted local workers</text>
+</svg>

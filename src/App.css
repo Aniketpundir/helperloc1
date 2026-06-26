@@ -244,3 +244,11 @@ input {
 input::placeholder {
   color: var(--color-outline);
 }
+
+.app-loader {
+  min-height: 60vh;
+  display: grid;
+  place-items: center;
+  color: var(--color-primary);
+  font-weight: var(--fw-semibold);
+}

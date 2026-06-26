@@ -1,4 +1,3 @@
-import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import './ServiceCard.css';
 
@@ -14,8 +13,10 @@ const ServiceCard = ({ service }) => {
             <div className="services__card-img-wrap">
                 <img
                     src={service.image}
-                    alt={service.title}
+                    alt={`${service.title} service on HelperLoc`}
                     className="services__card-img"
+                    loading="lazy"
+                    decoding="async"
                 />
             </div>
             <div className="services__card-body">

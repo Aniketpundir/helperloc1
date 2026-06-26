@@ -50,6 +50,8 @@ const OurStory = ({
                         className="our-story__img"
                         src={imgSrc}
                         alt="HelperLoc founding team"
+                        loading="lazy"
+                        decoding="async"
                     />
                 </div>
             </div>

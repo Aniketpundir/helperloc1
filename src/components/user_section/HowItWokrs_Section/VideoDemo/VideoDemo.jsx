@@ -16,6 +16,8 @@ const VideoDemo = ({ thumbnailSrc = 'https://lh3.googleusercontent.com/aida-publ
                         className="video-demo__img"
                         src={thumbnailSrc}
                         alt="HelperLoc App Demo"
+                        loading="lazy"
+                        decoding="async"
                     />
                     <div className="video-demo__overlay">
                         <button className="video-demo__play-btn" onClick={handlePlay} aria-label="Play video">

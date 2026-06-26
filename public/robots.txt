@@ -1,0 +1,10 @@
+User-agent: *
+Allow: /
+Disallow: /user-dashboard/
+Disallow: /worker/
+Disallow: /booking-confirmed
+Disallow: /login
+Disallow: /registration
+Disallow: /worker-category
+
+Sitemap: https://helperloc.in/sitemap.xml

@@ -1,221 +1,254 @@
 // src/App.jsx
-import "./App.css"
+import { lazy, Suspense } from 'react';
+import './App.css';
 import { Provider } from 'react-redux';
 import store from './Redux/store';
-import { createBrowserRouter, createRoutesFromElements, Route, RouterProvider } from 'react-router-dom'
-import Layout from './components/user_section/Layout_User/Layout'
-import Home from './pages/Home/Home'
-import HowItWorks from './pages/HowItWorks/HowItWorks'
-import About from './pages/About/About'
-import Contact from './pages/Contact/Contact'
-import RegisterForm from './components/Auth/RegisterForm/RegisterForm'
-import LoginForm from './components/Auth/LoginForm/LoginForm'
-import ProtectedRoute from './components/Auth/ProtectedRoute'
-import PublicOnlyRoute from './components/Auth/PublicOnlyRoute'
-import Worker_Category from "./components/user_section/Worker_Category/Worker_Category"
-import Listed_Worker from "./components/user_section/Listed_Worker/Listed_Worker"
-import Worker_Detail from "./components/user_section/Worker_Detail/Worker_Detail"
-import Booking_Confirmed from "./components/user_section/Booking_Confirmed/Booking_Confirmed"
-import RecentChats from "./components/common/RecentChats/RecentChats";
+import { createBrowserRouter, createRoutesFromElements, Route, RouterProvider } from 'react-router-dom';
+import Layout from './components/user_section/Layout_User/Layout';
+import ProtectedRoute from './components/Auth/ProtectedRoute';
+import PublicOnlyRoute from './components/Auth/PublicOnlyRoute';
+import SEO from './seo/SEO';
+import { createPageTitle } from './seo/seoData';
 
-// user profile
-import UserProfile from "./components/user_section/user_dashboard/UserProfile/UserProfile";
-import Help from "./components/user_section/user_dashboard/Help/Help";
-import CurrentBooking from "./components/user_section/user_dashboard/CurrentBooking/CurrentBooking";
-import PastBooking from "./components/user_section/user_dashboard/PastBooking/PastBooking"
-import PostWork from "./components/user_section/user_dashboard/PostWork/PostWork";
-import MyPostedJobs from "./components/user_section/user_dashboard/MyPostedJobs/MyPostedJobs";
+const Home = lazy(() => import('./pages/Home/Home'));
+const HowItWorks = lazy(() => import('./pages/HowItWorks/HowItWorks'));
+const About = lazy(() => import('./pages/About/About'));
+const Contact = lazy(() => import('./pages/Contact/Contact'));
+const ServiceLocation = lazy(() => import('./pages/ServiceLocation/ServiceLocation'));
+const LegalPage = lazy(() => import('./pages/Legal/LegalPage'));
+const RegisterForm = lazy(() => import('./components/Auth/RegisterForm/RegisterForm'));
+const LoginForm = lazy(() => import('./components/Auth/LoginForm/LoginForm'));
+const Worker_Category = lazy(() => import('./components/user_section/Worker_Category/Worker_Category'));
+const Listed_Worker = lazy(() => import('./components/user_section/Listed_Worker/Listed_Worker'));
+const Worker_Detail = lazy(() => import('./components/user_section/Worker_Detail/Worker_Detail'));
+const Booking_Confirmed = lazy(() => import('./components/user_section/Booking_Confirmed/Booking_Confirmed'));
+const RecentChats = lazy(() => import('./components/common/RecentChats/RecentChats'));
+const UserProfile = lazy(() => import('./components/user_section/user_dashboard/UserProfile/UserProfile'));
+const Help = lazy(() => import('./components/user_section/user_dashboard/Help/Help'));
+const CurrentBooking = lazy(() => import('./components/user_section/user_dashboard/CurrentBooking/CurrentBooking'));
+const PastBooking = lazy(() => import('./components/user_section/user_dashboard/PastBooking/PastBooking'));
+const PostWork = lazy(() => import('./components/user_section/user_dashboard/PostWork/PostWork'));
+const MyPostedJobs = lazy(() => import('./components/user_section/user_dashboard/MyPostedJobs/MyPostedJobs'));
+const WorkerDashboard = lazy(() => import('./components/worker_section/WorkerDashboard/WorkerDashboard'));
+const WorkerProfile = lazy(() => import('./components/worker_section/WorkerProfile/WorkerProfile'));
+const CompleteProfile = lazy(() => import('./components/worker_section/CompleteProfile/CompleteProfile'));
+const BookingRequestsPage = lazy(() => import('./components/worker_section/BookingRequestsPage/BookingRequestsPage'));
+const AvailableWork = lazy(() => import('./components/worker_section/AvailableWork/AvailableWork'));
+const AppliedWork = lazy(() => import('./components/worker_section/AppliedWork/AppliedWork'));
+const ClientReviews = lazy(() => import('./components/worker_section/ClientReviews/ClientReviews'));
 
-// worker panel 
-import WorkerDashboard from "./components/worker_section/WorkerDashboard/WorkerDashboard";
-import WorkerProfile from "./components/worker_section/WorkerProfile/WorkerProfile"
-import CompleteProfile from "./components/worker_section/CompleteProfile/CompleteProfile"
-import BookingRequestsPage from "./components/worker_section/BookingRequestsPage/BookingRequestsPage"
-import AvailableWork from "./components/worker_section/AvailableWork/AvailableWork";
-import AppliedWork from "./components/worker_section/AppliedWork/AppliedWork"
-import ClientReviews from "./components/worker_section/ClientReviews/ClientReviews";
+const PageLoader = () => <div className="app-loader" role="status" aria-live="polite">Loading HelperLoc...</div>;
+
+const withSuspense = (element) => (
+  <Suspense fallback={<PageLoader />}>
+    {element}
+  </Suspense>
+);
+
+const withNoIndex = (title, canonicalPath, element) => (
+  <>
+    <SEO
+      title={createPageTitle(title)}
+      description={`${title} is an account-only HelperLoc page and is not intended for search indexing.`}
+      canonicalPath={canonicalPath}
+      noindex
+    />
+    {element}
+  </>
+);
 
 const router = createBrowserRouter(
   createRoutesFromElements(
     <Route>
-      <Route path='/registration' element={
-        <PublicOnlyRoute>
-          <RegisterForm />
-        </PublicOnlyRoute>
-      }
+      <Route
+        path="/registration"
+        element={(
+          <PublicOnlyRoute>
+            {withSuspense(withNoIndex('Create HelperLoc Account', '/registration', <RegisterForm />))}
+          </PublicOnlyRoute>
+        )}
       />
 
-      <Route path='/login' element={
-        <PublicOnlyRoute>
-          <LoginForm />
-        </PublicOnlyRoute>
-      }
+      <Route
+        path="/login"
+        element={(
+          <PublicOnlyRoute>
+            {withSuspense(withNoIndex('Login to HelperLoc', '/login', <LoginForm />))}
+          </PublicOnlyRoute>
+        )}
       />
 
-      <Route path='/' element={<Layout />}>
-        {/* Public routes */}
-        <Route index element={<Home />} />
-        <Route path="/how-it-works" element={<HowItWorks />} />
-        <Route path='/about-us' element={<About />} />
-        <Route path='/contact-us' element={<Contact />} />
+      <Route path="/" element={<Layout />}>
+        <Route index element={withSuspense(<Home />)} />
+        <Route path="/how-it-works" element={withSuspense(<HowItWorks />)} />
+        <Route path="/about-us" element={withSuspense(<About />)} />
+        <Route path="/contact-us" element={withSuspense(<Contact />)} />
+        <Route path="/privacy-policy" element={withSuspense(<LegalPage type="privacy" />)} />
+        <Route path="/terms-of-service" element={withSuspense(<LegalPage type="terms" />)} />
+        <Route path="/:serviceSlug/:locationSlug" element={withSuspense(<ServiceLocation />)} />
 
-        {/* User-only routes */}
-        <Route path="/user-dashboard/user-profile"
-          element={
+        <Route
+          path="/user-dashboard/user-profile"
+          element={(
             <ProtectedRoute allowedRoles={['user']}>
-              <UserProfile />
+              {withSuspense(withNoIndex('HelperLoc User Profile', '/user-dashboard/user-profile', <UserProfile />))}
             </ProtectedRoute>
-          }
+          )}
         />
-        <Route path="/user-dashboard/current-booking"
-          element={
+        <Route
+          path="/user-dashboard/current-booking"
+          element={(
             <ProtectedRoute allowedRoles={['user']}>
-              <CurrentBooking />
+              {withSuspense(withNoIndex('Current HelperLoc Bookings', '/user-dashboard/current-booking', <CurrentBooking />))}
             </ProtectedRoute>
-          }
+          )}
         />
-        <Route path="/user-dashboard/past-booking"
-          element={
+        <Route
+          path="/user-dashboard/past-booking"
+          element={(
             <ProtectedRoute allowedRoles={['user']}>
-              <PastBooking />
+              {withSuspense(withNoIndex('Past HelperLoc Bookings', '/user-dashboard/past-booking', <PastBooking />))}
             </ProtectedRoute>
-          }
+          )}
         />
-        <Route path="/user-dashboard/post-work"
-          element={
+        <Route
+          path="/user-dashboard/post-work"
+          element={(
             <ProtectedRoute allowedRoles={['user']}>
-              <PostWork />
+              {withSuspense(withNoIndex('Post Work on HelperLoc', '/user-dashboard/post-work', <PostWork />))}
             </ProtectedRoute>
-          }
+          )}
         />
-        <Route path="/user-dashboard/my-posted-jobs"
-          element={
+        <Route
+          path="/user-dashboard/my-posted-jobs"
+          element={(
             <ProtectedRoute allowedRoles={['user']}>
-              <MyPostedJobs />
+              {withSuspense(withNoIndex('My Posted Jobs on HelperLoc', '/user-dashboard/my-posted-jobs', <MyPostedJobs />))}
             </ProtectedRoute>
-          }
+          )}
         />
-        <Route path="/user-dashboard/recent-chats"
-          element={
+        <Route
+          path="/user-dashboard/recent-chats"
+          element={(
             <ProtectedRoute allowedRoles={['user']}>
-              <RecentChats role="user" />
+              {withSuspense(withNoIndex('HelperLoc User Chats', '/user-dashboard/recent-chats', <RecentChats role="user" />))}
             </ProtectedRoute>
-          }
+          )}
         />
-        <Route path="/booking-confirmed"
-          element={
+        <Route
+          path="/booking-confirmed"
+          element={(
             <ProtectedRoute allowedRoles={['user']}>
-              <Booking_Confirmed />
+              {withSuspense(withNoIndex('HelperLoc Booking Confirmed', '/booking-confirmed', <Booking_Confirmed />))}
             </ProtectedRoute>
-          }
+          )}
         />
-        <Route path="/help-and-support"
-          element={
+        <Route
+          path="/help-and-support"
+          element={(
             <ProtectedRoute allowedRoles={['user', 'worker']}>
-              <Help />
+              {withSuspense(withNoIndex('HelperLoc Help and Support', '/help-and-support', <Help />))}
             </ProtectedRoute>
-          }
+          )}
         />
-        <Route path="/worker-category"
-          element={
+        <Route
+          path="/worker-category"
+          element={(
             <ProtectedRoute allowedRoles={['user', 'worker']}>
-              <Worker_Category />
+              {withSuspense(withNoIndex('HelperLoc Worker Categories', '/worker-category', <Worker_Category />))}
             </ProtectedRoute>
-          }
+          )}
         />
-        <Route path="/worker-category/listed-worker/:category"
-          element={
+        <Route
+          path="/worker-category/listed-worker/:category"
+          element={(
             <ProtectedRoute allowedRoles={['user', 'worker']}>
-              <Listed_Worker />
+              {withSuspense(withNoIndex('HelperLoc Listed Workers', '/worker-category/listed-worker', <Listed_Worker />))}
             </ProtectedRoute>
-          }
+          )}
         />
-
-        <Route path="/worker-category/listed-worker/:category/:id"
-          element={
+        <Route
+          path="/worker-category/listed-worker/:category/:id"
+          element={(
             <ProtectedRoute allowedRoles={['user', 'worker']}>
-              <Worker_Detail />
+              {withSuspense(withNoIndex('HelperLoc Worker Detail', '/worker-category/listed-worker/detail', <Worker_Detail />))}
             </ProtectedRoute>
-          }
+          )}
         />
 
-
-        {/* Worker-only routes */}
-        <Route path="/worker/dashboard"
-          element={
+        <Route
+          path="/worker/dashboard"
+          element={(
             <ProtectedRoute allowedRoles={['worker']}>
-              <WorkerDashboard />
+              {withSuspense(withNoIndex('HelperLoc Worker Dashboard', '/worker/dashboard', <WorkerDashboard />))}
             </ProtectedRoute>
-          }
+          )}
         />
-
-        <Route path="/worker/profile"
-          element={
+        <Route
+          path="/worker/profile"
+          element={(
             <ProtectedRoute allowedRoles={['worker']}>
-              <WorkerProfile />
+              {withSuspense(withNoIndex('HelperLoc Worker Profile', '/worker/profile', <WorkerProfile />))}
             </ProtectedRoute>
-          }
+          )}
         />
-
-        <Route path="/worker/completed-work"
-          element={
+        <Route
+          path="/worker/completed-work"
+          element={(
             <ProtectedRoute allowedRoles={['worker']}>
-              <CompleteProfile />
+              {withSuspense(withNoIndex('HelperLoc Completed Work', '/worker/completed-work', <CompleteProfile />))}
             </ProtectedRoute>
-          }
+          )}
         />
-
-        <Route path="/worker/booking-request"
-          element={
+        <Route
+          path="/worker/booking-request"
+          element={(
             <ProtectedRoute allowedRoles={['worker']}>
-              <BookingRequestsPage />
+              {withSuspense(withNoIndex('HelperLoc Booking Requests', '/worker/booking-request', <BookingRequestsPage />))}
             </ProtectedRoute>
-          }
+          )}
         />
-
-        <Route path="/worker/available-work"
-          element={
+        <Route
+          path="/worker/available-work"
+          element={(
             <ProtectedRoute allowedRoles={['worker']}>
-              <AvailableWork />
+              {withSuspense(withNoIndex('HelperLoc Available Work', '/worker/available-work', <AvailableWork />))}
             </ProtectedRoute>
-          }
+          )}
         />
-
-        <Route path="/worker/recent-chats"
-          element={
+        <Route
+          path="/worker/recent-chats"
+          element={(
             <ProtectedRoute allowedRoles={['worker']}>
-              <RecentChats role="worker" />
+              {withSuspense(withNoIndex('HelperLoc Worker Chats', '/worker/recent-chats', <RecentChats role="worker" />))}
             </ProtectedRoute>
-          }
+          )}
         />
-
-        <Route path="/worker/applied-work"
-          element={
+        <Route
+          path="/worker/applied-work"
+          element={(
             <ProtectedRoute allowedRoles={['worker']}>
-              <AppliedWork />
+              {withSuspense(withNoIndex('HelperLoc Applied Work', '/worker/applied-work', <AppliedWork />))}
             </ProtectedRoute>
-          }
+          )}
         />
-
-        <Route path="/worker/client-review"
-          element={
+        <Route
+          path="/worker/client-review"
+          element={(
             <ProtectedRoute allowedRoles={['worker']}>
-              <ClientReviews />
+              {withSuspense(withNoIndex('HelperLoc Client Reviews', '/worker/client-review', <ClientReviews />))}
             </ProtectedRoute>
-          }
+          )}
         />
-
       </Route>
     </Route>
   )
 );
-const App = () => {
-  return (
-    // Redux Provider — poori app ko wrap karta hai
-    <Provider store={store}>
-      <RouterProvider router={router} />
-    </Provider>
-  )
-}
 
-export default App
+const App = () => (
+  <Provider store={store}>
+    <RouterProvider router={router} />
+  </Provider>
+);
+
+export default App;

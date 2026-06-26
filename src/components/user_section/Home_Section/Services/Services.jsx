@@ -1,5 +1,5 @@
 // src/components/user_section/Home_Section/Services/Services.jsx
-import React, { useRef } from 'react';
+import { useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { FaArrowRight, FaChevronLeft, FaChevronRight } from 'react-icons/fa';
 import './Services.css';
@@ -72,7 +72,15 @@ const Services = () => {
                             <span className="svc-card__badge">{service.badge}</span>
 
                             <div className="svc-card__img-wrap">
-                                <img src={service.image} alt={service.title} className="svc-card__img" />
+                                <img
+                                    src={service.image}
+                                    alt={`${service.title} service on HelperLoc`}
+                                    className="svc-card__img"
+                                    loading="lazy"
+                                    decoding="async"
+                                    width="280"
+                                    height="180"
+                                />
                             </div>
 
                             <div className="svc-card__info">

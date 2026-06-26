@@ -44,7 +44,7 @@
   width: 32px;
   height: 32px;
   border-radius: var(--radius-lg);
-  filter: brightness(0) invert(1);
+  background: #ffffff;
 }
 
 .footer__brand-name {

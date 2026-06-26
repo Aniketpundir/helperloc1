@@ -47,6 +47,8 @@ export default function OfficeMap() {
                     className="office-map__img"
                     src="https://lh3.googleusercontent.com/aida-public/AB6AXuCYeR94VifLLxxE7qKEv50Sfo0dkJTAp5xNy5C0NlnzbobYhpIz3Zx0a2j6IFQIDavzxr8ClxSQUZmZ-YgUA8b682rbXo-Wfj1LLgRXb8wMQEA3WavHy9yWqJzqtetSuS-3nlqrzRhb_dCjA_HNE_ddyEqOas8SJf-TzfiMknDe9uJ042i3R8E_PmD2FQdNeBXuBpLsNDsoaNJrKUxrqfQdKPeNmij84j3_qGfb9fMvHoU7abMfbHA0KSoODTSfF8VQ6365KqKDNKB4"
                     alt="Northern India map with HelperLoc office locations"
+                    loading="lazy"
+                    decoding="async"
                 />
             </div>
         </section>

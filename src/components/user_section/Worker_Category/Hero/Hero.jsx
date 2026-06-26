@@ -1,4 +1,3 @@
-import React from 'react';
 import './Hero.css';
 
 const Hero = () => {
@@ -10,6 +9,9 @@ const Hero = () => {
                     src="https://lh3.googleusercontent.com/aida-public/AB6AXuAwn5PIT6a7trTxrKxhraAV54CY0hPdVDAXtzLoDxd7ZG7LxGVwdbo1npYDClbvek40vHVKvYA2lYQLumEEAG7JjWtPyZGyN_iBo19UJfcFYUUg2A7ovPGKvrxgxYgujoR6HfRMiNOAHgZBBt1Jmj_A7jQCycFFNzIReuo1a5zDKBw9cn30GivrWI-ioT6R5H04evJQclbcTAaY4yjz91JOlBWlK-c8nSkbuc_p4yKBxvXNfdlA0sl5ggmHEaEtFimnxsnjmimgbv1E"
                     alt="Professional cleaning specialist"
                     className="worker-category-hero__bg-img"
+                    loading="eager"
+                    decoding="async"
+                    fetchPriority="high"
                 />
                 <div className="worker-category-hero__overlay"></div>
             </div>
