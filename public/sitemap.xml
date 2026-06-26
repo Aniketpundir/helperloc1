@@ -4,6 +4,8 @@
   <url><loc>https://helperloc.in/how-it-works</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
   <url><loc>https://helperloc.in/about-us</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
   <url><loc>https://helperloc.in/contact-us</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://helperloc.in/privacy-policy</loc><changefreq>yearly</changefreq><priority>0.3</priority></url>
+  <url><loc>https://helperloc.in/terms-of-service</loc><changefreq>yearly</changefreq><priority>0.3</priority></url>
   <url><loc>https://helperloc.in/electrician/dehradun</loc><changefreq>weekly</changefreq><priority>0.9</priority></url>
   <url><loc>https://helperloc.in/electrician/haridwar</loc><changefreq>weekly</changefreq><priority>0.9</priority></url>
   <url><loc>https://helperloc.in/electrician/roorkee</loc><changefreq>weekly</changefreq><priority>0.9</priority></url>
